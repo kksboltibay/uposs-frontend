@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="UPOSS.Views.AuthView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UPOSS.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800">
+
+
+    <!--<UserControl.Background>
+        <ImageBrush
+            ImageSource="/Resources/login-background.jpg"
+            Opacity="0.5"
+            Stretch="UniformToFill" />
+    </UserControl.Background>-->
+    
+    <Border Margin="25" Padding="50"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Background="LightGray"
+        BorderBrush="DimGray"
+        BorderThickness="3"
+        CornerRadius="10">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Color="Gray" />
+        </Border.Effect>
+        <Grid Grid.IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                HorizontalAlignment="Center"
+                FontSize="48"
+                FontFamily="Sylfaen"
+                Text="U P O $ $" />
+
+            <TextBlock Grid.Row="1" Margin="0 10"
+                HorizontalAlignment="Center"
+                FontSize="18"
+                FontWeight="Thin"
+                Text="The world's simplest Point of Sales system." />
+
+            <Grid Grid.Row="2" Margin="0 20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Username : " VerticalAlignment="Center" />
+
+                    <StackPanel Grid.Column="1" Margin="20 0 0 0" FocusManager.FocusedElement="{Binding ElementName=TxtB}">
+                        <TextBox x:Name="TxtB" FontSize="15" Text="{Binding InputUser.Username, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Password : " VerticalAlignment="Center" />
+                    <PasswordBox Grid.Column="1" FontSize="15" Margin="20 0 0 0" PasswordChanged="PasswordBox_PasswordChanged"/>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Branch : " VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="20 0">
+                        <ComboBox HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        MinWidth="300"
+                        FontSize="15"
+                        ItemsSource="{Binding Path=ActiveBranchList}"
+                        SelectedItem="{Binding Path=SelectedBranch}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Button Grid.Row="3" Margin="0 10"
+                    HorizontalAlignment="Center"
+                    Command="{Binding LoginCommand}"
+                    Content="Login"
+                    IsDefault="True" />
+
+                <Button Grid.Row="4" Margin="0 10 0 0"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Command="{Binding ExitCommand}"
+                    Content="Exit"
+                    FontSize="14"
+                    Foreground="Blue" />
+            </Grid>
+        </Grid>
+    </Border>
+
+</UserControl>
