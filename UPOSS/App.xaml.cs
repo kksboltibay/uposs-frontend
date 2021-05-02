@@ -36,7 +36,8 @@ namespace UPOSS
             {
                 manager = await UpdateManager.GitHubUpdateManager(@"https://github.com/kksboltibay/UPOSS");
 
-                //CurrentVersionTextBox.Text = manager.CurrentlyInstalledVersion().ToString();
+                UPOSS.Properties.Settings.Default.CurrentApplicationVersion = manager.CurrentlyInstalledVersion().ToString();
+                UPOSS.Properties.Settings.Default.Save();
 
                 var updateInfo = await manager.CheckForUpdate();
 

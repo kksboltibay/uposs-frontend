@@ -58,5 +58,17 @@ namespace UPOSS.Properties {
                 this["CurrentUserRole"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CurrentApplicationVersion {
+            get {
+                return ((string)(this["CurrentApplicationVersion"]));
+            }
+            set {
+                this["CurrentApplicationVersion"] = value;
+            }
+        }
     }
 }
