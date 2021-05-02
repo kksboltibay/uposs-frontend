@@ -32,22 +32,29 @@ namespace UPOSS
 
         private async void CheckAvailableUpdate()
         {
-            manager = await UpdateManager.GitHubUpdateManager(@"https://github.com/kksboltibay/UPOSS-Frontend");
-
-            //CurrentVersionTextBox.Text = manager.CurrentlyInstalledVersion().ToString();
-
-            var updateInfo = await manager.CheckForUpdate();
-
-            if (updateInfo.ReleasesToApply.Count > 0)
+            try
             {
-                var update = MessageBox.Show("There is an update available", "UPO$$", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                manager = await UpdateManager.GitHubUpdateManager(@"https://github.com/kksboltibay/UPOSS");
 
-                if (update == MessageBoxResult.Yes)
+                //CurrentVersionTextBox.Text = manager.CurrentlyInstalledVersion().ToString();
+
+                var updateInfo = await manager.CheckForUpdate();
+
+                if (updateInfo.ReleasesToApply.Count > 0)
                 {
-                    await manager.UpdateApp();
+                    var update = MessageBox.Show("There is an update available", "UPO$$", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
-                    MessageBox.Show("Updated succesfuly!");
+                    if (update == MessageBoxResult.Yes)
+                    {
+                        await manager.UpdateApp();
+
+                        MessageBox.Show("Updated succesfuly!");
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString() + "\n\nUpdate checking process error, please contact IT support", "UPO$$");
             }
         }
     }
