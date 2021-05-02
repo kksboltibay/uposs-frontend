@@ -42,7 +42,7 @@ namespace UPOSS
 
                 if (updateInfo.ReleasesToApply.Count > 0)
                 {
-                    var update = MessageBox.Show("There is an update available", "UPO$$", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                    var update = MessageBox.Show("There is an update available, do you want to update?", "UPO$$", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
                     if (update == MessageBoxResult.Yes)
                     {
