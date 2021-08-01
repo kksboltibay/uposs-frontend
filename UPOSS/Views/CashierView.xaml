@@ -3,10 +3,517 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UPOSS.Views"
+             xmlns:local="clr-namespace:UPOSS.Views" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
+             xmlns:controls="clr-namespace:UPOSS.Controls" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1024">
+    
+    
     <Grid>
-        <TextBlock Text="Cashier Page"/>
+        <!--Content-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.40*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Item section-->
+            <Grid Grid.Column="0" Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.15*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Search-->
+                <Grid Grid.Row="0" Margin="10">
+                    
+                    <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+
+                    <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10" HorizontalAlignment="Center">
+                        <!--Scanner toggle switch-->
+                        <Grid Margin="5">
+                            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                <StackPanel Orientation="Vertical" Margin="5 2">
+                                    <TextBlock Text="Scanner" Margin="0 0 1 0"/>
+                                    <ToggleButton Name="togglebuttonScanner" Margin="0 2 0 0" Click="togglebuttonScanner_Checked" Foreground="Black"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        
+                        <!--Barcode search box-->
+                        <Grid Margin="5">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <!--Text Box-->
+                                <Grid>
+                                    <TextBox x:Name="tbBarcode" Width="150" BorderBrush="Black" BorderThickness="1"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
+                                        Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}"
+                                        TextChanged="tbBarcode_TextChanged" KeyDown="tbBarcode_KeyDown">
+                                        <TextBox.Resources>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </TextBox.Resources>
+                                    </TextBox>
+                                    <TextBlock IsHitTestVisible="False" Text="- Search Barcode -" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=tbBarcode}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+
+                                <!-- Suggestion box -->
+                                <Popup x:Name="popupBarcode" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
+                                    <!--List Box-->
+                                    <ListBox x:Name="lbBarcode" Visibility="Collapsed" SelectionChanged="lbBarcode_SelectionChanged" SelectedItem="{Binding Path=SelectedBarcode, Mode=TwoWay}"/>
+                                </Popup>
+                            </StackPanel>
+                        </Grid>
+
+                        <!--Product No search box-->
+                        <Grid Margin="5">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <!--Text Box-->
+                                <Grid>
+                                    <TextBox x:Name="tbProductNo" Width="150" BorderBrush="Black" BorderThickness="1"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
+                                        Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay}"
+                                        TextChanged="tbProductNo_TextChanged">
+                                        <TextBox.Resources>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </TextBox.Resources>
+                                    </TextBox>
+                                    <TextBlock IsHitTestVisible="False" Text="- Search Product No -" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=tbProductNo}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+
+                                <!-- Suggestion box -->
+                                <Popup x:Name="popupProductNo" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
+                                    <!--List Box-->
+                                    <ListBox x:Name="lbProductNo" Visibility="Collapsed" SelectionChanged="lbProductNo_SelectionChanged" SelectedItem="{Binding Path=SelectedProductNo, Mode=TwoWay}"/>
+                                </Popup>
+                            </StackPanel>
+                        </Grid>
+
+                        <!--Product Name search box-->
+                        <Grid Margin="5">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <!--Text Box-->
+                                <Grid>
+                                    <TextBox x:Name="tbProductName" Width="150" BorderBrush="Black" BorderThickness="1"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
+                                        Text="{Binding Path=InputProduct.Name, Mode=TwoWay}"
+                                        TextChanged="tbProductName_TextChanged">
+                                        <TextBox.Resources>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </TextBox.Resources>
+                                    </TextBox>
+                                    <TextBlock IsHitTestVisible="False" Text="- Search Product Name -" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=tbProductName}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+
+                                <!-- Suggestion box -->
+                                <Popup x:Name="popupProductName" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
+                                    <!--List Box-->
+                                    <ListBox x:Name="lbProductName" Visibility="Collapsed" SelectionChanged="lbProductName_SelectionChanged" SelectedItem="{Binding Path=SelectedProductName, Mode=TwoWay}"/>
+                                </Popup>
+                            </StackPanel>
+                        </Grid>
+                    </WrapPanel>
+                </Grid>
+                
+                <!--Product List-->
+                <Grid Grid.Row="1" Margin="10">
+                    <DataGrid Name="dgProduct"
+                      MouseDown="dgProduct_MouseDown"
+                      PreviewTextInput="dgProduct_PreviewTextInput"
+                      PreviewKeyDown="dgProduct_PreviewKeyDown"
+                      AutoGenerateColumns="False"
+                      MaxWidth="930"
+                      MinWidth="500"
+                      CanUserAddRows="False"
+                      SelectionUnit="FullRow"
+                      SelectionMode="Single"
+                      Padding="9"
+                      ItemsSource="{Binding Path=ProductList, Mode=TwoWay}"
+                      SelectedItem="{Binding Path=SelectedProduct, Mode=TwoWay}">
+
+                        <!--Make datagrid content alignment center-->
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                            <Grid>
+                                                <ContentPresenter VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <!--Detect row changes event command-->
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="RowEditEnding">
+                                <b:InvokeCommandAction Command="{Binding RowEditEndingCommand}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding Path=Id}"/>
+                            <DataGridTextColumn Header="Product No." IsReadOnly="True" Binding="{Binding Path=Product_no}" />
+                            <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=Name}" />
+                            <DataGridTextColumn Header="Barcode" IsReadOnly="True" Binding="{Binding Path=Barcode}" />
+                            <DataGridTextColumn Header="Price" Binding="{Binding Path=Price, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Qty(Meter)" Binding="{Binding Path=Total_stock, UpdateSourceTrigger=PropertyChanged}">
+                                
+                                <!--<DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <EventSetter Event="TextChanged" Handler="CellValueChanged"/>
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>-->
+
+                                <!--<b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="TextChanged">
+                                        <b:InvokeCommandAction  Command="{Binding CellValueChangedCommand}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>-->
+                            
+                            </DataGridTextColumn>
+
+                            <!--<DataGridTemplateColumn Header="Qty()">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Total_stock, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=SelectedProduct.Total_stock}">
+                                            <b:Interaction.Triggers>
+                                                <b:EventTrigger EventName="TextChanged">
+                                                    <b:InvokeCommandAction  Command="{Binding CellValueChangedCommand}"/>
+                                                </b:EventTrigger>
+                                            </b:Interaction.Triggers>
+                                        </TextBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>-->
+
+                            <!--<DataGridTemplateColumn Header="Adjustment">
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=SelectedProduct.Total_stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <b:Interaction.Triggers>
+                                                <b:EventTrigger EventName="TextChanged">
+                                                    <b:InvokeCommandAction  Command="{Binding CellValueChangedCommand}"/>
+                                                </b:EventTrigger>
+                                            </b:Interaction.Triggers>
+                                        </TextBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>-->
+
+
+                            <DataGridTextColumn Header="Discount" IsReadOnly="True" Binding="{Binding Path=Discount}"/>
+                            <DataGridTextColumn Header="Subtotal" IsReadOnly="True" Binding="{Binding Path=Subtotal}"/>
+
+                            <!--Edit button-->
+                            <!--<DataGridTemplateColumn Header="">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button BorderThickness="0" Background="Transparent" Command="{Binding Path=EditSelectedItemCommand}">
+                                            <materialDesign:PackIcon Kind="Edit"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>-->
+
+                            <!--Remove button-->
+                            <DataGridTemplateColumn Header="">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button BorderThickness="0" Background="Transparent" Command="{Binding Path=DataContext.RemoveSelectedItemCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                            <materialDesign:PackIcon Kind="RemoveCircle"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+            
+            
+            <!--Calculate section-->
+            <Grid Grid.Column="1" Margin="0 25 20 25">
+                <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+
+                <Grid Margin="5">
+                    <Rectangle Fill="DarkGray"   Height="auto" RadiusX="5" RadiusY="5"/>
+
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.40*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="0.20*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--First line-->
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Subtotal-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 5 0">
+                                    <Viewbox>
+                                        <TextBlock Text="Subtotal" FontWeight="Light"/>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--Subtotal price-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
+                                    <Viewbox>
+                                        <TextBlock FontWeight="Light">
+                                            $<TextBlock Text="{Binding Path=Cart.Subtotal, Mode=TwoWay}"/>
+                                        </TextBlock>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
+
+                        <!--Second line-->
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Discount-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 5 0">
+                                    <Viewbox>
+                                        <TextBlock Text="Discounts" FontWeight="Light"/>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--Discount price-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
+                                    <Viewbox>
+                                        <TextBlock FontWeight="Light">
+                                            ($<TextBlock Text="{Binding Path=Cart.Discount, Mode=TwoWay}"/>)
+                                        </TextBlock>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
+
+                        <!--Thirt line-->
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--GST-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 5 0">
+                                    <Viewbox>
+                                        <TextBlock Text="GST" FontWeight="Light"/>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--GST price-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
+                                    <Viewbox>
+                                        <TextBlock FontWeight="Light">
+                                            $<TextBlock Text="{Binding Path=Cart.GST, Mode=TwoWay}"/>
+                                        </TextBlock>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
+
+                        <!--Fourth line-->
+                        <Grid Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                </Grid.RowDefinitions>
+
+                                <!--Total-->
+                                <WrapPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Viewbox>
+                                        <TextBlock Text="Total" FontWeight="Bold"/>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--Total price-->
+                                <WrapPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Viewbox>
+                                        <TextBlock>
+                                            $<TextBlock Text="{Binding Path=Cart.Total_amount, Mode=TwoWay}"/>
+                                        </TextBlock>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
+                        
+                        
+                        <!--Fifth line-->
+                        <Grid Grid.Row="4">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <!--Refresh sync button-->
+                                <Button Name="btnSync"
+                                    Width="100"
+                                    Margin="8"
+                                    Padding="3"
+                                    Command="{Binding Path=SyncCommand}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Refresh" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Sync" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <!--Reset All button-->
+                                <Button Name="btnResetAll"
+                                    Background="DarkRed"
+                                    Width="100"
+                                    Content="Clear"
+                                    Margin="8"
+                                    Padding="3"
+                                    Command="{Binding Path=ClearAllCommand}" />
+                                <!--On Hold button-->
+                                <Button Name="btnOnHold"
+                                    Width="100"
+                                    Margin="8"
+                                    Padding="3"
+                                    Command="{Binding Path=OnHoldCommand}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Download" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="On Hold" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <!--Recall button-->
+                                <Button Name="btnRecall"
+                                    Width="100"
+                                    Margin="8"
+                                    Padding="3"
+                                    Command="{Binding Path=RecallCommand}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Output" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Recall" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+
+                            <!--horizontal seperate line-->
+                            <Separator BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Bottom" Margin="10 0"/>
+                        </Grid>
+
+
+                        <!--sixth line-->
+                        <Grid Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <!--Payment button-->
+                            <Button Name="btnPayment"
+                                Background="Green"
+                                Width="100"
+                                Padding="3"
+                                Command="{Binding Path=PaymentCommand}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="PrinterPointOfSale" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Payment" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+
+
+
+                    </Grid>
+                </Grid>
+                
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

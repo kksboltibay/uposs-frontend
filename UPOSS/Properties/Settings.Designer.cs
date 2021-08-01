@@ -70,5 +70,41 @@ namespace UPOSS.Properties {
                 this["CurrentApplicationVersion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Setting_ScannerIsUsed {
+            get {
+                return ((bool)(this["Setting_ScannerIsUsed"]));
+            }
+            set {
+                this["Setting_ScannerIsUsed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.06")]
+        public string Setting_GST {
+            get {
+                return ((string)(this["Setting_GST"]));
+            }
+            set {
+                this["Setting_GST"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.06")]
+        public string Setting_SST {
+            get {
+                return ((string)(this["Setting_SST"]));
+            }
+            set {
+                this["Setting_SST"] = value;
+            }
+        }
     }
 }

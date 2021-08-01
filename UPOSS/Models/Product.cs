@@ -33,11 +33,22 @@ namespace UPOSS.Models
 
         public string Barcode { get; set; }
 
-        public string Total_stock { get; set; }
-
         public string Is_active { get; set; }
 
+        public int Action { get; set; }
+
         public List<ProductQuantity> Stock { get; set; }
+
+        //Cashier
+        public string Remaining_stock { get; set; } = "0";
+
+        public string Total_stock { get; set; } = "0";
+
+        public string Original_price { get; set; } = "0";
+
+        public string Discount { get; set; } = "0";
+
+        public string Subtotal { get; set; } = "0";
     }
 
     public class ProductQuantity : ObservableObject

@@ -4,9 +4,8 @@
              xmlns:local="clr-namespace:UPOSS"
              
              xmlns:viewModels="clr-namespace:UPOSS.ViewModels"
-             xmlns:views="clr-namespace:UPOSS.Views"
-             
-             >
+             xmlns:views="clr-namespace:UPOSS.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    
             <!-- StartupUri="MainWindow.xaml" , handled by code behind -->
 
     <Application.Resources>
@@ -16,11 +15,14 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/Common.xaml"/>
                 <ResourceDictionary Source="/Styles/ImageDictionary.xaml"/>
+
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+                <!--<materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Yellow" SecondaryColor="Red" />-->
+                
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- For Navigation, switch between pages -->
+            <!-- MVVM Binding -->
             <DataTemplate DataType="{x:Type viewModels:DashboardViewModel}">
                 <views:DashboardView/>
             </DataTemplate>

@@ -8,295 +8,316 @@
              d:DesignHeight="450" d:DesignWidth="1080">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.25*"/>
-            <RowDefinition Height="0.05*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--filter section-->
-        <Grid Grid.Row="0">
+        <!--Content-->
+        <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             
-            <Rectangle Fill="White" Height="auto" Margin="15 10" RadiusX="10" RadiusY="10"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.05*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15 10">
-                <WrapPanel Orientation="Horizontal" Margin="0 0 0 10">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10 0">
-                        <TextBlock Text="Product No : " FontWeight="Bold"/>
+            <!--filter section-->
+            <Grid Grid.Row="0">
 
-                        <TextBox MinWidth="100"
+                <Rectangle Fill="White" Height="auto" Margin="15 10" RadiusX="10" RadiusY="10"/>
+
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15 10">
+                    <WrapPanel Orientation="Horizontal" Margin="0 0 0 10">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10 0">
+                            <TextBlock Text="Product No : " FontWeight="Bold"/>
+
+                            <TextBox MinWidth="100"
                          BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                          Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay}">
-                            <TextBox.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="6"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                    </StackPanel>
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="Name : " FontWeight="Bold"/>
+                        <StackPanel Orientation="Vertical" Margin="10 0">
+                            <TextBlock Text="Name : " FontWeight="Bold"/>
 
-                        <TextBox MinWidth="100"
+                            <TextBox MinWidth="100"
                          BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                          Text="{Binding Path=InputProduct.Name, Mode=TwoWay}">
-                            <TextBox.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="6"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                    </StackPanel>
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="Category : " FontWeight="Bold"/>
+                        <StackPanel Orientation="Vertical" Margin="10 0">
+                            <TextBlock Text="Category : " FontWeight="Bold"/>
 
-                        <TextBox MinWidth="100"
+                            <TextBox MinWidth="100"
                          BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                          Text="{Binding Path=InputProduct.Category, Mode=TwoWay}">
-                            <TextBox.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="6"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                    </StackPanel>
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="Design Code : " FontWeight="Bold"/>
+                        <StackPanel Orientation="Vertical" Margin="10 0">
+                            <TextBlock Text="Design Code : " FontWeight="Bold"/>
 
-                        <TextBox MinWidth="100"
+                            <TextBox MinWidth="100"
                          BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                          Text="{Binding Path=InputProduct.Design_code, Mode=TwoWay}">
-                            <TextBox.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="6"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                    </StackPanel>
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="Color Code : " FontWeight="Bold"/>
+                        <StackPanel Orientation="Vertical" Margin="10 0">
+                            <TextBlock Text="Color Code : " FontWeight="Bold"/>
 
-                        <TextBox MinWidth="100"
+                            <TextBox MinWidth="100"
                          BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                          Text="{Binding Path=InputProduct.Colour_code, Mode=TwoWay}">
-                            <TextBox.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="6"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                    </StackPanel>
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="Price : " FontWeight="Bold"/>
+                        <StackPanel Orientation="Vertical" Margin="10 0">
+                            <TextBlock Text="Price : " FontWeight="Bold"/>
 
-                        <TextBox MinWidth="100"
+                            <TextBox MinWidth="100"
                          BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                          Text="{Binding Path=InputProduct.Price, Mode=TwoWay}">
-                            <TextBox.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="6"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                    </StackPanel>
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="Barcode : " FontWeight="Bold"/>
+                        <StackPanel Orientation="Vertical" Margin="10 0">
+                            <TextBlock Text="Barcode : " FontWeight="Bold"/>
 
-                        <TextBox MinWidth="100"
+                            <TextBox MinWidth="100"
                          BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                          Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}">
-                            <TextBox.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="6"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                    </StackPanel>
-                </WrapPanel>
-                
-                <!--Stack row 2-->
-                <WrapPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal" Margin="10 0">
-                        <TextBlock Text="Branch :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
+                    </WrapPanel>
 
-                        <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
+                    <!--Stack row 2-->
+                    <WrapPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <TextBlock Text="Branch :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                            <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
                               Margin="10 0" MinWidth="150" FontSize="15" MaxHeight="300" MaxWidth="300"
                               ItemsSource="{Binding BranchList}" SelectedItem="{Binding SelectedBranch}"
                                SelectedValue="All"/>
-                    </StackPanel>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="10 0">
-                        <TextBlock Text="Status :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <TextBlock Text="Status :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                        <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
+                            <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
                               Margin="10 0" MinWidth="150" FontSize="15" MaxHeight="300" MaxWidth="300"
                               ItemsSource="{Binding StatusList}" SelectedItem="{Binding SelectedStatus}"
                                SelectedValue="Active"/>
-                    </StackPanel>
-                </WrapPanel>
-            </StackPanel>
-        </Grid>
+                        </StackPanel>
+                    </WrapPanel>
+                </StackPanel>
+            </Grid>
 
-        <!--horizontal seperate line-->
-        <Separator Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30 0" VerticalAlignment="Top"/>
+            <!--horizontal seperate line-->
+            <Separator Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30 0" VerticalAlignment="Top"/>
 
-        <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="0.30*"/>
-            </Grid.ColumnDefinitions>
+            <!--Main section-->
+            <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.30*"/>
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Vertical" Grid.Column="0">
-                <!--Product List-->
-                <DataGrid Name="dgProduct" 
+                <StackPanel Orientation="Vertical" Grid.Column="0">
+                    <!--Product List-->
+                    <DataGrid Name="dgProduct" 
                       AutoGenerateColumns="False"
                       MaxHeight="500"
                       MaxWidth="930"
                       MinWidth="500"
                       CanUserAddRows="False"
                       SelectionMode="Single"
+                      SelectionUnit="FullRow"
                       IsReadOnly="True"
                       Margin="8,8"
                       Padding="9"
                       ItemsSource="{Binding Path=ProductList, Mode=TwoWay}"
                       SelectedItem="{Binding Path=SelectedProduct, Mode=TwoWay}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header=""
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header=""
                                     Width="auto"
                                     Binding="{Binding Path=Id}" />
-                        <DataGridTextColumn Header="Product No."
+                            <DataGridTextColumn Header="Product No."
                                     Width="auto"
                                     Binding="{Binding Path=Product_no}" />
-                        <DataGridTextColumn Header="Name"
+                            <DataGridTextColumn Header="Name"
                                     Width="auto"
                                     Binding="{Binding Path=Name}" />
-                        <DataGridTextColumn Header="Category"
+                            <DataGridTextColumn Header="Category"
                                     Width="auto"
                                     Binding="{Binding Path=Category}" />
-                        <DataGridTextColumn Header="Design Code"
+                            <DataGridTextColumn Header="Design Code"
                                     Width="auto"
                                     Binding="{Binding Path=Design_code}" />
-                        <DataGridTextColumn Header="Color Code"
+                            <DataGridTextColumn Header="Color Code"
                                     Width="auto"
                                     Binding="{Binding Path=Colour_code}" />
-                        <DataGridTextColumn Header="Price"
+                            <DataGridTextColumn Header="Price"
                                     Width="auto"
                                     Binding="{Binding Path=Price}" />
-                        <DataGridTextColumn Header="Barcode"
+                            <DataGridTextColumn Header="Barcode"
                                     Width="auto"
                                     Binding="{Binding Path=Barcode}" />
-                        <DataGridTextColumn Header="Quantity"
+                            <DataGridTextColumn Header="Quantity"
                                     Width="auto"
                                     Binding="{Binding Path=Total_stock}" />
-                        <DataGridTextColumn Header="Status"
+                            <DataGridTextColumn Header="Status"
                                     Width="auto"
                                     Binding="{Binding Path=Is_active}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-                <!--Pagination-->
-                <Grid MaxWidth="900">
-                    <Rectangle Fill="DimGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
+                    <!--Pagination-->
+                    <Grid MaxWidth="900">
+                        <Rectangle Fill="DimGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
 
-                    <Grid Margin="30 10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid Margin="30 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
+                            <WrapPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Button Name="btnPrePage"
+                                    Content="Prev"
+                                    Margin="5,8"
+                                    Padding="8"
+                                    Command="{Binding Path=PreviousPageCommand}" />
 
+                                <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
+                                    Margin="5 8" Foreground="WhiteSmoke"
+                                    VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                                    Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay}" />
 
-                        <WrapPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                            <Button Name="btnPrePage"
-                            Content="Prev"
-                            Margin="5,8"
-                            Padding="8"
-                            Command="{Binding Path=PreviousPageCommand}" />
+                                <Button Name="btnNxtPage"
+                                    Content="Next"
+                                    Margin="5,8"
+                                    Padding="8"
+                                    Command="{Binding Path=NextPageCommand}" />
 
-                            <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
-                            Margin="5 8" Foreground="WhiteSmoke"
-                            VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                            Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay}" />
-
-                            <Button Name="btnNxtPage"
-                            Content="Next"
-                            Margin="5,8"
-                            Padding="8"
-                            Command="{Binding Path=NextPageCommand}" />
-
-                            <Label FontSize="14" VerticalContentAlignment="Center">
-                                <TextBlock>
+                                <Label FontSize="14" VerticalContentAlignment="Center">
+                                    <TextBlock>
                                     of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalPage, Mode=TwoWay}"/></Bold>  pages
                                 </TextBlock>
-                            </Label>
-                        </WrapPanel>
+                                </Label>
+                            </WrapPanel>
 
-                        <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                            <Label FontSize="14" VerticalContentAlignment="Center">
-                                <TextBlock>
+                            <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Label FontSize="14" VerticalContentAlignment="Center">
+                                    <TextBlock>
                                     Showing  <Bold><TextBlock Text="{Binding Path=Pagination.CurrentRecord, Mode=TwoWay}"/></Bold>  out of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalRecord, Mode=TwoWay}"/></Bold>  records
                                 </TextBlock>
-                            </Label>
-                        </WrapPanel>
+                                </Label>
+                            </WrapPanel>
+                        </Grid>
                     </Grid>
-                </Grid>
 
-                <!--Buttons-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                    <Button Name="btnSearch"
+                    <!--Buttons-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                        <Button Name="btnSearch"
                             Width="100"
                             Content="SEARCH"
                             Margin="5,8"
                             Padding="3"
                             Command="{Binding Path=SearchCommand}" />
-                    <Button Name="btnAdd"
+                        <Button Name="btnAdd"
                             Width="100"
                             Content="ADD"
                             Margin="5,8"
                             Padding="3"
                             Command="{Binding Path=AddCommand}" />
-                    <Button Name="btnUpdate"
+                        <Button Name="btnUpdate"
                             Width="100"
                             Content="UPDATE"
                             Margin="5,8"
                             Padding="3"
                             Command="{Binding Path=UpdateCommand}" />
-                    <Button Name="btnRestock"
+                        <Button Name="btnRestock"
                             Width="100"
                             Content="RESTOCK"
                             Margin="5,8"
                             Padding="3"
                             Command="{Binding Path=RestockCommand}" />
 
-                    <Grid>
-                        <Rectangle Fill="White" Height="auto" Margin="5 12" RadiusX="10" RadiusY="10"/>
+                        <Grid>
+                            <Rectangle Fill="White" Height="auto" Margin="5 12" RadiusX="10" RadiusY="10"/>
 
-                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10">
-                            <Button Name="btnActivate"
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10">
+                                <Button Name="btnActivate"
                             Width="100"
                             Content="Activate"
                             Margin="5,8"
                             Padding="3"
                             Command="{Binding Path=ActivateCommand}" />
-                            <Button Name="btnAvticate"
+                                <Button Name="btnAvticate"
                             Width="100"
                             Content="Deactivate"
                             Margin="5,8"
                             Padding="3"
                             Command="{Binding Path=DeactivateCommand}" />
-                        </WrapPanel>
-                    </Grid>
-                </StackPanel>
-            </StackPanel>
+                            </WrapPanel>
+                        </Grid>
 
-            <!--Quantity List-->
-            <DataGrid Name="dgStock" Grid.Column="1"
+                        <Button Name="btnPrintBarcode"
+                            Width="100"
+                            Content="Print Barcode"
+                            Margin="5,8"
+                            Padding="3"
+                            Command="{Binding Path=PrintBarcodeCommand}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!--Quantity List-->
+                <DataGrid Name="dgStock" Grid.Column="1"
                 AutoGenerateColumns="False"
                 MaxHeight="400"
                 MaxWidth="240"
@@ -309,17 +330,48 @@
                 Padding="9"
                 ItemsSource="{Binding Path=QuantityList, Mode=TwoWay}"
                 SelectedItem="{Binding Path=SelectedQuantity, Mode=TwoWay}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Branch"
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Branch"
                                         Width="auto"
                                         Binding="{Binding Path=Branch_name}" />
-                    <DataGridTextColumn Header="Quantity"
+                        <DataGridTextColumn Header="Quantity"
                                         Width="auto"
                                         Binding="{Binding Path=Quantity}" />
-                </DataGrid.Columns>
-            </DataGrid>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
         </Grid>
 
+
+        <!--Loading Screen-->
+        <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--Title-->
+                <TextBlock Text="Loading..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
+
+                <!--Progress Bar-->
+                <Grid MinWidth="600" MaxWidth="800">
+                    <Rectangle Fill="DimGray" Margin="10 5" RadiusX="30" RadiusY="30"/>
+
+                    <Grid Margin="30 10">
+                        <ProgressBar Name="progressBar" Height="25" BorderBrush="Black" IsIndeterminate="True"/>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
 
 </UserControl>

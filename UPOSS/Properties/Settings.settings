@@ -14,5 +14,14 @@
     <Setting Name="CurrentApplicationVersion" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Setting_ScannerIsUsed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Setting_GST" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.06</Value>
+    </Setting>
+    <Setting Name="Setting_SST" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.06</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

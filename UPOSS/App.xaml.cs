@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Squirrel;
+using System;
 using System.Windows;
-using UPOSS.Services;
-using UPOSS.State;
 using UPOSS.ViewModels;
-
-using Squirrel;
 
 namespace UPOSS
 {
@@ -18,8 +10,6 @@ namespace UPOSS
     /// </summary>
     public partial class App : Application
     {
-        UpdateManager manager;
-
         protected override void OnStartup(StartupEventArgs e)
         {
             Window window = new MainWindow();
@@ -30,8 +20,11 @@ namespace UPOSS
             CheckAvailableUpdate();
         }
 
+
+        #region Check For Update
         private async void CheckAvailableUpdate()
         {
+            UpdateManager manager;
             try
             {
                 manager = await UpdateManager.GitHubUpdateManager(@"https://github.com/kksboltibay/UPOSS");
@@ -58,5 +51,6 @@ namespace UPOSS
                 MessageBox.Show(e.Message.ToString() + "\n\nUpdate checking process error, please contact IT support", "UPO$$");
             }
         }
+        #endregion
     }
 }

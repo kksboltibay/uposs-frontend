@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using UPOSS.Commands;
 using UPOSS.Models;
 using UPOSS.Services;
-using UPOSS.State;
 
 namespace UPOSS.ViewModels
 {
@@ -25,7 +21,7 @@ namespace UPOSS.ViewModels
             _UserPath = "user";
             _BranchPath = "branch";
 
-            loginCommand = new RelayCommand(Login);
+            loginCommand = new AsyncRelayCommand(Login, this);
             exitCommand = new RelayCommand(Exit);
 
             InputUser = new User();
@@ -34,7 +30,16 @@ namespace UPOSS.ViewModels
             GetLoginBranchList();
         }
 
+
         #region Define
+        //Loding screen
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; OnPropertyChanged("IsLoading"); }
+        }
+
         public event EventHandler LoginCompleted;
         protected virtual void OnLoginCompleted(EventArgs e)
         {
@@ -92,12 +97,12 @@ namespace UPOSS.ViewModels
 
 
         #region Login
-        private RelayCommand loginCommand;
-        public RelayCommand LoginCommand
+        private AsyncRelayCommand loginCommand;
+        public AsyncRelayCommand LoginCommand
         {
             get { return loginCommand; }
         }
-        private async void Login()
+        private async Task Login()
         {
             try
             {
@@ -107,6 +112,7 @@ namespace UPOSS.ViewModels
 
                 if (Response.Status != "ok")
                 {
+                    IsLoading = false;
                     MessageBox.Show(Response.Msg, "UPO$$");
                 }
                 else
@@ -116,6 +122,7 @@ namespace UPOSS.ViewModels
                     Properties.Settings.Default.CurrentUserRole = Response.Data[0].Role;
                     Properties.Settings.Default.Save();
 
+                    IsLoading = false;
                     MessageBox.Show(Response.Msg, "UPO$$");
 
                     //change viewModel to Dashboard screen

@@ -90,8 +90,8 @@ namespace UPOSS.Services
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
+                System.Diagnostics.Trace.WriteLine("\nException Caught!");
+                System.Diagnostics.Trace.WriteLine("Message :{0} ", e.Message);
 
                 switch (_path)
                 {
