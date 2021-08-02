@@ -200,56 +200,7 @@
                             <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=Name}" />
                             <DataGridTextColumn Header="Barcode" IsReadOnly="True" Binding="{Binding Path=Barcode}" />
                             <DataGridTextColumn Header="Price" Binding="{Binding Path=Price, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Qty(Meter)" Binding="{Binding Path=Total_stock, UpdateSourceTrigger=PropertyChanged}">
-                                
-                                <!--<DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type TextBox}">
-                                        <EventSetter Event="TextChanged" Handler="CellValueChanged"/>
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>-->
-
-                                <!--<b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="TextChanged">
-                                        <b:InvokeCommandAction  Command="{Binding CellValueChangedCommand}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>-->
-                            
-                            </DataGridTextColumn>
-
-                            <!--<DataGridTemplateColumn Header="Qty()">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Path=Total_stock, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding Path=SelectedProduct.Total_stock}">
-                                            <b:Interaction.Triggers>
-                                                <b:EventTrigger EventName="TextChanged">
-                                                    <b:InvokeCommandAction  Command="{Binding CellValueChangedCommand}"/>
-                                                </b:EventTrigger>
-                                            </b:Interaction.Triggers>
-                                        </TextBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>-->
-
-                            <!--<DataGridTemplateColumn Header="Adjustment">
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding Path=SelectedProduct.Total_stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <b:Interaction.Triggers>
-                                                <b:EventTrigger EventName="TextChanged">
-                                                    <b:InvokeCommandAction  Command="{Binding CellValueChangedCommand}"/>
-                                                </b:EventTrigger>
-                                            </b:Interaction.Triggers>
-                                        </TextBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>-->
-
-
+                            <DataGridTextColumn Header="Qty(Meter)" Binding="{Binding Path=Total_stock, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Discount" IsReadOnly="True" Binding="{Binding Path=Discount}"/>
                             <DataGridTextColumn Header="Subtotal" IsReadOnly="True" Binding="{Binding Path=Subtotal}"/>
 

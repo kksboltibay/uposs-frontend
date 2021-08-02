@@ -22,17 +22,53 @@
 
         <!-- logo & title -->
         <Grid Grid.Row="0" Background="LightGray">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Image Source="{StaticResource ManCountingMoneyLogo}" Width="auto" Height="100" />
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                </Grid.RowDefinitions>
 
-                <WrapPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="U P O $ $" VerticalAlignment="Center" FontSize="45" FontFamily="Times New Roman"/>
-
-                    <TextBlock HorizontalAlignment="Center" FontSize="15" FontFamily="Comic Sans MS">
-                            (<TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentBranch}"/>)
-                        </TextBlock>
+                <WrapPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
+                    <Viewbox>
+                        <TextBlock Text="U P O $ $" FontFamily="Times New Roman"/>
+                    </Viewbox>
                 </WrapPanel>
-            </StackPanel>
+
+                <WrapPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="1">
+                    <Viewbox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="UserBox" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center" FontFamily="Comic Sans MS">
+                                : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUsername}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="1">
+                    <Viewbox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Home" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center" FontFamily="Comic Sans MS">
+                                : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentBranch}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="1">
+                    <Viewbox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Badge" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center" FontFamily="Comic Sans MS">
+                                : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUserRole}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+                </WrapPanel>
+            </Grid>
         </Grid>
 
         <!-- nav bar -->
