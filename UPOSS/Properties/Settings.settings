@@ -14,5 +14,26 @@
     <Setting Name="CurrentApplicationVersion" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Setting_ScannerIsUsed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Setting_GovChargesValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.06</Value>
+    </Setting>
+    <Setting Name="Setting_System_IsFirstLogin" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Setting_GovChargesName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GST</Value>
+    </Setting>
+    <Setting Name="Setting_SystemAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Setting_SystemPhoneNo" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Setting_GovChargesNo" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

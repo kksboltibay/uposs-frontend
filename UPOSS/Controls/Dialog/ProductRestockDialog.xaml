@@ -39,7 +39,7 @@
                 </StackPanel.Resources>
 
                 <WrapPanel Orientation="Horizontal" Margin="5">
-                    <TextBlock Text="Price :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="Total Price :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                     <TextBox Name="tbPrice" Margin="10 0" FontSize="15" MinWidth="80"/>
                 </WrapPanel>
             </StackPanel>

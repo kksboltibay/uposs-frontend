@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace UPOSS.Views
 {
     /// <summary>
-    /// Interaction logic for SalesView.xaml
+    /// Interaction logic for AnalyticsView.xaml
     /// </summary>
-    public partial class SalesView : UserControl
+    public partial class AnalyticsView : UserControl
     {
-        public SalesView()
+        public AnalyticsView()
         {
             InitializeComponent();
         }

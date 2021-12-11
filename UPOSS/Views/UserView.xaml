@@ -11,36 +11,52 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0.25*"/>
-        </Grid.ColumnDefinitions>
+        <!--Content-->
+        <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.25*"/>
-                <RowDefinition Height="0.1*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.25*"/>
+            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
+            <!--Main Section-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.25*"/>
+                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Text="Username : "/>
+                <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="1" x:Name="tbUsername" 
+                    <TextBlock Grid.Column="0" Text="Username : "/>
+
+                    <TextBox Grid.Column="1" x:Name="tbUsername" 
                          Margin="5 0" BorderBrush="Black" BorderThickness="1"
+                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                          Text="{Binding Path=InputUser.Username, Mode=TwoWay}" />
-            </Grid>
+                </Grid>
 
-            <Separator Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30" VerticalAlignment="Top"/>
+                <Separator Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30" VerticalAlignment="Top"/>
 
-            <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <StackPanel Orientation="Vertical">
-                    <DataGrid Name="dgUser"
+                <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <StackPanel Orientation="Vertical">
+                        <DataGrid Name="dgUser"
                       HorizontalAlignment="Center"
                       AutoGenerateColumns="False"
                       MaxHeight="500"
@@ -53,125 +69,156 @@
                       Padding="9"
                       ItemsSource="{Binding Path=UserList, Mode=TwoWay}"
                       SelectedItem="{Binding Path=SelectedUser, Mode=TwoWay}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="User Id"
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="User Id"
                                     Width="auto"
                                     Binding="{Binding Path=Id}" />
-                            <DataGridTextColumn Header="Username"
+                                <DataGridTextColumn Header="Username"
                                     Width="auto"
                                     Binding="{Binding Path=Username}" />
-                            <DataGridTextColumn Header="User Role"
+                                <DataGridTextColumn Header="User Role"
                                     Width="auto"
                                     Binding="{Binding Path=Role}" />
-                            <DataGridTextColumn Header="User Branch"
+                                <DataGridTextColumn Header="User Branch"
                                     Width="auto"
                                     Binding="{Binding Path=Branch_name}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                    <!--Pagination-->
-                    <Grid MinWidth="600" MaxWidth="800">
-                        <Rectangle Fill="DimGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
+                        <!--Pagination-->
+                        <Grid MinWidth="600" MaxWidth="800">
+                            <Rectangle Fill="DimGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
 
-                        <Grid Margin="30 10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Margin="30 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
 
 
-                            <WrapPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                <Button Name="btnPrePage"
+                                <WrapPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <Button Name="btnPrePage"
                             Content="Prev"
                             Margin="5,8"
                             Padding="8"
                             Command="{Binding Path=PreviousPageCommand}" />
 
-                                <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
+                                    <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
                             Margin="5 8" Foreground="WhiteSmoke"
                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
                             Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay}" />
 
-                                <Button Name="btnNxtPage"
+                                    <Button Name="btnNxtPage"
                             Content="Next"
                             Margin="5,8"
                             Padding="8"
                             Command="{Binding Path=NextPageCommand}" />
 
-                                <Label FontSize="14" VerticalContentAlignment="Center">
-                                    <TextBlock>
+                                    <Label FontSize="14" VerticalContentAlignment="Center">
+                                        <TextBlock>
                                     of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalPage, Mode=TwoWay}"/></Bold>  pages
                                 </TextBlock>
-                                </Label>
-                            </WrapPanel>
+                                    </Label>
+                                </WrapPanel>
 
-                            <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                <Label FontSize="14" VerticalContentAlignment="Center">
-                                    <TextBlock>
+                                <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <Label FontSize="14" VerticalContentAlignment="Center">
+                                        <TextBlock>
                                     Showing  <Bold><TextBlock Text="{Binding Path=Pagination.CurrentRecord, Mode=TwoWay}"/></Bold>  out of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalRecord, Mode=TwoWay}"/></Bold>  records
                                 </TextBlock>
-                                </Label>
-                            </WrapPanel>
+                                    </Label>
+                                </WrapPanel>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
+
             </Grid>
 
-        </Grid>
+            <Grid Grid.Column="1" >
+                <!--Curernt User card-->
+                <!--<StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                    <Grid Margin="0 10">
+                        <Rectangle Fill="LightGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
 
-        <Grid Grid.Column="1" >
-            <!--Curernt User card-->
-            <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                <Grid Margin="0 10">
-                    <Rectangle Fill="LightGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
-
-                    <StackPanel Orientation="Vertical" Margin="10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="UserBox" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
-                            <TextBlock VerticalAlignment="Center" Margin="5" FontSize="18" FontFamily="Comic Sans MS">
+                        <StackPanel Orientation="Vertical" Margin="10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="UserBox" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
+                                <TextBlock VerticalAlignment="Center" Margin="5" FontSize="18" FontFamily="Comic Sans MS">
                                 : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUsername}"/>
                             </TextBlock>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <materialDesign:PackIcon Kind="Badge" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
                                 <TextBlock VerticalAlignment="Center" Margin="5" FontSize="16" FontFamily="Comic Sans MS">
                                     : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUserRole}"/>
                                 </TextBlock>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="Home" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
-                            <TextBlock VerticalAlignment="Center" Margin="5" FontSize="16" FontFamily="Comic Sans MS">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Home" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
+                                <TextBlock VerticalAlignment="Center" Margin="5" FontSize="16" FontFamily="Comic Sans MS">
                                     : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentBranch}"/>
                                 </TextBlock>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
+                    </Grid>
+                </StackPanel>-->
 
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="100">
-                <Button Name="btnSearch"
+                <!--Buttons Section-->
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="100">
+                    <Button Name="btnSearch"
                     Content="SEARCH"
                     Margin="5,8"
                     Padding="3"
                     Command="{Binding Path=SearchCommand}" />
-                <Button Name="btnAdd"
+                    <Button Name="btnAdd"
                     Content="ADD"
                     Margin="5,8"
                     Padding="3"
                     Command="{Binding Path=AddCommand}" />
-                <Button Name="btnUpdate"
+                    <Button Name="btnUpdate"
                     Content="UPDATE"
                     Margin="5,8"
                     Padding="3"
                     Command="{Binding Path=UpdateCommand}" />
-                <Button Name="btnDelete"
+                    <Button Name="btnDelete"
                     Content="DELETE"
                     Margin="5,8"
                     Padding="3"
                     Command="{Binding Path=DeleteCommand}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!--Loading Screen-->
+        <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--Title-->
+                <TextBlock Text="Loading..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
+
+                <!--Progress Bar-->
+                <Grid MinWidth="600" MaxWidth="800">
+                    <Rectangle Fill="DimGray" Margin="10 5" RadiusX="30" RadiusY="30"/>
+
+                    <Grid Margin="30 10">
+                        <ProgressBar Name="progressBar" Height="25" BorderBrush="Black" IsIndeterminate="True"/>
+                    </Grid>
+                </Grid>
             </StackPanel>
         </Grid>
     </Grid>

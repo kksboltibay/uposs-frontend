@@ -27,7 +27,7 @@ namespace UPOSS.ViewModels
         public ViewModelBase SelectedViewModel
         {
             get { return _selectedViewModel; }
-            set { _selectedViewModel = value; OnPropertyChanged(nameof(SelectedViewModel)); }
+            set { _selectedViewModel = value; OnPropertyChanged("SelectedViewModel"); }
         }
     }
 }

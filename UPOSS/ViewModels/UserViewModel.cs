@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using UPOSS.Commands;
 using UPOSS.Controls;
@@ -21,12 +22,12 @@ namespace UPOSS.ViewModels
             ObjUserService = new APIService();
             _Path = "user";
 
-            searchCommand = new RelayCommand(Search);
-            addCommand = new RelayCommand(Add);
-            updateCommand = new RelayCommand(Update);
-            deleteCommand = new RelayCommand(Delete);
-            previousPageCommand = new RelayCommand(PrevPage);
-            nextPageCommand = new RelayCommand(NextPage);
+            searchCommand = new AsyncRelayCommand(Search, this);
+            addCommand = new AsyncRelayCommand(Add, this);
+            updateCommand = new AsyncRelayCommand(Update, this);
+            deleteCommand = new AsyncRelayCommand(Delete, this);
+            previousPageCommand = new AsyncRelayCommand(PrevPage, this);
+            nextPageCommand = new AsyncRelayCommand(NextPage, this);
 
             SelectedUser = new User();
             InputUser = new User();
@@ -35,6 +36,15 @@ namespace UPOSS.ViewModels
 
 
         #region Define
+        //Loding screen
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; OnPropertyChanged("IsLoading"); }
+        }
+
+
         private ObservableCollection<User> userList;
         public ObservableCollection<User> UserList
         {
@@ -77,12 +87,12 @@ namespace UPOSS.ViewModels
 
 
         #region SearchOperation
-        private RelayCommand searchCommand;
-        public RelayCommand SearchCommand
+        private AsyncRelayCommand searchCommand;
+        public AsyncRelayCommand SearchCommand
         {
             get { return searchCommand; }
         }
-        private async void Search()
+        private async Task Search()
         {
             try
             {
@@ -94,6 +104,7 @@ namespace UPOSS.ViewModels
 
                 if (Response.Status != "ok")
                 {
+                    IsLoading = false;
                     MessageBox.Show(Response.Msg, "UPO$$");
                     UserList = null;
                     Pagination = new Pagination { CurrentPage = 1, CurrentRecord = "0 - 0", TotalPage = 1, TotalRecord = 0 };
@@ -102,19 +113,18 @@ namespace UPOSS.ViewModels
                 {
                     //record section
                     var totalRecord = Response.Total;
-                    var fromRecord = (currentPage * 70) - 69;
-                    var toRecord = totalRecord - (currentPage * 70) <= 0 ? totalRecord : currentPage * 70;
-
+                    var fromRecord = currentPage == 0 ? 1 : (currentPage * 70) - 69;
+                    var toRecord = currentPage == 0 ? totalRecord : (fromRecord + 69 < totalRecord ? fromRecord + 69 : totalRecord);
 
                     //page section
-                    var totalPage = Convert.ToInt32(Math.Ceiling((double)totalRecord / 70));
+                    var totalPage = currentPage == 0 ? 1 : Convert.ToInt32(Math.Ceiling((double)totalRecord / 70));
 
                     Pagination = new Pagination
                     {
                         CurrentRecord = fromRecord.ToString() + " ~ " + toRecord.ToString(),
                         TotalRecord = totalRecord,
 
-                        CurrentPage = currentPage,
+                        CurrentPage = currentPage == 0 ? 1 : currentPage,
                         TotalPage = totalPage
                     };
 
@@ -135,13 +145,13 @@ namespace UPOSS.ViewModels
 
 
         #region AddOperation
-        private RelayCommand addCommand;
-        public RelayCommand AddCommand
+        private AsyncRelayCommand addCommand;
+        public AsyncRelayCommand AddCommand
         {
             get { return addCommand; }
         }
 
-        private async void Add()   
+        private async Task Add()   
         {
             try
             {
@@ -151,10 +161,12 @@ namespace UPOSS.ViewModels
                 {
                     if (_defaultInputDialog.Result is null || _defaultInputDialog.Result.Username == "")
                     {
+                        IsLoading = false;
                         MessageBox.Show("New username can't be empty", "UPO$$");
                     }
                     else if (_defaultInputDialog.Result.Password == "")
                     {
+                        IsLoading = false;
                         MessageBox.Show("New password can't be empty", "UPO$$");
                     }
                     else
@@ -174,7 +186,7 @@ namespace UPOSS.ViewModels
                         if (Response.Status is "ok")
                         {
                             RefreshTextBox();
-                            Search();
+                            await Search();
                         }
                     }
                 }
@@ -183,25 +195,26 @@ namespace UPOSS.ViewModels
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
         }
         #endregion
 
 
         #region UpdateOperation
-        private RelayCommand updateCommand;
-        public RelayCommand UpdateCommand
+        private AsyncRelayCommand updateCommand;
+        public AsyncRelayCommand UpdateCommand
         {
             get { return updateCommand; }
         }
-        private async void Update()
+        private async Task Update()
         {
             try
             {
                 if (SelectedUser is null || SelectedUser.Id == 0)
                 {
-                    MessageBox.Show("Please select a branch from the list", "UPO$$");
+                    IsLoading = false;
+                    MessageBox.Show("Please select an item from the list", "UPO$$");
                 }
                 else
                 {
@@ -211,18 +224,20 @@ namespace UPOSS.ViewModels
                     {
                         if (_defaultInputDialog.Result is null || _defaultInputDialog.Result.Username == "")
                         {
+                            IsLoading = false;
                             MessageBox.Show("Dialog error, please contact IT suppport", "UPO$$");
                         }
                         else if (_defaultInputDialog.Result.Password == "")
                         {
+                            IsLoading = false;
                             MessageBox.Show("New password can't be empty", "UPO$$");
                         }
                         else
                         {
                             dynamic param = new
                             {
+                                currentUsername = Properties.Settings.Default.CurrentUsername,
                                 userID = SelectedUser.Id,
-                                //username = _defaultInputDialog.Result.Username, // username cannot be changed
                                 password = _defaultInputDialog.Result.Password,
                                 role = _defaultInputDialog.Result.Role,
                                 branchName = _defaultInputDialog.Result.Branch_name
@@ -235,7 +250,7 @@ namespace UPOSS.ViewModels
                             if (Response.Status is "ok")
                             {
                                 RefreshTextBox();
-                                Search();
+                                await Search();
                             }
                         }
                     }
@@ -245,7 +260,7 @@ namespace UPOSS.ViewModels
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
 
         }
@@ -253,21 +268,23 @@ namespace UPOSS.ViewModels
 
 
         #region DeleteOperation
-        private RelayCommand deleteCommand;
-        public RelayCommand DeleteCommand
+        private AsyncRelayCommand deleteCommand;
+        public AsyncRelayCommand DeleteCommand
         {
             get { return deleteCommand; }
         }
-        private async void Delete()
+        private async Task Delete()
         {
             try
             {
                 if (SelectedUser is null || SelectedUser.Id == 0)
                 {
-                    MessageBox.Show("Please select a branch from the list", "UPO$$");
+                    IsLoading = false;
+                    MessageBox.Show("Please select an item from the list", "UPO$$");
                 }
                 else if (SelectedUser.Role == "Super Admin")
                 {
+                    IsLoading = false;
                     MessageBox.Show("Super admin account can't be deleted", "UPO$$");
                 }
                 else
@@ -278,6 +295,7 @@ namespace UPOSS.ViewModels
                     {
                         if (_defaultInputDialog.Result is null || _defaultInputDialog.Result.Username == "")
                         {
+                            IsLoading = false;
                             MessageBox.Show("Dialog error, please contact IT suppport", "UPO$$");
                         }
                         else
@@ -291,7 +309,7 @@ namespace UPOSS.ViewModels
                             if (Response.Status is "ok")
                             {
                                 RefreshTextBox();
-                                Search();
+                                await Search();
                                 SelectedUser = new User();
                             }
                         }
@@ -302,7 +320,7 @@ namespace UPOSS.ViewModels
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
 
         }
@@ -310,58 +328,58 @@ namespace UPOSS.ViewModels
 
 
         #region PrevPageOperation
-        private RelayCommand previousPageCommand;
-        public RelayCommand PreviousPageCommand
+        private AsyncRelayCommand previousPageCommand;
+        public AsyncRelayCommand PreviousPageCommand
         {
             get { return previousPageCommand; }
         }
-        private void PrevPage()
+        private async Task PrevPage()
         {
             try
             {
                 var currentPage = Pagination.CurrentPage;
 
-                if (currentPage > 1)
+                if (currentPage > 1 && currentPage <= Pagination.TotalPage)
                 {
                     Pagination = new Pagination { CurrentPage = --currentPage };
 
-                    Search();
+                    await Search();
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
         }
         #endregion
 
 
         #region NextPageOperation
-        private RelayCommand nextPageCommand;
-        public RelayCommand NextPageCommand
+        private AsyncRelayCommand nextPageCommand;
+        public AsyncRelayCommand NextPageCommand
         {
             get { return nextPageCommand; }
         }
-        private void NextPage()
+        private async Task NextPage()
         {
             try
             {
                 var currentPage = Pagination.CurrentPage;
 
-                if (currentPage > 0 && (currentPage * 70) < Pagination.TotalRecord)
+                if (currentPage > 0 && currentPage < Pagination.TotalPage)
                 {
                     Pagination = new Pagination { CurrentPage = ++currentPage };
 
-                    Search();
+                    await Search();
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
         }
         #endregion

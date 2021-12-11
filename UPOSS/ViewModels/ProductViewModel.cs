@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using UPOSS.Commands;
 using UPOSS.Controls;
+using UPOSS.Controls.Dialog;
 using UPOSS.Models;
 using UPOSS.Services;
 
@@ -24,15 +26,16 @@ namespace UPOSS.ViewModels
             GetActiveBranchList();
             LoadStatusList();
 
-            searchCommand = new RelayCommand(Search);
-            addCommand = new RelayCommand(Add);
-            updateCommand = new RelayCommand(Update);
-            //deleteCommand = new RelayCommand(Delete);
-            restockCommand = new RelayCommand(Restock);
-            activateCommand = new RelayCommand(Activate);
-            deactivateCommand = new RelayCommand(Deactivate);
-            previousPageCommand = new RelayCommand(PrevPage);
-            nextPageCommand = new RelayCommand(NextPage);
+            searchCommand = new AsyncRelayCommand(Search, this);
+            addCommand = new AsyncRelayCommand(Add, this);
+            updateCommand = new AsyncRelayCommand(Update, this);
+            //deleteCommand = new AsyncRelayCommand(Delete, this);
+            restockCommand = new AsyncRelayCommand(Restock, this);
+            activateCommand = new AsyncRelayCommand(Activate, this);
+            deactivateCommand = new AsyncRelayCommand(Deactivate, this);
+            previousPageCommand = new AsyncRelayCommand(PrevPage, this);
+            nextPageCommand = new AsyncRelayCommand(NextPage, this);
+            printBarcodeCommand = new AsyncRelayCommand(PrintBarcode, this);
 
             SelectedBranch = "";
             SelectedStatus = "Active";
@@ -42,12 +45,17 @@ namespace UPOSS.ViewModels
             Pagination = new Pagination { CurrentPage = 1, CurrentRecord = "0 - 0", TotalPage = 1, TotalRecord = 0 };
         }
 
-        #region Debug
-        //System.Diagnostics.Trace.WriteLine(x.Name);
-        //System.Diagnostics.Trace.WriteLine(x.Stock);
-        #endregion
 
         #region Define
+        //Loding screen
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; OnPropertyChanged("IsLoading"); }
+        }
+
+        //Filter section
         private ObservableCollection<string> branchList;
         public ObservableCollection<string> BranchList
         {
@@ -76,6 +84,14 @@ namespace UPOSS.ViewModels
             set { selectedStatus = value; OnPropertyChanged("SelectedStatus"); }
         }
 
+        private Product inputProduct;
+        public Product InputProduct
+        {
+            get { return inputProduct; }
+            set { inputProduct = value; OnPropertyChanged("InputProduct"); }
+        }
+
+        //Main content section
         private ObservableCollection<Product> productList;
         public ObservableCollection<Product> ProductList
         {
@@ -88,13 +104,6 @@ namespace UPOSS.ViewModels
         {
             get { return quantityList; }
             set { quantityList = value; OnPropertyChanged("QuantityList"); }
-        }
-
-        private Product inputProduct;
-        public Product InputProduct
-        {
-            get { return inputProduct; }
-            set { inputProduct = value; OnPropertyChanged("InputProduct"); }
         }
 
         private Product selectedProduct;
@@ -198,12 +207,12 @@ namespace UPOSS.ViewModels
 
 
         #region SearchOperation
-        private RelayCommand searchCommand;
-        public RelayCommand SearchCommand
+        private AsyncRelayCommand searchCommand;
+        public AsyncRelayCommand SearchCommand
         {
             get { return searchCommand; }
         }
-        private async void Search()
+        private async Task Search()
         {
             try
             {
@@ -227,6 +236,7 @@ namespace UPOSS.ViewModels
 
                 if (Response.Status != "ok")
                 {
+                    IsLoading = false;
                     MessageBox.Show(Response.Msg, "UPO$$");
                     ProductList = null;
                     QuantityList = null;
@@ -236,18 +246,18 @@ namespace UPOSS.ViewModels
                 {
                     //record section
                     var totalRecord = Response.Total;
-                    var fromRecord = (currentPage * 70) - 69;
-                    var toRecord = totalRecord - (currentPage * 70) <= 0 ? totalRecord : currentPage * 70;
+                    var fromRecord = currentPage == 0 ? 1 : (currentPage * 70) - 69;
+                    var toRecord = currentPage == 0 ? totalRecord : (fromRecord + 69 < totalRecord ? fromRecord + 69 : totalRecord);
 
                     //page section
-                    var totalPage = Convert.ToInt32(Math.Ceiling((double)totalRecord / 70));
+                    var totalPage = currentPage == 0 ? 1 : Convert.ToInt32(Math.Ceiling((double)totalRecord / 70));
 
                     Pagination = new Pagination
                     {
                         CurrentRecord = fromRecord.ToString() + " ~ " + toRecord.ToString(),
                         TotalRecord = totalRecord,
 
-                        CurrentPage = currentPage,
+                        CurrentPage = currentPage == 0 ? 1 : currentPage,
                         TotalPage = totalPage
                     };
 
@@ -267,20 +277,18 @@ namespace UPOSS.ViewModels
                 QuantityList = null;
                 Pagination = new Pagination { CurrentPage = 1, CurrentRecord = "0 - 0", TotalPage = 1, TotalRecord = 0 };
             }
-
             RefreshTextBox();
         }
         #endregion
 
 
         #region AddOperation
-        private RelayCommand addCommand;
-        public RelayCommand AddCommand
+        private AsyncRelayCommand addCommand;
+        public AsyncRelayCommand AddCommand
         {
             get { return addCommand; }
         }
-
-        private async void Add()
+        private async Task Add()
         {
             try
             {
@@ -297,6 +305,7 @@ namespace UPOSS.ViewModels
                         _defaultInputDialog.ProductResult.Price == ""
                         )
                     {
+                        IsLoading = false;
                         MessageBox.Show("Empty column detected, all columns can't be empty", "UPO$$");
                     }
                     else
@@ -317,7 +326,7 @@ namespace UPOSS.ViewModels
                         if (Response.Status is "ok")
                         {
                             RefreshTextBox();
-                            Search();
+                            await Search();
                         }
                     }
                 }
@@ -325,27 +334,30 @@ namespace UPOSS.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
+                await Search();
             }
         }
         #endregion
 
 
         #region UpdateOperation
-        private RelayCommand updateCommand;
-        public RelayCommand UpdateCommand
+        private AsyncRelayCommand updateCommand;
+        public AsyncRelayCommand UpdateCommand
         {
             get { return updateCommand; }
         }
-        private async void Update()
+        private async Task Update()
         {
             try
             {
                 if (SelectedProduct is null || SelectedProduct.Id == 0)
                 {
+                    IsLoading = false;
                     MessageBox.Show("Please select a product from the list", "UPO$$");
                 }
                 else if (SelectedProduct.Is_active == "Inactive")
                 {
+                    IsLoading = false;
                     MessageBox.Show("Product is Inactive, only active product is allowed to be updated", "UPO$$");
                 }
                 else
@@ -364,6 +376,7 @@ namespace UPOSS.ViewModels
                             _defaultInputDialog.ProductResult.Price == ""
                             )
                         {
+                            IsLoading = false;
                             MessageBox.Show("Empty column detected, all columns can't be empty", "UPO$$");
                         }
                         else
@@ -380,6 +393,7 @@ namespace UPOSS.ViewModels
                                     designCode = _defaultInputDialog.ProductResult.Design_code,
                                     colourCode = _defaultInputDialog.ProductResult.Colour_code,
                                     price = _defaultInputDialog.ProductResult.Price,
+                                    is_active = SelectedProduct.Is_active,
                                     branchName = _defaultInputDialog.QuantityResult.Branch_name,
                                     quantity = _defaultInputDialog.QuantityResult.Quantity
                                 };
@@ -405,7 +419,7 @@ namespace UPOSS.ViewModels
                             if (Response.Status is "ok")
                             {
                                 RefreshTextBox();
-                                Search();
+                                await Search();
                             }
                         }
                     }
@@ -414,14 +428,15 @@ namespace UPOSS.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
+                await Search();
             }
         }
         #endregion
 
 
         //#region DeleteOperation
-        //private RelayCommand deleteCommand;
-        //public RelayCommand DeleteCommand
+        //private AsyncRelayCommand deleteCommand;
+        //public AsyncRelayCommand DeleteCommand
         //{
         //    get { return deleteCommand; }
         //}
@@ -471,21 +486,23 @@ namespace UPOSS.ViewModels
 
 
         #region RestockOperation
-        private RelayCommand restockCommand;
-        public RelayCommand RestockCommand
+        private AsyncRelayCommand restockCommand;
+        public AsyncRelayCommand RestockCommand
         {
             get { return restockCommand; }
         }
-        private async void Restock()
+        private async Task Restock()
         {
             try
             {
                 if (SelectedProduct is null || SelectedProduct.Id == 0)
                 {
+                    IsLoading = false;
                     MessageBox.Show("Please select a product from the list", "UPO$$");
                 }
                 else if (SelectedProduct.Is_active == "Inactive" || QuantityList == null)
                 {
+                    IsLoading = false;
                     MessageBox.Show("Only active product is allowed to be restocked", "UPO$$");
                 }
                 else
@@ -496,6 +513,7 @@ namespace UPOSS.ViewModels
                     {
                         if (_defaultInputDialog.ProductResult is null)
                         {
+                            IsLoading = false;
                             MessageBox.Show("Empty column detected, all columns can't be empty", "UPO$$");
                         }
                         else
@@ -511,7 +529,7 @@ namespace UPOSS.ViewModels
                             if (Response.Status is "ok")
                             {
                                 RefreshTextBox();
-                                Search();
+                                await Search();
                             }
                         }
                     }
@@ -520,27 +538,30 @@ namespace UPOSS.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
+                await Search();
             }
         }
         #endregion
 
 
         #region ActivateOperation
-        private RelayCommand activateCommand;
-        public RelayCommand ActivateCommand
+        private AsyncRelayCommand activateCommand;
+        public AsyncRelayCommand ActivateCommand
         {
             get { return activateCommand; }
         }
-        private async void Activate()
+        private async Task Activate()
         {
             try
             {
                 if (SelectedProduct is null || SelectedProduct.Id == 0)
                 {
+                    IsLoading = false;
                     MessageBox.Show("Please select a product from the list", "UPO$$");
                 }
                 else if (SelectedProduct.Is_active == "Active")
                 {
+                    IsLoading = false;
                     MessageBox.Show("Product is active", "UPO$$");
                 }
                 else
@@ -563,7 +584,7 @@ namespace UPOSS.ViewModels
                         if (Response.Status is "ok")
                         {
                             RefreshTextBox();
-                            Search();
+                            await Search();
                         }
                     }
                 }
@@ -572,28 +593,30 @@ namespace UPOSS.ViewModels
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
         }
         #endregion
 
 
         #region DeactivateOperation
-        private RelayCommand deactivateCommand;
-        public RelayCommand DeactivateCommand
+        private AsyncRelayCommand deactivateCommand;
+        public AsyncRelayCommand DeactivateCommand
         {
             get { return deactivateCommand; }
         }
-        private async void Deactivate()
+        private async Task Deactivate()
         {
             try
             {
                 if (SelectedProduct is null || SelectedProduct.Id == 0)
                 {
+                    IsLoading = false;
                     MessageBox.Show("Please select a product from the list", "UPO$$");
                 }
                 else if (SelectedProduct.Is_active == "Inactive")
                 {
+                    IsLoading = false;
                     MessageBox.Show("Product is Inactive", "UPO$$");
                 }
                 else
@@ -617,7 +640,7 @@ namespace UPOSS.ViewModels
                         if (Response.Status is "ok")
                         {
                             RefreshTextBox();
-                            Search();
+                            await Search();
                         }
                     }
                 }
@@ -626,65 +649,102 @@ namespace UPOSS.ViewModels
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
         }
         #endregion
 
 
         #region PrevPageOperation
-        private RelayCommand previousPageCommand;
-        public RelayCommand PreviousPageCommand
+        private AsyncRelayCommand previousPageCommand;
+        public AsyncRelayCommand PreviousPageCommand
         {
             get { return previousPageCommand; }
         }
-        private void PrevPage()
+        private async Task PrevPage()
         {
             try
             {
                 var currentPage = Pagination.CurrentPage;
 
-                if (currentPage > 1)
+                if (currentPage > 1 && currentPage <= Pagination.TotalPage)
                 {
                     Pagination = new Pagination { CurrentPage = --currentPage };
 
-                    Search();
+                    await Search();
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
             }
         }
         #endregion
 
 
         #region NextPageOperation
-        private RelayCommand nextPageCommand;
-        public RelayCommand NextPageCommand
+        private AsyncRelayCommand nextPageCommand;
+        public AsyncRelayCommand NextPageCommand
         {
             get { return nextPageCommand; }
         }
-        private void NextPage()
+        private async Task NextPage()
         {
             try
             {
                 var currentPage = Pagination.CurrentPage;
 
-                if (currentPage > 0 && (currentPage * 70) < Pagination.TotalRecord)
+                if (currentPage > 0 && currentPage < Pagination.TotalPage)
                 {
                     Pagination = new Pagination { CurrentPage = ++currentPage };
 
-                    Search();
+                    await Search();
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
-                Search();
+                await Search();
+            }
+        }
+        #endregion
+
+
+        #region PrintBarcodeOperation
+        private AsyncRelayCommand printBarcodeCommand;
+        public AsyncRelayCommand PrintBarcodeCommand
+        {
+            get { return printBarcodeCommand; }
+        }
+        private async Task PrintBarcode()
+        {
+            try
+            {
+                if (SelectedProduct is null || SelectedProduct.Id == 0)
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Please select a product from the list", "UPO$$");
+                }
+                else
+                {
+                    if (SelectedProduct.Barcode is null || SelectedProduct.Barcode == "")
+                    {
+                        IsLoading = false;
+                        MessageBox.Show("Barcode not found", "UPO$$");
+                    }
+                    else
+                    {
+                        ProductPrintBarcodeDialog _defaultPrintDialog = new ProductPrintBarcodeDialog(SelectedProduct.Barcode);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+                IsLoading = false;
             }
         }
         #endregion

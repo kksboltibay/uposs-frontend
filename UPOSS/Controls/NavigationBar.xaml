@@ -22,17 +22,53 @@
 
         <!-- logo & title -->
         <Grid Grid.Row="0" Background="LightGray">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Image Source="{StaticResource ManCountingMoneyLogo}" Width="auto" Height="100" />
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                </Grid.RowDefinitions>
 
-                <WrapPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="U P O $ $" VerticalAlignment="Center" FontSize="45" FontFamily="Times New Roman"/>
-
-                    <TextBlock HorizontalAlignment="Center" FontSize="15" FontFamily="Comic Sans MS">
-                            (<TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentBranch}"/>)
-                        </TextBlock>
+                <WrapPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
+                    <Viewbox>
+                        <TextBlock Text="U P O $ $" FontFamily="Times New Roman"/>
+                    </Viewbox>
                 </WrapPanel>
-            </StackPanel>
+
+                <WrapPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="1">
+                    <Viewbox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="UserBox" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center" FontFamily="Comic Sans MS">
+                                : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUsername}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="1">
+                    <Viewbox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Home" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center" FontFamily="Comic Sans MS">
+                                : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentBranch}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+                </WrapPanel>
+
+                <WrapPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="1">
+                    <Viewbox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Badge" VerticalAlignment="Center"/>
+                            <TextBlock VerticalAlignment="Center" FontFamily="Comic Sans MS">
+                                : <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUserRole}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+                </WrapPanel>
+            </Grid>
         </Grid>
 
         <!-- nav bar -->
@@ -40,9 +76,11 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Padding" Value="20 28"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>
             </ListView.ItemContainerStyle>
 
+            <!--Users-->
             <ListViewItem Padding="20 40 20 28">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -56,6 +94,7 @@
                 </StackPanel>
             </ListViewItem>
 
+            <!--Branches-->
             <ListViewItem>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -69,6 +108,7 @@
                 </StackPanel>
             </ListViewItem>
 
+            <!--Products-->
             <ListViewItem>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -82,6 +122,7 @@
                 </StackPanel>
             </ListViewItem>
 
+            <!--Cashier-->
             <ListViewItem>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -95,32 +136,35 @@
                 </StackPanel>
             </ListViewItem>
 
+            <!--Analytics-->
             <ListViewItem>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Sales}"/>
+                        <i:InvokeCommandAction Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Analytics}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Summit" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
-                    <TextBlock Text="Sales" VerticalAlignment="Center" Margin="5" FontSize="40"/>
+                    <materialDesign:PackIcon Kind="ChartArc" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
+                    <TextBlock Text="Analytics" VerticalAlignment="Center" Margin="5" FontSize="40"/>
                 </StackPanel>
             </ListViewItem>
 
+            <!--Settings-->
             <ListViewItem>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Help}"/>
+                        <i:InvokeCommandAction Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Setting}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Help" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
-                    <TextBlock Text="Help" VerticalAlignment="Center" Margin="5" FontSize="40"/>
+                    <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
+                    <TextBlock Text="Settings" VerticalAlignment="Center" Margin="5" FontSize="40"/>
                 </StackPanel>
             </ListViewItem>
 
+            <!--Exit-->
             <ListViewItem MouseLeftButtonUp="LV_ExitBtn">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Logout" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
