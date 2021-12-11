@@ -46,7 +46,7 @@ namespace UPOSS.Controls
                 tbCategory.Text = "Sample_category";
                 tbDesignCode.Text = "Sample_design_code";
                 tbColourCode.Text = "Sample_colour_code";
-                tbPrice.Text = "1.0";
+                tbPrice.Text = "1.00";
             }
             else if (mode == "update")
             {
@@ -70,7 +70,8 @@ namespace UPOSS.Controls
                         tbBranch.Text = quantity.Branch_name;
                         tbQuantity.Text = quantity.Quantity;
 
-                        tbkNote.Visibility = Visibility.Collapsed;
+                        //tbkNote.Visibility = Visibility.Collapsed;
+                        tbkNote.Text = "Note: 'UPDATE' product quantity does not count as a record of restock";
                     }
                     else
                     {
@@ -191,23 +192,30 @@ namespace UPOSS.Controls
 
         private void btnDialogOk_Click(object sender, RoutedEventArgs e)
         {
-            ProductResult = new Product
+            if (tbPrice.Text == null && tbPrice.Text == "")
             {
-                Product_no = tbProductNo.Text,
-                Name = tbName.Text,
-                Category = tbCategory.Text,
-                Design_code = tbDesignCode.Text,
-                Colour_code = tbColourCode.Text,
-                Price = tbPrice.Text
-            };
-
-            QuantityResult = new ProductQuantity
+                MessageBox.Show("Price cannot be empty", "UPO$$");
+            }
+            else
             {
-                Branch_name = tbBranch.Text,
-                Quantity = tbQuantity.Text
-            };
+                ProductResult = new Product
+                {
+                    Product_no = tbProductNo.Text,
+                    Name = tbName.Text,
+                    Category = tbCategory.Text,
+                    Design_code = tbDesignCode.Text,
+                    Colour_code = tbColourCode.Text,
+                    Price = Math.Round(Convert.ToDecimal(tbPrice.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
+                };
 
-            this.DialogResult = true;
+                QuantityResult = new ProductQuantity
+                {
+                    Branch_name = tbBranch.Text,
+                    Quantity = tbQuantity.Text
+                };
+
+                this.DialogResult = true;
+            }
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)

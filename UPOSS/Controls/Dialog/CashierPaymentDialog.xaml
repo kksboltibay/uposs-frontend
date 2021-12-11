@@ -1,0 +1,307 @@
+﻿<Window x:Class="UPOSS.Controls.Dialog.CashierPaymentDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UPOSS.Controls.Dialog"
+        mc:Ignorable="d"
+        Title="CashierPaymentDialog" 
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        d:DesignHeight="800" d:DesignWidth="800"
+        SizeToContent="WidthAndHeight" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None">
+
+    <Grid MinHeight="800" MinWidth="800">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Title-->
+        <Viewbox Grid.Row="0">
+            <TextBlock Text="Payment" Margin="5" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Viewbox>
+
+        <!--Content-->
+        <Grid Grid.Row="1" Margin="10">
+            <Rectangle Fill="DarkGray" Height="auto" RadiusX="10" RadiusY="10"/>
+
+            <!--Main-->
+            <Grid Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="7*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Total Section-->
+                    <Grid Grid.Row="0" Margin="5">
+                        <Rectangle Fill="Black" Height="auto" RadiusX="10" RadiusY="10"/>
+                        <Grid Margin="5">
+                            <Rectangle Fill="LightGray" Height="auto" RadiusX="5" RadiusY="5"/>
+
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Total-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 5 0">
+                                    <Viewbox>
+                                        <TextBlock Text="Total:" FontWeight="Light"/>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--Total price-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
+                                    <Viewbox>
+                                        <TextBlock FontWeight="Light">
+                                            $<TextBlock x:Name="tbkTotal"/>
+                                        </TextBlock>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <!--Payment Method Section-->
+                    <Grid Grid.Row="1" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Cash-->
+                        <Grid Grid.Column="0" Margin="0 0 1 0">
+                            <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+                            <Grid Margin="5">
+                                <Rectangle Fill="DarkGray" Height="auto" RadiusX="5" RadiusY="5"/>
+
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.1*"/>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--1st row-->
+                                    <WrapPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Viewbox>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <CheckBox x:Name="checkboxCash" IsChecked="False" Checked="checkboxCash_Changed" Unchecked="checkboxCash_Changed">
+                                                    <CheckBox.Resources>
+                                                        <!--Unchecked state-->
+                                                        <SolidColorBrush x:Key="MaterialDesignCheckBoxOff" Color="White"/>
+                                                        <!--Checked state-->
+                                                        <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="White"/>
+                                                    </CheckBox.Resources>
+                                                </CheckBox>
+
+                                                <TextBlock Text="Cash" FontWeight="Bold" Foreground="White" Margin="2 0 0 0"/>
+                                            </StackPanel>
+                                        </Viewbox>
+                                    </WrapPanel>
+
+                                    <!--2nd row-->
+                                    <WrapPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Viewbox>
+                                            <materialDesign:PackIcon Kind="Cash100" Foreground="White"/>
+                                        </Viewbox>
+                                    </WrapPanel>
+
+                                    <!--3nd row-->
+                                    <Grid Grid.Row="2" Margin="5">
+                                        <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+                                        <Grid Margin="5">
+                                            <Rectangle Fill="LightGray" Height="auto" RadiusX="5" RadiusY="5"/>
+                                            <Grid Margin="10">
+                                                <!--Total price-->
+                                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0 0 0">
+                                                    <Viewbox>
+                                                        <TextBlock Text="$" Foreground="Gray"/>
+                                                    </Viewbox>
+
+                                                    <Viewbox>
+                                                        <TextBox x:Name="tbCashPay" PreviewKeyDown="checkPreviewKeyDown" PreviewTextInput="checkTextInput" LostFocus="tbCashPay_LostFocus"/>
+                                                    </Viewbox>
+                                                </WrapPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                    <!--4th row-->
+                                    <Grid Grid.Row="3" Margin="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!--First Button-->
+                                        <Grid Grid.Row="0">
+                                            <Button Name="btnChoice1" Foreground="White" Width="200"
+                                                Margin="8" Padding="3" Click="btnChoice1_Click">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="$" Margin="0 0 1 0" VerticalAlignment="Center"/>
+                                                        <TextBlock x:Name="tbkChoice1Value" Margin="1 0 0 0" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+
+                                        <!--Second Button-->
+                                        <Grid Grid.Row="1">
+                                            <Button Name="btnChoice2" Foreground="White" Width="200"
+                                                Margin="8" Padding="3" Click="btnChoice2_Click">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="$" Margin="0 0 1 0" VerticalAlignment="Center"/>
+                                                        <TextBlock x:Name="tbkChoice2Value" Margin="1 0 0 0" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+
+                        <!--Card-->
+                        <Grid Grid.Column="1" Margin="1 0 0 0">
+                            <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+                            <Grid Margin="5">
+                                <Rectangle Fill="DarkGray"   Height="auto" RadiusX="5" RadiusY="5"/>
+
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.1*"/>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.2*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--1st row-->
+                                    <WrapPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Viewbox>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <CheckBox x:Name="checkboxCard" IsChecked="False" Checked="checkboxCard_Changed" Unchecked="checkboxCard_Changed">
+                                                    <CheckBox.Resources>
+                                                        <!--Unchecked state-->
+                                                        <SolidColorBrush x:Key="MaterialDesignCheckBoxOff" Color="White"/>
+                                                        <!--Checked state-->
+                                                        <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="White"/>
+                                                    </CheckBox.Resources>
+                                                </CheckBox>
+
+                                                <TextBlock Text="Card" FontWeight="Bold" Foreground="White" Margin="2 0 0 0"/>
+                                            </StackPanel>
+                                        </Viewbox>
+                                    </WrapPanel>
+
+                                    <!--2nd row-->
+                                    <WrapPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Viewbox>
+                                            <materialDesign:PackIcon Kind="CardText" Foreground="White"/>
+                                        </Viewbox>
+                                    </WrapPanel>
+
+                                    <!--3nd row-->
+                                    <Grid Grid.Row="2" Margin="5">
+                                        <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+                                        <Grid Margin="5">
+                                            <Rectangle Fill="LightGray" Height="auto" RadiusX="5" RadiusY="5"/>
+                                            <Grid Margin="10">
+                                                <!--Total price-->
+                                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0 0 0">
+                                                    <Viewbox>
+                                                        <TextBlock Text="$" Foreground="Gray"/>
+                                                    </Viewbox>
+
+                                                    <Viewbox>
+                                                        <TextBox x:Name="tbCardPay" PreviewKeyDown="checkPreviewKeyDown" PreviewTextInput="checkTextInput" LostFocus="tbCardPay_LostFocus" IsReadOnly="True"/>
+                                                    </Viewbox>
+                                                </WrapPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                    <!--4th row-->
+                                    <Grid Grid.Row="3">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!--Card No-->
+                                        <Grid Grid.Row="0" Margin="5">
+                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Grid>
+                                                    <TextBox x:Name="tbCardNo" MinWidth="300" BorderBrush="White" BorderThickness="3"
+                                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
+                                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden" 
+                                                        PreviewKeyDown="checkPreviewKeyDown" PreviewTextInput="tbCardNo_PreviewTextInput">
+                                                        <TextBox.Resources>
+                                                            <Style TargetType="{x:Type Border}">
+                                                                <Setter Property="CornerRadius" Value="6"/>
+                                                            </Style>
+                                                        </TextBox.Resources>
+                                                    </TextBox>
+                                                    <TextBlock IsHitTestVisible="False" Text="- Card No -" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DimGray">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="{x:Type TextBlock}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Text, ElementName=tbCardNo}" Value="">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Bank List-->
+                                        <Grid Grid.Row="1" Margin="5">
+                                            <ComboBox Name="comboboxBankNameList" SelectedIndex="0" HorizontalContentAlignment="Center" 
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center" Width="300"
+                                                      FontSize="25" BorderBrush="White" BorderThickness="3"/>
+                                        </Grid>
+
+                                        <!--Card Type-->
+                                        <Grid Grid.Row="2" Margin="5">
+                                            <ComboBox Name="comboboxCardType" SelectedIndex="0" HorizontalContentAlignment="Center" 
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center" Width="300"
+                                                      FontSize="25" BorderBrush="White" BorderThickness="3" SelectedValuePath="Content">
+                                                <ComboBoxItem Content="Visa"/>
+                                                <ComboBoxItem Content="Master"/>
+                                                <ComboBoxItem Content="Credit"/>
+                                                <ComboBoxItem Content="Debit"/>
+                                                <ComboBoxItem Content="Other"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+        
+        <!--End Button-->
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="10">
+            <Button IsDefault="True" Name="btnDialogOk" Click="btnDialogConfirm_Click" MinWidth="60" Margin="0,0,10,0">_Confirm</Button>
+            <Button IsCancel="True" MinWidth="60">_Cancel</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

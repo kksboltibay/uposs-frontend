@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:UPOSS.Views" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              
-             xmlns:controls="clr-namespace:UPOSS.Controls" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls="clr-namespace:UPOSS.Controls" 
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:properties="clr-namespace:UPOSS.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1024">
     
@@ -14,6 +16,18 @@
     <Grid>
         <!--Content-->
         <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="0.40*"/>
@@ -49,6 +63,7 @@
                                 <Grid>
                                     <TextBox x:Name="tbBarcode" Width="150" BorderBrush="Black" BorderThickness="1"
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
+                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                         Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}"
                                         TextChanged="tbBarcode_TextChanged" KeyDown="tbBarcode_KeyDown">
                                         <TextBox.Resources>
@@ -86,6 +101,7 @@
                                 <Grid>
                                     <TextBox x:Name="tbProductNo" Width="150" BorderBrush="Black" BorderThickness="1"
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
+                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                         Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay}"
                                         TextChanged="tbProductNo_TextChanged">
                                         <TextBox.Resources>
@@ -123,6 +139,7 @@
                                 <Grid>
                                     <TextBox x:Name="tbProductName" Width="150" BorderBrush="Black" BorderThickness="1"
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
+                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                         Text="{Binding Path=InputProduct.Name, Mode=TwoWay}"
                                         TextChanged="tbProductName_TextChanged">
                                         <TextBox.Resources>
@@ -162,7 +179,6 @@
                       PreviewTextInput="dgProduct_PreviewTextInput"
                       PreviewKeyDown="dgProduct_PreviewKeyDown"
                       AutoGenerateColumns="False"
-                      MaxWidth="930"
                       MinWidth="500"
                       CanUserAddRows="False"
                       SelectionUnit="FullRow"
@@ -179,7 +195,7 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type DataGridCell}">
                                             <Grid>
-                                                <ContentPresenter VerticalAlignment="Center"/>
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                             </Grid>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -195,14 +211,112 @@
                         </b:Interaction.Triggers>
                         
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding Path=Id}"/>
-                            <DataGridTextColumn Header="Product No." IsReadOnly="True" Binding="{Binding Path=Product_no}" />
-                            <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=Name}" />
-                            <DataGridTextColumn Header="Barcode" IsReadOnly="True" Binding="{Binding Path=Barcode}" />
-                            <DataGridTextColumn Header="Price" Binding="{Binding Path=Price, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Qty(Meter)" Binding="{Binding Path=Total_stock, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Discount" IsReadOnly="True" Binding="{Binding Path=Discount}"/>
-                            <DataGridTextColumn Header="Subtotal" IsReadOnly="True" Binding="{Binding Path=Subtotal}"/>
+                            <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding Path=Id}" Width="0.3*"/>
+                            <DataGridTextColumn Header="Product No." IsReadOnly="True" Binding="{Binding Path=Product_no}" Width="1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=Name}" Width="1.1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Barcode" IsReadOnly="True" Binding="{Binding Path=Barcode}" Width="1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Price" Binding="{Binding Path=Price, UpdateSourceTrigger=PropertyChanged}" Width="1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Qty(Meter)" Binding="{Binding Path=Total_stock, UpdateSourceTrigger=PropertyChanged}" Width="1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Discount" IsReadOnly="True" Binding="{Binding Path=Discount}" Width="1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Subtotal" IsReadOnly="True" Binding="{Binding Path=Subtotal}" Width="1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
 
                             <!--Edit button-->
                             <!--<DataGridTemplateColumn Header="">
@@ -332,7 +446,7 @@
                                 <!--GST-->
                                 <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 5 0">
                                     <Viewbox>
-                                        <TextBlock Text="GST" FontWeight="Light"/>
+                                        <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=Setting_GovChargesName}" FontWeight="Light"/>
                                     </Viewbox>
                                 </WrapPanel>
 
@@ -340,7 +454,7 @@
                                 <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
                                     <Viewbox>
                                         <TextBlock FontWeight="Light">
-                                            $<TextBlock Text="{Binding Path=Cart.GST, Mode=TwoWay}"/>
+                                            $<TextBlock Text="{Binding Path=Cart.Tax, Mode=TwoWay}"/>
                                         </TextBlock>
                                     </Viewbox>
                                 </WrapPanel>
@@ -390,6 +504,8 @@
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <!--Refresh sync button-->
                                 <Button Name="btnSync"
+                                    Background="Yellow"
+                                    Foreground="Black"
                                     Width="100"
                                     Margin="8"
                                     Padding="3"
@@ -449,7 +565,7 @@
                                 Background="Green"
                                 Width="100"
                                 Padding="3"
-                                Command="{Binding Path=PaymentCommand}">
+                                Command="{Binding Path=PaymentCommand}" HorizontalAlignment="Left">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="PrinterPointOfSale" Margin="0 0 5 0" VerticalAlignment="Center"/>
@@ -459,12 +575,39 @@
                             </Button>
                         </Grid>
 
-
-
                     </Grid>
                 </Grid>
                 
             </Grid>
+        </Grid>
+
+        <!--Loading Screen-->
+        <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--Title-->
+                <TextBlock Text="Loading..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
+
+                <!--Progress Bar-->
+                <Grid MinWidth="600" MaxWidth="800">
+                    <Rectangle Fill="DimGray" Margin="10 5" RadiusX="30" RadiusY="30"/>
+
+                    <Grid Margin="30 10">
+                        <ProgressBar Name="progressBar" Height="25" BorderBrush="Black" IsIndeterminate="True"/>
+                    </Grid>
+                </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

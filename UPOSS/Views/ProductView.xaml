@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UPOSS.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1080">
 
@@ -39,8 +40,9 @@
                             <TextBlock Text="Product No : " FontWeight="Bold"/>
 
                             <TextBox MinWidth="100"
-                         BorderBrush="Black" BorderThickness="1" MaxWidth="100"
-                         Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay}">
+                                 BorderBrush="Black" BorderThickness="1" MaxWidth="100"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -53,22 +55,24 @@
                             <TextBlock Text="Name : " FontWeight="Bold"/>
 
                             <TextBox MinWidth="100"
-                         BorderBrush="Black" BorderThickness="1" MaxWidth="100"
-                         Text="{Binding Path=InputProduct.Name, Mode=TwoWay}">
+                                 BorderBrush="Black" BorderThickness="1" MaxWidth="100"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Text="{Binding Path=InputProduct.Name, Mode=TwoWay}">
                                 <TextBox.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="6"/>
-                                    </Style>
-                                </TextBox.Resources>
-                            </TextBox>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Margin="10 0">
                             <TextBlock Text="Category : " FontWeight="Bold"/>
 
                             <TextBox MinWidth="100"
-                         BorderBrush="Black" BorderThickness="1" MaxWidth="100"
-                         Text="{Binding Path=InputProduct.Category, Mode=TwoWay}">
+                                 BorderBrush="Black" BorderThickness="1" MaxWidth="100"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Text="{Binding Path=InputProduct.Category, Mode=TwoWay}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -81,8 +85,9 @@
                             <TextBlock Text="Design Code : " FontWeight="Bold"/>
 
                             <TextBox MinWidth="100"
-                         BorderBrush="Black" BorderThickness="1" MaxWidth="100"
-                         Text="{Binding Path=InputProduct.Design_code, Mode=TwoWay}">
+                                 BorderBrush="Black" BorderThickness="1" MaxWidth="100"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Text="{Binding Path=InputProduct.Design_code, Mode=TwoWay}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -95,8 +100,9 @@
                             <TextBlock Text="Color Code : " FontWeight="Bold"/>
 
                             <TextBox MinWidth="100"
-                         BorderBrush="Black" BorderThickness="1" MaxWidth="100"
-                         Text="{Binding Path=InputProduct.Colour_code, Mode=TwoWay}">
+                                 BorderBrush="Black" BorderThickness="1" MaxWidth="100"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Text="{Binding Path=InputProduct.Colour_code, Mode=TwoWay}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -109,8 +115,9 @@
                             <TextBlock Text="Price : " FontWeight="Bold"/>
 
                             <TextBox MinWidth="100"
-                         BorderBrush="Black" BorderThickness="1" MaxWidth="100"
-                         Text="{Binding Path=InputProduct.Price, Mode=TwoWay}">
+                                 BorderBrush="Black" BorderThickness="1" MaxWidth="100"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Text="{Binding Path=InputProduct.Price, Mode=TwoWay}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -123,8 +130,9 @@
                             <TextBlock Text="Barcode : " FontWeight="Bold"/>
 
                             <TextBox MinWidth="100"
-                         BorderBrush="Black" BorderThickness="1" MaxWidth="100"
-                         Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}">
+                                 BorderBrush="Black" BorderThickness="1" MaxWidth="100"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -201,15 +209,53 @@
                             <DataGridTextColumn Header="Color Code"
                                     Width="auto"
                                     Binding="{Binding Path=Colour_code}" />
-                            <DataGridTextColumn Header="Price"
-                                    Width="auto"
-                                    Binding="{Binding Path=Price}" />
+                            <DataGridTextColumn Header="Price" Width="auto" Binding="{Binding Path=Price}">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+
+                                        <Style.Triggers>
+                                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#757575" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Header="Barcode"
                                     Width="auto"
                                     Binding="{Binding Path=Barcode}" />
-                            <DataGridTextColumn Header="Quantity"
-                                    Width="auto"
-                                    Binding="{Binding Path=Total_stock}" />
+                            <DataGridTextColumn Header="Quantity" Width="auto" Binding="{Binding Path=Total_stock}">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+
+                                        <Style.Triggers>
+                                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#757575" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Header="Status"
                                     Width="auto"
                                     Binding="{Binding Path=Is_active}" />
@@ -331,12 +377,29 @@
                 ItemsSource="{Binding Path=QuantityList, Mode=TwoWay}"
                 SelectedItem="{Binding Path=SelectedQuantity, Mode=TwoWay}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Branch"
-                                        Width="auto"
-                                        Binding="{Binding Path=Branch_name}" />
-                        <DataGridTextColumn Header="Quantity"
-                                        Width="auto"
-                                        Binding="{Binding Path=Quantity}" />
+                        <DataGridTextColumn Header="Branch" Width="auto" Binding="{Binding Path=Branch_name}"/>
+                        <DataGridTextColumn Header="Quantity" Width="auto" Binding="{Binding Path=Quantity}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="{x:Type DataGridCell}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+
+                                    <Style.Triggers>
+                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#757575" />
+                                            <Setter Property="Foreground" Value="White" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

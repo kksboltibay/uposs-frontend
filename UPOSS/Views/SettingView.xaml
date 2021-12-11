@@ -1,0 +1,195 @@
+﻿<UserControl x:Class="UPOSS.Views.SettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UPOSS.Views" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:properties="clr-namespace:UPOSS.Properties">
+    
+    <Grid>
+        <Grid Grid.Column="1" Margin="10">
+            <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+
+            <Grid Margin="5">
+                <Rectangle Fill="DarkGray"   Height="auto" RadiusX="5" RadiusY="5"/>
+
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0.10*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Content Section-->
+                    <Grid Grid.Row="0" Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--First line-->
+                        <Grid Grid.Row="0" Margin="0 15 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Goverment Charges Name-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                    <Viewbox>
+                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                            <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 Text="{Binding Path=InputSetting.GovChargesName, Mode=TwoWay}"/>
+                                        </Border>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--Goverment Charges Value-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                    <Viewbox>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <!--Charges Percentage-->
+                                            <Border Width="50" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 Text="{Binding Path=InputSetting.GovChargesValue, Mode=TwoWay}"/>
+                                            </Border>
+                                            <TextBlock Text="%" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0"/>
+                                            
+                                            <!--Registration No-->
+                                            <Grid>
+                                                <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                    <TextBox x:Name="tbRegNo" Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 Text="{Binding Path=InputSetting.Setting_GovChargesNo, Mode=TwoWay}"/>
+                                                </Border>
+
+                                                <TextBlock IsHitTestVisible="False" Text="Registration No." VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Text, ElementName=tbRegNo}" Value="">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
+
+                        <!--Second line-->
+                        <Grid Grid.Row="1" Margin="0 15 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Setting Address Label-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                    <Viewbox>
+                                        <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                            <TextBlock Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Address"/>
+                                        </Border>
+                                    </Viewbox>
+                                </WrapPanel>
+                                
+                                <!--Setting Address-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                    <Viewbox>
+                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                            <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 Text="{Binding Path=InputSetting.System_address, Mode=TwoWay}"/>
+                                        </Border>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
+
+                        <!--Third line-->
+                        <Grid Grid.Row="2" Margin="0 15 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Setting Phone Label-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                    <Viewbox>
+                                        <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                            <TextBlock Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Phone"/>
+                                        </Border>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--Setting Phone-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                    <Viewbox>
+                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                            <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 Text="{Binding Path=InputSetting.Phone_no, Mode=TwoWay}"/>
+                                        </Border>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
+                    </Grid>
+                    
+                    <!--Button Section-->
+                    <Grid Grid.Row="1" HorizontalAlignment="Right">
+                        <Viewbox>
+                            <Button
+                                Background="Green"
+                                Width="100"
+                                Content="SAVE"
+                                Margin="5,8"
+                                Padding="3"
+                                Command="{Binding Path=SaveCommand}"/>
+                        </Viewbox>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

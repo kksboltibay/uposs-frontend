@@ -236,8 +236,8 @@ namespace UPOSS.ViewModels
                         {
                             dynamic param = new
                             {
+                                currentUsername = Properties.Settings.Default.CurrentUsername,
                                 userID = SelectedUser.Id,
-                                //username = _defaultInputDialog.Result.Username, // username cannot be changed
                                 password = _defaultInputDialog.Result.Password,
                                 role = _defaultInputDialog.Result.Role,
                                 branchName = _defaultInputDialog.Result.Branch_name

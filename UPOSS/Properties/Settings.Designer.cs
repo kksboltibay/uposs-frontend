@@ -12,7 +12,7 @@ namespace UPOSS.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -86,24 +86,72 @@ namespace UPOSS.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.06")]
-        public string Setting_GST {
+        public string Setting_GovChargesValue {
             get {
-                return ((string)(this["Setting_GST"]));
+                return ((string)(this["Setting_GovChargesValue"]));
             }
             set {
-                this["Setting_GST"] = value;
+                this["Setting_GovChargesValue"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.06")]
-        public string Setting_SST {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Setting_System_IsFirstLogin {
             get {
-                return ((string)(this["Setting_SST"]));
+                return ((bool)(this["Setting_System_IsFirstLogin"]));
             }
             set {
-                this["Setting_SST"] = value;
+                this["Setting_System_IsFirstLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GST")]
+        public string Setting_GovChargesName {
+            get {
+                return ((string)(this["Setting_GovChargesName"]));
+            }
+            set {
+                this["Setting_GovChargesName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting_SystemAddress {
+            get {
+                return ((string)(this["Setting_SystemAddress"]));
+            }
+            set {
+                this["Setting_SystemAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting_SystemPhoneNo {
+            get {
+                return ((string)(this["Setting_SystemPhoneNo"]));
+            }
+            set {
+                this["Setting_SystemPhoneNo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting_GovChargesNo {
+            get {
+                return ((string)(this["Setting_GovChargesNo"]));
+            }
+            set {
+                this["Setting_GovChargesNo"] = value;
             }
         }
     }

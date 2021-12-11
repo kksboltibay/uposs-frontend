@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace UPOSS.Views
 {
     /// <summary>
-    /// Interaction logic for HelpView.xaml
+    /// Interaction logic for SettingView.xaml
     /// </summary>
-    public partial class HelpView : UserControl
+    public partial class SettingView : UserControl
     {
-        public HelpView()
+        public SettingView()
         {
             InitializeComponent();
         }

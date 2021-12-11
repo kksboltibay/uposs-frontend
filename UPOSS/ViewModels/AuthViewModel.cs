@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,9 +27,14 @@ namespace UPOSS.ViewModels
             exitCommand = new RelayCommand(Exit);
 
             InputUser = new User();
-            SelectedBranch = Properties.Settings.Default.CurrentBranch;
+            ActiveBranchList = new ObservableCollection<string>();
+            SelectedBranch = "";
 
             GetLoginBranchList();
+
+            // for reset local db
+            //Properties.Settings.Default.Setting_System_IsFirstLogin = true;
+            //Properties.Settings.Default.Save();
         }
 
 
@@ -82,6 +89,14 @@ namespace UPOSS.ViewModels
                 if (Response.Status == "ok")
                 {
                     ActiveBranchList = new ObservableCollection<string>(Response.Data.OrderBy(property => property.Name).Select(item => item.Name));
+
+                    if (ActiveBranchList.Contains(Properties.Settings.Default.CurrentBranch))
+                    {
+                        SelectedBranch = Properties.Settings.Default.CurrentBranch;
+                    } else
+                    {
+                        SelectedBranch = ActiveBranchList[0];
+                    }
                 }
                 else
                 {

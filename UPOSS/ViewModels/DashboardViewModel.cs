@@ -11,9 +11,10 @@ namespace UPOSS.ViewModels
 
         public DashboardViewModel()
         {
-            //Sync Database
             SQLiteDatabase DB = new SQLiteDatabase(this);
-            DB.SyncLocalDB().Await();
+            IsLoading = true;
+            DB.LoadLocalDatabase().Await();
+            IsLoading = false;
         }
 
         #region Definition

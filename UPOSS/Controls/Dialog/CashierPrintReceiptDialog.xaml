@@ -1,0 +1,117 @@
+﻿<Window x:Class="UPOSS.Controls.Dialog.CashierPrintReceiptDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UPOSS.Controls.Dialog"
+        xmlns:properties="clr-namespace:UPOSS.Properties"
+        mc:Ignorable="d"
+        Title="CashierPrintReceiptDialog"
+        SizeToContent="WidthAndHeight" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None">
+
+    <Grid x:Name="printGrid" HorizontalAlignment="Center">
+        <StackPanel Orientation="Vertical" Margin="5">
+            <!--Title-->
+            <TextBlock Text="Kedai Seri Boltibay Sdn. Bhd." FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+            
+            <!--Address-->
+            <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=Setting_SystemAddress}" 
+                       TextWrapping="Wrap" Margin="10 0" HorizontalAlignment="Center" TextAlignment="Center"/>
+
+            <!--Phone No-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10 0">
+                <TextBlock Text="Tel : "/>
+                <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=Setting_SystemPhoneNo}" TextWrapping="Wrap"/>
+            </WrapPanel>
+
+            <StackPanel Orientation="Vertical" Margin="0 10 0 0" TextBlock.FontSize="10">
+                <!--Receipt No-->
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Receipt No. : "/>
+                    <TextBlock x:Name="tbkReceiptNo" TextWrapping="Wrap"/>
+                </WrapPanel>
+
+                <!--Staff-->
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Staff : "/>
+                    <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUsername}" TextWrapping="Wrap"/>
+                </WrapPanel>
+
+                <!--Gov Charges Registration No-->
+                <WrapPanel x:Name="wpGovChargesRegNo" Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Collapsed">
+                    <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=Setting_GovChargesName}" TextWrapping="Wrap"/>
+                    <TextBlock Text=" No : "/>
+                    <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=Setting_GovChargesNo}" TextWrapping="Wrap"/>
+                </WrapPanel>
+
+                <!--Datetime-->
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Date : "/>
+                    <TextBlock x:Name="tbkDatetime" TextWrapping="Wrap"/>
+                </WrapPanel>
+
+                <!--horizontal seperate line-->
+                <Separator BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Margin="0 5"/>
+
+                <!--Cart List-->
+                <!--Title-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Item" Grid.Column="0" FontWeight="Bold" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock Text="QTY" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock Text="Price" Grid.Column="2" FontWeight="Bold" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock Text="Total" Grid.Column="3" FontWeight="Bold" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+                
+                <!--horizontal seperate line-->
+                <Separator BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Margin="0 5"/>
+
+                <!--Cart List-->
+                <StackPanel x:Name="spCartList" Orientation="Vertical" TextBlock.FontWeight="ExtraLight"/>
+
+                <!--horizontal seperate dotted line-->
+                <!--<Rectangle Stroke="#FF000000" Height="1" StrokeThickness="1" StrokeDashArray="4 2" SnapsToDevicePixels="True"/>-->
+                <!--horizontal seperate line-->
+                <Separator BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Margin="0 5"/>
+
+                <!--Datetime-->
+                <Grid>
+                    <TextBlock Text="Total : " HorizontalAlignment="Left" Margin="1 0" FontWeight="Bold"/>
+                    <TextBlock x:Name="tbkTotal" HorizontalAlignment="Right" Margin="1 0" FontWeight="Bold"/>
+                </Grid>
+
+                <!--Gov Charges Tax-->
+                <Grid x:Name="gridGovCharges" Visibility="Collapsed">
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="1 0">
+                        <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=Setting_GovChargesName}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" "/>
+                        <TextBlock x:Name="tbkGovChargesValue" TextWrapping="Wrap"/>
+                        <TextBlock Text="% : "/>
+                    </WrapPanel>
+
+                    <TextBlock x:Name="tbkGovTax" TextWrapping="Wrap" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+
+                <!--Payment Method-->
+                <Grid>
+                    <TextBlock x:Name="tbkPaymentMethod" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkCustomerPay" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+
+                <!--Change-->
+                <Grid>
+                    <TextBlock Text="Change : " HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkChange" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

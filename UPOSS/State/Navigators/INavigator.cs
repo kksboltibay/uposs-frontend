@@ -12,8 +12,8 @@ namespace UPOSS.State.Navigators
         Branch,
         Product,
         Cashier,
-        Sales,
-        Help
+        Analytics,
+        Setting
     }
     public interface INavigator
     {

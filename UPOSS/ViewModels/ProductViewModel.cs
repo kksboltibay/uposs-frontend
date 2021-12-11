@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Documents;
 using UPOSS.Commands;
 using UPOSS.Controls;
+using UPOSS.Controls.Dialog;
 using UPOSS.Models;
 using UPOSS.Services;
 
@@ -34,6 +35,7 @@ namespace UPOSS.ViewModels
             deactivateCommand = new AsyncRelayCommand(Deactivate, this);
             previousPageCommand = new AsyncRelayCommand(PrevPage, this);
             nextPageCommand = new AsyncRelayCommand(NextPage, this);
+            printBarcodeCommand = new AsyncRelayCommand(PrintBarcode, this);
 
             SelectedBranch = "";
             SelectedStatus = "Active";
@@ -706,6 +708,43 @@ namespace UPOSS.ViewModels
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 RefreshTextBox();
                 await Search();
+            }
+        }
+        #endregion
+
+
+        #region PrintBarcodeOperation
+        private AsyncRelayCommand printBarcodeCommand;
+        public AsyncRelayCommand PrintBarcodeCommand
+        {
+            get { return printBarcodeCommand; }
+        }
+        private async Task PrintBarcode()
+        {
+            try
+            {
+                if (SelectedProduct is null || SelectedProduct.Id == 0)
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Please select a product from the list", "UPO$$");
+                }
+                else
+                {
+                    if (SelectedProduct.Barcode is null || SelectedProduct.Barcode == "")
+                    {
+                        IsLoading = false;
+                        MessageBox.Show("Barcode not found", "UPO$$");
+                    }
+                    else
+                    {
+                        ProductPrintBarcodeDialog _defaultPrintDialog = new ProductPrintBarcodeDialog(SelectedProduct.Barcode);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+                IsLoading = false;
             }
         }
         #endregion

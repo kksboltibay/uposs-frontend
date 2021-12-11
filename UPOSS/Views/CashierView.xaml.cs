@@ -333,8 +333,6 @@ namespace UPOSS.Views
                 grid.SelectedItem = null;
                 grid.CommitEdit(DataGridEditingUnit.Row, true);
                 //tbBarcode.Focus();
-                System.Diagnostics.Trace.WriteLine("dg");
-
             }
         }
 

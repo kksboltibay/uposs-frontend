@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using UPOSS.Commands;
 using UPOSS.Controls;
+using UPOSS.Controls.Dialog;
+using UPOSS.Custom;
+using UPOSS.LocalDatabase;
 using UPOSS.Models;
 using UPOSS.Services;
 
@@ -16,25 +19,28 @@ namespace UPOSS.ViewModels
 {
     public class CashierViewModel : ViewModelBase
     {
-        APIService ObjProductService;
+        APIService ObjCashierService;
         private readonly string _Path;
+        SQLiteDatabase DB;
 
         public CashierViewModel()
         {
-            ObjProductService = new APIService();
-            _Path = "product";
+            ObjCashierService = new APIService();
+            _Path = "cashier";
 
-            paymentCommand = new AsyncRelayCommand(Payment, this);
-            //updateCommand = new AsyncRelayCommand(Update, this);
 
-            rowEditEndingCommand = new AsyncRelayCommand(RowEdit, this);
+            rowEditEndingCommand = new AsyncRelayCommand(CheckRowEdit, this);
             removeSelectedItemCommand = new AsyncRelayCommand(RemoveItem, this);
+            syncCommand = new AsyncRelayCommand(Sync, this);
             clearAllCommand = new AsyncRelayCommand(ClearAll, this);
             onHoldCommand = new AsyncRelayCommand(OnHold, this);
+            recallCommand = new AsyncRelayCommand(Recall, this);
+            paymentCommand = new AsyncRelayCommand(Payment, this);
 
 
-            //cellValueChangedCommand = new AsyncRelayCommand(RowTextChangedEvent, this);
-            //ProductList.CollectionChanged += ProductList_CollectionChanged;
+            DB = new SQLiteDatabase(this);
+
+            IsSynced = false;
         }
 
 
@@ -126,6 +132,12 @@ namespace UPOSS.ViewModels
             set { inputProduct = value; OnPropertyChanged("InputProduct"); }
         }
 
+        private bool isSynced;
+        public bool IsSynced
+        {
+            get { return isSynced; }
+            set { isSynced = value; OnPropertyChanged("IsSynced"); }
+        }
 
         //event
         //private void ProductList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -146,76 +158,110 @@ namespace UPOSS.ViewModels
         #region Custom
         private async Task AddItemIntoProductList(string barcode = "", string productNo = "", string productName = "")
         {
-            // Search from local DB
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            try
             {
-                connection.Open();
-                try
+                string syncResult = "";
+                // check if system is synced
+                if (IsSynced == false)
                 {
-                    using var command = new SQLiteCommand(connection);
+                    // auto sync
+                    syncResult = await DB.SyncLocalDB();
 
-                    string sql = "";
-                    if (!string.IsNullOrEmpty(barcode))
+                    if (syncResult == "error")
                     {
-                        sql = "SELECT * FROM products WHERE barcode = '" + barcode + "' AND is_active = '1' LIMIT 1";
+                        return;
                     }
-                    else if (!string.IsNullOrEmpty(productNo))
+                    else
                     {
-                        sql = "SELECT * FROM products WHERE product_no = '" + productNo + "' AND is_active = '1' LIMIT 1";
+                        IsSynced = true;
                     }
-                    else if (!string.IsNullOrEmpty(productName))
+                }
+                
+                if (IsSynced == true)
+                {
+                    // check if sync status time out
+                    if (await CheckPaymentDuration())
                     {
-                        sql = "SELECT * FROM products WHERE name = '" + productName + "' AND is_active = '1' LIMIT 1";
-                    }
-
-                    // get product
-                    command.CommandText = sql;
-                    using (SQLiteDataReader rdr = command.ExecuteReader())
-                    {
-                        if (rdr.Read())
+                        // time in ( <= 15 mins)
+                        // Search from local DB
+                        using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
                         {
-                            if (ProductList == null)
+                            connection.Open();
+
+                            using var command = new SQLiteCommand(connection);
+
+                            string sql = "";
+                            if (!string.IsNullOrEmpty(barcode))
                             {
-                                ProductList = new ObservableCollection<Product>();
+                                sql = "SELECT * FROM products WHERE barcode = '" + barcode + "' AND is_active = '1' LIMIT 1";
+                            }
+                            else if (!string.IsNullOrEmpty(productNo))
+                            {
+                                sql = "SELECT * FROM products WHERE product_no = '" + productNo + "' AND is_active = '1' LIMIT 1";
+                            }
+                            else if (!string.IsNullOrEmpty(productName))
+                            {
+                                sql = "SELECT * FROM products WHERE name = '" + productName + "' AND is_active = '1' LIMIT 1";
                             }
 
-                            if (ProductList.Any(p => p.Product_no == rdr["product_no"].ToString()))
+                            // get product
+                            command.CommandText = sql;
+                            using (SQLiteDataReader rdr = command.ExecuteReader())
                             {
-                                MessageBox.Show("Product :" + rdr["product_no"].ToString() + " already exists", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
-                            else
-                            {
-                                ProductList.Add(new Product
+                                if (rdr.Read())
                                 {
-                                    Product_no = rdr["product_no"].ToString(),
-                                    Name = rdr["name"].ToString(),
-                                    Barcode = rdr["barcode"].ToString(),
-                                    Price = rdr["price"].ToString(),
-                                    Total_stock = "1.0",
-                                    Original_price = rdr["price"].ToString(),
-                                });
-                            }
-                            
-                        }
-                        rdr.Close();
-                    }
+                                    if (ProductList == null)
+                                    {
+                                        ProductList = new ObservableCollection<Product>();
+                                    }
 
-                    Refresh();
+                                    if (ProductList.Any(p => p.Product_no == rdr["product_no"].ToString()))
+                                    {
+                                        MessageBox.Show("Product :" + rdr["product_no"].ToString() + " already exists", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                                    else if (rdr.IsDBNull(rdr.GetOrdinal("remaining_stock")))
+                                    {
+                                        MessageBox.Show("Product :" + rdr["product_no"].ToString() + " is out of stock", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                                    else if (Math.Round(Convert.ToDecimal(rdr["remaining_stock"].ToString()), 2, MidpointRounding.AwayFromZero) <= 0)
+                                    {
+                                        MessageBox.Show("Product :" + rdr["product_no"].ToString() + " is out of stock", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                                    else
+                                    {
+                                        ProductList.Add(new Product
+                                        {
+                                            Product_no = rdr["product_no"].ToString(),
+                                            Name = rdr["name"].ToString(),
+                                            Barcode = rdr["barcode"].ToString(),
+                                            Price = Math.Round(Convert.ToDecimal(rdr["price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                            Total_stock = "1.00",
+                                            Original_price = Math.Round(Convert.ToDecimal(rdr["price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                            Remaining_stock = Math.Round(Convert.ToDecimal(rdr["remaining_stock"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                        });
+                                    }
+
+                                }
+                                rdr.Close();
+                            }
+                            Refresh();
+                            connection.Close();
+                        }
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message.ToString(), "UPO$$");
-                }
-                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "UPO$$");
             }
         }
 
         private void Refresh()
         {
-            string totalSubtotal = "0";
-            string totalDiscount = "0";
-            string gst = "0";
-            string netTotal = "0";
+            string totalSubtotal = "0.00";
+            string totalDiscount = "0.00";
+            string tax = "0.00";
+            string netTotal = "0.00";
 
             //Calculate
             for (int i = 0; i < ProductList.Count; i++)
@@ -225,49 +271,90 @@ namespace UPOSS.ViewModels
 
                 //Discount (ori_price - price)
                 ProductList[i].Discount = Math.Round(Convert.ToDecimal(
-                    Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2)
+                    Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2, MidpointRounding.AwayFromZero) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2, MidpointRounding.AwayFromZero)
                     -
-                    Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2)
-                ), 2).ToString();
+                    Math.Round(Convert.ToDecimal(ProductList[i].Price), 2, MidpointRounding.AwayFromZero) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2, MidpointRounding.AwayFromZero)
+                ), 2, MidpointRounding.AwayFromZero).ToString();
 
                 //Subtotal
-                ProductList[i].Subtotal = (Math.Round(Convert.ToDecimal(
-                    Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2)
-                ), 2)).ToString();
+                ProductList[i].Subtotal = Math.Round(Convert.ToDecimal(
+                    Math.Round(Convert.ToDecimal(ProductList[i].Price), 2, MidpointRounding.AwayFromZero) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2, MidpointRounding.AwayFromZero)
+                ), 2, MidpointRounding.AwayFromZero).ToString();
 
                 // Calculation Section
                 //Total Original Subtotal
                 totalSubtotal = Math.Round(Convert.ToDecimal(
-                    Math.Round(Convert.ToDecimal(totalSubtotal), 2) + Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2)
-                ), 2).ToString();
+                    Math.Round(Convert.ToDecimal(totalSubtotal), 2, MidpointRounding.AwayFromZero) + Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2, MidpointRounding.AwayFromZero) * Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2, MidpointRounding.AwayFromZero)
+                ), 2, MidpointRounding.AwayFromZero).ToString();
 
                 //Total Discount
-                totalDiscount = (Math.Round(Convert.ToDecimal(
-                    Math.Round(Convert.ToDecimal(totalDiscount), 2) + Math.Round(Convert.ToDecimal(ProductList[i].Discount), 2)
-                ), 2)).ToString();
+                totalDiscount = Math.Round(Convert.ToDecimal(
+                    Math.Round(Convert.ToDecimal(totalDiscount), 2, MidpointRounding.AwayFromZero) + Math.Round(Convert.ToDecimal(ProductList[i].Discount), 2, MidpointRounding.AwayFromZero)
+                ), 2, MidpointRounding.AwayFromZero).ToString();
             }
 
-            //GST((Total Subtotal - Total Discount) * 0.06 )
-            gst = (Math.Round(Convert.ToDecimal(
-                    (Math.Round(Convert.ToDecimal(totalSubtotal), 2) - Math.Round(Convert.ToDecimal(totalDiscount), 2)) * Math.Round(Convert.ToDecimal(Properties.Settings.Default.Setting_GST), 2)
-            ), 2)).ToString();
+            //Tax - GST/SST ((Total Subtotal - Total Discount) * Tax_Setting )
+            tax = Math.Round(Convert.ToDecimal(
+                    (Math.Round(Convert.ToDecimal(totalSubtotal), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(totalDiscount), 2, MidpointRounding.AwayFromZero)) * Math.Round(Convert.ToDecimal(Properties.Settings.Default.Setting_GovChargesValue), 2, MidpointRounding.AwayFromZero)
+            ), 2, MidpointRounding.AwayFromZero).ToString();
 
             //Net Total
-            netTotal = (Math.Round(Convert.ToDecimal(
-                    Math.Round(Convert.ToDecimal(totalSubtotal), 2) - Math.Round(Convert.ToDecimal(totalDiscount), 2) + Math.Round(Convert.ToDecimal(gst), 2)
-            ), 2)).ToString();
+            netTotal = Math.Round(Convert.ToDecimal(
+                    Math.Round(Convert.ToDecimal(totalSubtotal), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(totalDiscount), 2, MidpointRounding.AwayFromZero) + Math.Round(Convert.ToDecimal(tax), 2, MidpointRounding.AwayFromZero)
+            ), 2, MidpointRounding.AwayFromZero).ToString();
 
             Cart = new Cashier
             {
                 Subtotal = totalSubtotal,
                 Discount = totalDiscount,
-                GST = gst,
+                Tax = tax,
                 Total_amount = netTotal
             };
 
             // Refresh product list
             var temp = ProductList;
             ProductList = new ObservableCollection<Product>(temp);
+        }
+
+        private async Task<bool> CheckPaymentDuration()
+        {
+            // check if payment duration exited 15 mins
+            bool isPass = true;
+            List<string> recordList = new List<string>();
+
+            // check with local db
+            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            {
+                connection.Open();
+
+                using var command = new SQLiteCommand(connection);
+
+                command.CommandText = "SELECT last_update FROM update_record WHERE last_update <= Datetime('now', '-15 minutes', 'localtime')";
+                using (SQLiteDataReader rdr = command.ExecuteReader())
+                {
+                    while (rdr.Read())
+                    {
+                        recordList.Add(rdr[0].ToString());
+                        //System.Diagnostics.Trace.WriteLine(rdr[0].ToString());
+                    }
+                    rdr.Close();
+                }
+
+                if (recordList.Count > 0)
+                {
+                    // if exited 15 mins, reset whole cashier status
+                    MessageBox.Show("Payment Time Out, please try again within 15 minutes.", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    // save failure payment
+                    await OnHold();
+
+                    isPass = false;
+                    IsSynced = false;
+                    await ClearAll();
+                }
+                connection.Close();
+            }
+            return isPass;
         }
         #endregion
 
@@ -279,45 +366,105 @@ namespace UPOSS.ViewModels
         {
             get { return rowEditEndingCommand; }
         }
-        private async Task RowEdit()
+        private async Task<bool> CheckRowEdit()
         {
             try
             {
+                bool isCorrect = true;
                 for (int i = 0; i < ProductList.Count; i++)
                 {
+                    // update remaining_stock with local db
+                    using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                    {
+                        connection.Open();
+
+                        using var command = new SQLiteCommand(connection);
+
+                        string sql = "";
+                        if (!string.IsNullOrEmpty(ProductList[i].Product_no))
+                        {
+                            sql = "SELECT remaining_stock FROM products WHERE product_no = '" + ProductList[i].Product_no + "' LIMIT 1";
+                        }
+
+                        command.CommandText = sql;
+                        using (SQLiteDataReader rdr = command.ExecuteReader())
+                        {
+                            if (rdr.Read())
+                            {
+                                if (rdr.IsDBNull(rdr.GetOrdinal("remaining_stock")))
+                                {
+                                    ProductList[i].Remaining_stock = "0.00";
+                                }
+                                else if (Math.Round(Convert.ToDecimal(rdr["remaining_stock"].ToString()), 2) <= 0)
+                                {
+                                    ProductList[i].Remaining_stock = rdr["remaining_stock"].ToString();
+                                }
+
+                            }
+                            rdr.Close();
+                        }
+                        connection.Close();
+                    }
+
                     // check for empty price or qty
                     if (string.IsNullOrEmpty(ProductList[i].Price) || string.IsNullOrEmpty(ProductList[i].Total_stock))
                     {
                         MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] or [Qty] can't be empty", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
 
                         ProductList[i].Price = ProductList[i].Original_price;
-                        ProductList[i].Total_stock = "1.0";
+                        ProductList[i].Total_stock = "1.00";
+
+                        isCorrect = false;
                     }
 
-                    // check for 0 qty
-                    if (Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2) <= 0)
+                    // check for quantity
+                    else if (Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2) <= 0)
                     {
+                        // check if qty <= 0
                         MessageBox.Show("Product: " + ProductList[i].Product_no + " [Qty] can't be smaller or equal to 0", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                        ProductList[i].Total_stock = "1.0";
+                        ProductList[i].Total_stock = "1.00";
+
+                        isCorrect = false;
+                    }
+                    else if (Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2) > Math.Round(Convert.ToDecimal(ProductList[i].Remaining_stock), 2))
+                    {
+                        // check if qty > remaining_stock
+                        MessageBox.Show("Product: " + ProductList[i].Product_no + " [Qty] only has " + ProductList[i].Remaining_stock + " left.", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                        ProductList[i].Total_stock = ProductList[i].Remaining_stock;
+
+                        isCorrect = false;
                     }
 
-                    if (Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) > Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2))
+                    // check for price
+                    else if (Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) > Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2))
                     {
                         MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] can't be greater than its original price", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
 
                         ProductList[i].Price = ProductList[i].Original_price;
+
+                        isCorrect = false;
                     }
+
+                    // round up price and qty
+                    ProductList[i].Total_stock = Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2, MidpointRounding.AwayFromZero).ToString("0.00");
+                    ProductList[i].Price = Math.Round(Convert.ToDecimal(ProductList[i].Price), 2, MidpointRounding.AwayFromZero).ToString("0.00");
                 }
 
                 // refresh product list
                 Refresh();
+
+                if (!isCorrect) return false;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
                 await ClearAll();
+                return false;
             }
+
+            return true;
         }
         #endregion
 
@@ -330,7 +477,6 @@ namespace UPOSS.ViewModels
         }
         private async Task RemoveItem()
         {
-            System.Diagnostics.Trace.WriteLine("Remove Item");
             try
             {
                 if (SelectedProduct != null)
@@ -338,6 +484,66 @@ namespace UPOSS.ViewModels
                     ProductList.Remove(SelectedProduct);
                 }
                 Refresh();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+            }
+        }
+        #endregion
+
+
+        #region Sync
+        private AsyncRelayCommand syncCommand;
+        public AsyncRelayCommand SyncCommand
+        {
+            get { return syncCommand; }
+        }
+        private async Task Sync()
+        {
+            try
+            {
+                IsLoading = true;
+
+                if (ProductList.Count > 0)
+                {
+                    var msgResult = MessageBox.Show("Are you sure to sync? \n\n*Note: Cart will be cleared if update detected!*", "UPO$$", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+
+                    if (msgResult == MessageBoxResult.Cancel)
+                    {
+                        IsLoading = false;
+                        return;
+                    }
+                }
+
+                string syncResult = await DB.SyncLocalDB();
+
+                if (syncResult == "updateRequired")
+                {
+                    // update required
+
+                    // compare updated product list with cart product list
+                    if (ProductList.Count > 0 && DB.ProductList.Count > 0)
+                    {
+                        MessageBox.Show("Products have just been updated, please try again within 15 minutes.", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        await ClearAll();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Products synced successfully.", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    IsSynced = true;
+                }
+                else if (syncResult == "upToDate")
+                {
+                    MessageBox.Show("Products synced successfully.", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Information);
+                    IsSynced = true;
+                }
+                else
+                {
+                    // db sync exception error
+                }
+                IsLoading = false;
             }
             catch (Exception e)
             {
@@ -384,12 +590,142 @@ namespace UPOSS.ViewModels
         }
         private async Task OnHold()
         {
+            // on hold limit <= 3
             try
             {
-                
+                IsLoading = true;
+
+                if (ProductList.Count > 0)
+                {
+                    if (await CheckRowEdit())
+                    {
+                        List<string> recordList = new List<string>();
+                        var currentDateTime = DateTime.Now;
+
+                        using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                        {
+                            connection.Open();
+
+                            using var command = new SQLiteCommand(connection);
+
+                            command.CommandText = "SELECT created_at FROM temp_products GROUP BY created_at ORDER BY created_at DESC";
+                            using (SQLiteDataReader rdr = command.ExecuteReader())
+                            {
+                                while (rdr.Read())
+                                {
+                                    recordList.Add(rdr[0].ToString());
+                                    System.Diagnostics.Trace.WriteLine(rdr[0].ToString());
+                                }
+                                rdr.Close();
+                            }
+
+                            if (recordList.Any())
+                            {
+                                // check if record <= 3
+                                if (recordList.Count >= 3)
+                                {
+                                    // remove oldest record
+                                    string oldestRecordDate = recordList[2];
+
+                                    command.CommandText = "DELETE FROM temp_products WHERE created_at = '" + oldestRecordDate + "'";
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+
+                            // insert into temp_products table
+                            foreach (var product in ProductList)
+                            {
+                                command.CommandText = "INSERT INTO temp_products(product_no, name, barcode, price, qty, original_price, created_at)" +
+                                        " VALUES(@product_no, @name, @barcode, @price, @qty, @original_price, @created_at)";
+                                command.Parameters.AddWithValue("@product_no", product.Product_no);
+                                command.Parameters.AddWithValue("@name", product.Name);
+                                command.Parameters.AddWithValue("@barcode", product.Barcode);
+                                command.Parameters.AddWithValue("@price", product.Price);
+                                command.Parameters.AddWithValue("@qty", product.Total_stock);
+                                command.Parameters.AddWithValue("@original_price", product.Original_price);
+                                command.Parameters.AddWithValue("@created_at", currentDateTime);
+                                command.Prepare();
+                                command.ExecuteNonQuery();
+                            }
+
+                            connection.Close();
+                        }
+
+                        await ClearAll();
+                    }
+                }
+                IsLoading = false;
             }
             catch (Exception e)
             {
+                IsLoading = false;
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+            }
+        }
+        #endregion
+
+
+        #region Recall
+        private AsyncRelayCommand recallCommand;
+        public AsyncRelayCommand RecallCommand
+        {
+            get { return recallCommand; }
+        }
+        private async Task Recall()
+        {
+            try
+            {
+                IsLoading = true;
+
+                if (ProductList.Count == 0)
+                {
+                    string syncResult = "";
+                    // check if system is synced
+                    if (IsSynced == false)
+                    {
+                        // auto sync
+                        syncResult = await DB.SyncLocalDB();
+
+                        if (syncResult == "error")
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            IsSynced = true;
+                        }
+                    }
+
+                    if (IsSynced == true)
+                    {
+                        // check if sync status time out
+                        if (await CheckPaymentDuration())
+                        {
+                            // time in ( <= 15 mins)
+                            CashierRecallDialog _productRecallDialog = new CashierRecallDialog();
+
+                            if (_productRecallDialog.ShowDialog() == true)
+                            {
+                                if (_productRecallDialog.dgProduct.SelectedItem != null)
+                                {
+                                    Product product = (Product)_productRecallDialog.dgProduct.SelectedItem;
+                                    ProductList = new ObservableCollection<Product>(product.List);
+
+                                    Refresh();
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please clear all first", "UPO$$");
+                }
+                IsLoading = false;
+            }
+            catch (Exception e)
+            {
+                IsLoading = false;
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
             }
         }
@@ -406,85 +742,92 @@ namespace UPOSS.ViewModels
         {
             try
             {
-                //ProductInputDialog _defaultInputDialog = new ProductInputDialog("Please fill in the details of new product", mode: "add");
+                // check if product list is not empty
+                if (ProductList.Count > 0)
+                {
+                    string syncResult = "";
+                    // check if system is synced
+                    if (IsSynced == false)
+                    {
+                        // auto sync
+                        syncResult = await DB.SyncLocalDB();
 
-                //if (_defaultInputDialog.ShowDialog() == true)
-                //{
-                //    if (
-                //        _defaultInputDialog.ProductResult is null ||
-                //        _defaultInputDialog.ProductResult.Name == "" ||
-                //        _defaultInputDialog.ProductResult.Category == "" ||
-                //        _defaultInputDialog.ProductResult.Design_code == "" ||
-                //        _defaultInputDialog.ProductResult.Colour_code == "" ||
-                //        _defaultInputDialog.ProductResult.Price == ""
-                //        )
-                //    {
-                //        IsLoading = false;
-                //        MessageBox.Show("Empty column detected, all columns can't be empty", "UPO$$");
-                //    }
-                //    else
-                //    {
-                //        dynamic param = new
-                //        {
-                //            name = _defaultInputDialog.ProductResult.Name,
-                //            category = _defaultInputDialog.ProductResult.Category,
-                //            designCode = _defaultInputDialog.ProductResult.Design_code,
-                //            colourCode = _defaultInputDialog.ProductResult.Colour_code,
-                //            price = _defaultInputDialog.ProductResult.Price
-                //        };
+                        if (syncResult == "error")
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            IsSynced = true;
+                        }
+                    }
 
-                //        RootProductObject Response = await ObjProductService.PostAPI("addProduct", param, _Path);
+                    if (IsSynced == true)
+                    {
+                        if (await CheckRowEdit())
+                        {
+                            if (await CheckPaymentDuration())
+                            {
+                                // call payment dialog
+                                CashierPaymentDialog _paymentDialog = new CashierPaymentDialog(Cart.Total_amount);
 
-                //        MessageBox.Show(Response.Msg, "UPO$$");
+                                if (_paymentDialog.ShowDialog() == true)
+                                {
+                                    if (await CheckPaymentDuration())
+                                    {
+                                        // call api
+                                        dynamic param = new
+                                        {
+                                            cartList = ProductList,
+                                            totalItem = ProductList.Count,
+                                            totalSubtotal = Cart.Subtotal,
+                                            totalDiscount = Cart.Discount,
+                                            totalTax = Cart.Tax,
+                                            totalAmount = Cart.Total_amount,
+                                            paymentMethod = _paymentDialog.Payment.Payment_method,
+                                            cashPay = _paymentDialog.Payment.Cash_pay,
+                                            cardNo = _paymentDialog.Payment.Card_no,
+                                            cardPay = _paymentDialog.Payment.Card_pay,
+                                            cardType = _paymentDialog.Payment.Card_type,
+                                            bankName = _paymentDialog.Payment.Bank_name,
+                                            branchName = Properties.Settings.Default.CurrentBranch,
+                                            change = _paymentDialog.Payment.Change
+                                        };
 
-                //        if (Response.Status is "ok")
-                //        {
-                //            //RefreshTextBox();
-                //            //await Search();
-                //        }
-                //    }
-                //}
+                                        RootCashierObject Response = await ObjCashierService.PostAPI("payment", param, _Path);
+
+                                        MessageBox.Show(Response.Msg, "UPO$$");
+
+                                        if (Response.Status != "ok")
+                                        {
+                                            await OnHold();
+                                            MessageBox.Show("Cart has been [On Hold].", "UPO$$");
+                                        }
+                                        else
+                                        {
+                                            //changes
+                                            MessageBox.Show("Changes: $" + _paymentDialog.Payment.Change, "UPO$$");
+
+                                            //print receipt
+                                            CashierPrintReceiptDialog _cashierPrintReceiptDialog = new CashierPrintReceiptDialog(param, Response.Data);
+                                        }
+
+                                        await ClearAll();
+                                        IsSynced = false;
+                                        IsLoading = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
-                //await Search();
+                await OnHold();
             }
         }
-        #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        #region ProductList row edit detection
-        //private AsyncRelayCommand cellValueChangedCommand;
-        //public AsyncRelayCommand CellValueChangedCommand
-        //{
-        //    get { return cellValueChangedCommand; }
-        //}
-        //private async Task RowTextChangedEvent()
-        //{
-        //    System.Diagnostics.Trace.WriteLine("Cell Value Changed");
-        //    try
-        //    {
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        //MessageBox.Show(e.Message.ToString(), "UPO$$");
-        //    }
-        //}
         #endregion
     }
 }

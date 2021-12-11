@@ -7,7 +7,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using UPOSS.Models;
 
 namespace UPOSS.Services
@@ -19,7 +21,12 @@ namespace UPOSS.Services
 
         public APIService()
         {
-            _url = "http://localhost:5000/api/v1/";
+            //dev url
+            //_url = "http://localhost:5000/api/v1/";
+
+            //prod url
+            _url = "http://128.199.212.104/api/v1/";
+
         }
 
         public async Task<dynamic> PostAPI(string apiCommand, object param, string _path)
@@ -79,11 +86,26 @@ namespace UPOSS.Services
                     case "product":
                         responseObj = JsonConvert.DeserializeObject<RootProductObject>(responseString); break;
 
-                    //case "user":
-                    //responseObj = JsonConvert.DeserializeObject<RootBranchObject>(responseString); break;
+                    case "cashier":
+                        responseObj = JsonConvert.DeserializeObject<RootCashierObject>(responseString); break;
+
+                    case "analytics":
+                        responseObj = JsonConvert.DeserializeObject<RootAnalyticsObject>(responseString); break;
 
                     default:
-                        responseObj = new { Status = "error", Msg = "API Service error, please contact IT support", Data = "" }; break;
+                        MessageBox.Show("Client API Service error: missing [path], please contact IT support", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+                        responseObj = null; break;
+                }
+
+                // check if user got deleted
+                if (responseObj.Status != "ok")
+                {
+                    if (responseObj.Msg.Contains("cmVzZXRMb2NhbERC") == true)
+                    {
+                        // reset this client local db
+                        Properties.Settings.Default.Setting_System_IsFirstLogin = true;
+                        Properties.Settings.Default.Save();
+                    }
                 }
 
                 return responseObj;
@@ -91,7 +113,7 @@ namespace UPOSS.Services
             catch (HttpRequestException e)
             {
                 System.Diagnostics.Trace.WriteLine("\nException Caught!");
-                System.Diagnostics.Trace.WriteLine("Message :{0} ", e.Message);
+                System.Diagnostics.Trace.WriteLine("Message :{0} ", e.Message.ToString());
 
                 switch (_path)
                 {
@@ -104,11 +126,15 @@ namespace UPOSS.Services
                     case "product":
                         return new RootProductObject { Status = "error", Msg = e.Message, Data = null };
 
-                    //case "user":
-                    //responseObj = JsonConvert.DeserializeObject<RootBranchObject>(responseString); break;
+                    case "cashier":
+                        return new RootCashierObject { Status = "error", Msg = e.Message, Data = null};
+
+                    case "analytics":
+                        return new RootAnalyticsObject { Status = "error", Msg = e.Message, Data = null};
 
                     default:
-                        return new { Status = "error", Msg = e.Message, Data = "" };
+                        MessageBox.Show("Client API Service exception: missing [path], please contact IT support", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return "";
                 }
             }
         }

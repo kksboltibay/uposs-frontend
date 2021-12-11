@@ -48,6 +48,7 @@
 
                     <TextBox Grid.Column="1" x:Name="tbUsername" 
                          Margin="5 0" BorderBrush="Black" BorderThickness="1"
+                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                          Text="{Binding Path=InputUser.Username, Mode=TwoWay}" />
                 </Grid>
 

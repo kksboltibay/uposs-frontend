@@ -40,21 +40,25 @@ namespace UPOSS.Models
         public List<ProductQuantity> Stock { get; set; }
 
         //Cashier
-        public string Remaining_stock { get; set; } = "0";
+        public string Remaining_stock { get; set; } = "0.00";
 
-        public string Total_stock { get; set; } = "0";
+        public string Total_stock { get; set; } = "0.00";
 
-        public string Original_price { get; set; } = "0";
+        public string Original_price { get; set; } = "0.00";
 
-        public string Discount { get; set; } = "0";
+        public string Discount { get; set; } = "0.00";
 
-        public string Subtotal { get; set; } = "0";
+        public string Subtotal { get; set; } = "0.00";
+
+        public string Datetime { get; set; }
+
+        public List<Product> List { get; set; }
     }
 
     public class ProductQuantity : ObservableObject
     {
         public string Branch_name { get; set; }
 
-        public string Quantity { get; set; }
+        public string Quantity { get; set; } = "0.00";
     }
 }

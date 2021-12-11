@@ -46,12 +46,12 @@ namespace UPOSS.Commands
                         _navigator.CurrentViewModel = new CashierViewModel();
                         break;
 
-                    case ViewType.Sales:
-                        _navigator.CurrentViewModel = new SalesViewModel();
+                    case ViewType.Analytics:
+                        _navigator.CurrentViewModel = new AnalyticsViewModel();
                         break;
 
-                    case ViewType.Help:
-                        _navigator.CurrentViewModel = new HelpViewModel();
+                    case ViewType.Setting:
+                        _navigator.CurrentViewModel = new SettingViewModel();
                         break;
 
                     default:
