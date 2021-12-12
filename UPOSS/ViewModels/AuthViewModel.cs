@@ -8,6 +8,7 @@ using System.Windows;
 using UPOSS.Commands;
 using UPOSS.Models;
 using UPOSS.Services;
+using Squirrel;
 
 namespace UPOSS.ViewModels
 {
@@ -31,6 +32,7 @@ namespace UPOSS.ViewModels
             SelectedBranch = "";
 
             GetLoginBranchList();
+            CheckAvailableUpdate();
 
             // for reset local db
             //Properties.Settings.Default.Setting_System_IsFirstLogin = true;
@@ -106,6 +108,37 @@ namespace UPOSS.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
+            }
+        }
+
+        
+        private async void CheckAvailableUpdate()
+        {
+            try 
+            {
+                using (var updateManager = await UpdateManager.GitHubUpdateManager(@"https://github.com/kksboltibay/uposs-frontend"))
+                {
+                    UPOSS.Properties.Settings.Default.CurrentApplicationVersion = updateManager.CurrentlyInstalledVersion().ToString();
+                    UPOSS.Properties.Settings.Default.Save();
+
+                    var updateInfo = await updateManager.CheckForUpdate();
+
+                    if (updateInfo.ReleasesToApply.Count > 0)
+                    {
+                        var update = MessageBox.Show("There is an update available, do you want to update?", "UPO$$", MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                        if (update == MessageBoxResult.Yes)
+                        {
+                            await updateManager.UpdateApp();
+
+                            MessageBox.Show("Updated succesfuly!");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString() + "\n\nUpdate checking process error, please contact IT support", "UPO$$");
             }
         }
         #endregion
