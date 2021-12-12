@@ -129,9 +129,11 @@ namespace UPOSS.ViewModels
 
                         if (update == MessageBoxResult.Yes)
                         {
+                            IsLoading = true;
                             await updateManager.UpdateApp();
 
-                            MessageBox.Show("Updated succesfuly!");
+                            MessageBox.Show("Updated succesfuly. Please restart the application.");
+                            IsLoading = false;
                         }
                     }
                 }
