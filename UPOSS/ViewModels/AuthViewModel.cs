@@ -114,6 +114,7 @@ namespace UPOSS.ViewModels
         
         private async void CheckAvailableUpdate()
         {
+            IsLoading = true;
             try 
             {
                 using (var updateManager = await UpdateManager.GitHubUpdateManager(@"https://github.com/kksboltibay/uposs-frontend"))
@@ -129,11 +130,9 @@ namespace UPOSS.ViewModels
 
                         if (update == MessageBoxResult.Yes)
                         {
-                            IsLoading = true;
                             await updateManager.UpdateApp();
 
                             MessageBox.Show("Updated succesfuly. Please restart the application.");
-                            IsLoading = false;
                         }
                     }
                 }
@@ -142,6 +141,7 @@ namespace UPOSS.ViewModels
             {
                 MessageBox.Show(e.Message.ToString() + "\n\nUpdate checking process error, please contact IT support", "UPO$$");
             }
+            IsLoading = false;
         }
         #endregion
 
