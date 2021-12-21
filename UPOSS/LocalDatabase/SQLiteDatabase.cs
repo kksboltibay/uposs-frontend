@@ -226,8 +226,8 @@ namespace UPOSS.LocalDatabase
                                 {
                                     foreach (var product in ProductList)
                                     {
-                                        command.CommandText = "INSERT OR REPLACE INTO products(id, product_no, name, category, design_code, colour_code, price, barcode, is_active)" +
-                                            " VALUES(@id, @product_no, @name, @category, @design_code, @colour_code, @price, @barcode, @is_active)";
+                                        command.CommandText = "INSERT OR REPLACE INTO products(id, product_no, name, category, design_code, colour_code, price, barcode, is_active, remaining_stock)" +
+                                            " VALUES(@id, @product_no, @name, @category, @design_code, @colour_code, @price, @barcode, @is_active, (SELECT remaining_stock FROM products WHERE id = " + product.Id + "))";
                                         command.Parameters.AddWithValue("@id", product.Id);
                                         command.Parameters.AddWithValue("@product_no", product.Product_no);
                                         command.Parameters.AddWithValue("@name", product.Name);
