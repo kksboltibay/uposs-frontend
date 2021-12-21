@@ -173,7 +173,6 @@ namespace UPOSS.ViewModels
                     Properties.Settings.Default.Save();
 
                     IsLoading = false;
-                    MessageBox.Show(Response.Msg, "UPO$$");
 
                     //change viewModel to Dashboard screen
                     OnLoginCompleted(EventArgs.Empty);
