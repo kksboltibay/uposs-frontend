@@ -61,12 +61,12 @@ namespace UPOSS.Controls.Dialog
                                 {
                                     ProductRecallList[i - 1].List.Add(new Product
                                     {
-                                        Product_no = rdr[0].ToString(),
-                                        Name = rdr[1].ToString(),
-                                        Barcode = rdr[2].ToString(),
-                                        Price = rdr[3].ToString(),
-                                        Total_stock = rdr[4].ToString(),
-                                        Original_price = rdr[5].ToString()
+                                        Product_no = rdr["product_no"].ToString(),
+                                        Name = rdr["name"].ToString(),
+                                        Barcode = rdr["barcode"].ToString(),
+                                        Price = Math.Round(Convert.ToDecimal(rdr["price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                        Total_stock = Math.Round(Convert.ToDecimal(rdr["qty"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                        Original_price = Math.Round(Convert.ToDecimal(rdr["original_price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
                                     });
                                 }
                                 else
@@ -79,12 +79,12 @@ namespace UPOSS.Controls.Dialog
                                         Datetime = datetime,
                                         List = new List<Product>() { new Product
                                         {
-                                            Product_no = rdr[0].ToString(),
-                                            Name = rdr[1].ToString(),
-                                            Barcode = rdr[2].ToString(),
-                                            Price = rdr[3].ToString(),
-                                            Total_stock = rdr[4].ToString(),
-                                            Original_price = rdr[5].ToString()
+                                            Product_no = rdr["product_no"].ToString(),
+                                            Name = rdr["name"].ToString(),
+                                            Barcode = rdr["barcode"].ToString(),
+                                            Price = Math.Round(Convert.ToDecimal(rdr["price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                            Total_stock = Math.Round(Convert.ToDecimal(rdr["qty"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                            Original_price = Math.Round(Convert.ToDecimal(rdr["original_price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
                                         }}
                                     });
 
@@ -99,12 +99,12 @@ namespace UPOSS.Controls.Dialog
                                     Datetime = datetime,
                                     List = new List<Product>() { new Product
                                     {
-                                        Product_no = rdr[0].ToString(),
-                                        Name = rdr[1].ToString(),
-                                        Barcode = rdr[2].ToString(),
-                                        Price = rdr[3].ToString(),
-                                        Total_stock = rdr[4].ToString(),
-                                        Original_price = rdr[5].ToString()
+                                        Product_no = rdr["product_no"].ToString(),
+                                        Name = rdr["name"].ToString(),
+                                        Barcode = rdr["barcode"].ToString(),
+                                        Price = Math.Round(Convert.ToDecimal(rdr["price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                        Total_stock = Math.Round(Convert.ToDecimal(rdr["qty"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
+                                        Original_price = Math.Round(Convert.ToDecimal(rdr["original_price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
                                     }}
                                 });
 

@@ -395,9 +395,9 @@ namespace UPOSS.ViewModels
                                 {
                                     ProductList[i].Remaining_stock = "0.00";
                                 }
-                                else if (Math.Round(Convert.ToDecimal(rdr["remaining_stock"].ToString()), 2) <= 0)
+                                else
                                 {
-                                    ProductList[i].Remaining_stock = rdr["remaining_stock"].ToString();
+                                    ProductList[i].Remaining_stock = Math.Round(Convert.ToDecimal(rdr["remaining_stock"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00");
                                 }
 
                             }
@@ -407,11 +407,20 @@ namespace UPOSS.ViewModels
                     }
 
                     // check for empty price or qty
-                    if (string.IsNullOrEmpty(ProductList[i].Price) || string.IsNullOrEmpty(ProductList[i].Total_stock))
+                    if (string.IsNullOrEmpty(ProductList[i].Price))
                     {
-                        MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] or [Qty] can't be empty", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] can't be empty", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
 
                         ProductList[i].Price = ProductList[i].Original_price;
+
+                        isCorrect = false;
+                    }
+
+                    // check for empty price or qty
+                    else if (string.IsNullOrEmpty(ProductList[i].Total_stock))
+                    {
+                        MessageBox.Show("Product: " + ProductList[i].Product_no + " [Qty] can't be empty", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+
                         ProductList[i].Total_stock = "1.00";
 
                         isCorrect = false;
@@ -600,7 +609,7 @@ namespace UPOSS.ViewModels
                     if (await CheckRowEdit())
                     {
                         List<string> recordList = new List<string>();
-                        var currentDateTime = DateTime.Now;
+                        var currentDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                         using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
                         {
