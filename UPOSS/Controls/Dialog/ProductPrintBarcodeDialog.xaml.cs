@@ -35,7 +35,7 @@ namespace UPOSS.Controls.Dialog
         {
             Barcode b = new Barcode();
             b.IncludeLabel = true;
-            System.Drawing.Image img = b.Encode(TYPE.CODE128, bString, System.Drawing.Color.Black, System.Drawing.Color.White, 150, 80);
+            System.Drawing.Image img = b.Encode(TYPE.CODE128, bString, System.Drawing.Color.Black, System.Drawing.Color.White, 200, 90);
             BitmapImage bimg = new BitmapImage();
 
             using (var ms = new MemoryStream())
