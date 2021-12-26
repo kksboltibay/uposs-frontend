@@ -71,9 +71,7 @@
 
                     <TextBlock Grid.Column="0" Text="Username : " VerticalAlignment="Center" />
 
-                    <StackPanel Grid.Column="1" Margin="20 0 0 0" FocusManager.FocusedElement="{Binding ElementName=TxtB}">
-                        <TextBox x:Name="TxtB" Background="WhiteSmoke" FontSize="15" Text="{Binding InputUser.Username, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
+                    <TextBox x:Name="tbUsername" Grid.Column="1" Margin="20 0 0 0" Background="WhiteSmoke" FontSize="15" Text="{Binding InputUser.Username, Mode=TwoWay}"/>
                 </Grid>
 
                 <Grid Grid.Row="1" Margin="0 10">
