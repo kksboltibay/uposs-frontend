@@ -362,6 +362,16 @@ namespace UPOSS.ViewModels
                 }
                 else
                 {
+                    if (SelectedQuantity != null)
+                    {
+                        if (SelectedQuantity.Branch_name != null && SelectedQuantity.Branch_name != Properties.Settings.Default.CurrentBranch && Properties.Settings.Default.CurrentUserRole != "Super Admin")
+                        {
+                            IsLoading = false;
+                            MessageBox.Show("Only superadmin is allowed to update other branch's stock", "UPO$$");
+                            return;
+                        }
+                    }
+
                     ProductInputDialog _defaultInputDialog = new ProductInputDialog("Please fill in the details of product", mode: "update", SelectedProduct, SelectedQuantity);
 
                     if (_defaultInputDialog.ShowDialog() == true)

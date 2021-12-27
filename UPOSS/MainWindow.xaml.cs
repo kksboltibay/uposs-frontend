@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UPOSS.Custom.ShortcutKey;
 
 namespace UPOSS
 {
@@ -23,6 +24,19 @@ namespace UPOSS
         public MainWindow()
         {
             InitializeComponent();
+
+            // need to setup the global hook. this can go in
+            // App.xaml.cs's constructor if you want
+            HotkeysManager.SetupSystemHook();
+
+            Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Need to shutdown the hook. idk what happens if
+            // you dont, but it might cause a memory leak.
+            HotkeysManager.ShutdownSystemHook();
         }
     }
 }

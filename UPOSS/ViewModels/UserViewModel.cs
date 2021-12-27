@@ -28,6 +28,7 @@ namespace UPOSS.ViewModels
             deleteCommand = new AsyncRelayCommand(Delete, this);
             previousPageCommand = new AsyncRelayCommand(PrevPage, this);
             nextPageCommand = new AsyncRelayCommand(NextPage, this);
+            forceLogoutCommand = new AsyncRelayCommand(ForceLogout, this);
 
             SelectedUser = new User();
             InputUser = new User();
@@ -214,7 +215,7 @@ namespace UPOSS.ViewModels
                 if (SelectedUser is null || SelectedUser.Id == 0)
                 {
                     IsLoading = false;
-                    MessageBox.Show("Please select an item from the list", "UPO$$");
+                    MessageBox.Show("Please select a user from the list", "UPO$$");
                 }
                 else
                 {
@@ -280,7 +281,7 @@ namespace UPOSS.ViewModels
                 if (SelectedUser is null || SelectedUser.Id == 0)
                 {
                     IsLoading = false;
-                    MessageBox.Show("Please select an item from the list", "UPO$$");
+                    MessageBox.Show("Please select a user from the list", "UPO$$");
                 }
                 else if (SelectedUser.Role == "Super Admin")
                 {
@@ -373,6 +374,70 @@ namespace UPOSS.ViewModels
                     Pagination = new Pagination { CurrentPage = ++currentPage };
 
                     await Search();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+                RefreshTextBox();
+                await Search();
+            }
+        }
+        #endregion
+
+        #region ForceLogoutOperation
+        private AsyncRelayCommand forceLogoutCommand;
+        public AsyncRelayCommand ForceLogoutCommand
+        {
+            get { return forceLogoutCommand; }
+        }
+
+        private async Task ForceLogout()
+        {
+            try
+            {
+                if (SelectedUser is null || SelectedUser.Id == 0)
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Please select a user from the list", "UPO$$");
+                }
+                else if (SelectedUser.Username == Properties.Settings.Default.CurrentUsername)
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Unable to force logout current user", "UPO$$");
+                }
+                else if (SelectedUser.Is_log_in == "Offline")
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Selected user is offline", "UPO$$");
+                }
+                else
+                {
+                    UserInputDialog _defaultInputDialog = new UserInputDialog("Are you sure you want to force logout this account ?", mode: "forceLogout", SelectedUser);
+
+                    if (_defaultInputDialog.ShowDialog() == true)
+                    {
+                        if (_defaultInputDialog.Result is null || _defaultInputDialog.Result.Username == "")
+                        {
+                            IsLoading = false;
+                            MessageBox.Show("Dialog error, please contact IT suppport", "UPO$$");
+                        }
+                        else
+                        {
+                            dynamic param = new { userID = SelectedUser.Id };
+
+                            RootUserObject Response = await ObjUserService.PostAPI("forceLogoutUser", param, _Path);
+
+                            MessageBox.Show(Response.Msg, "UPO$$");
+
+                            if (Response.Status is "ok")
+                            {
+                                RefreshTextBox();
+                                await Search();
+                                SelectedUser = new User();
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)

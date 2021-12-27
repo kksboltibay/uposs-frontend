@@ -80,6 +80,25 @@ namespace UPOSS.Controls
                 cbBranchList.IsReadOnly = true;
                 cbBranchList.IsEnabled = false;
             }
+            else if (mode == "forceLogout")
+            {
+                tbUsername.Text = user.Username;
+                tbUsername.IsReadOnly = true;
+                tbUsername.Focusable = false;
+
+                tbPassword.Text = "{Encrypted}";
+                tbPassword.IsReadOnly = true;
+                tbPassword.Focusable = false;
+
+                RoleList.Add("Super Admin");
+                cbRoleList.SelectedItem = user.Role;
+                cbRoleList.IsReadOnly = true;
+                cbRoleList.IsEnabled = false;
+
+                cbBranchList.SelectedItem = user.Branch_name;
+                cbBranchList.IsReadOnly = true;
+                cbBranchList.IsEnabled = false;
+            }
         }
 
         #region Define
