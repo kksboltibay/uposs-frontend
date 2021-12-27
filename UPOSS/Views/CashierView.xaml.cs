@@ -42,6 +42,11 @@ namespace UPOSS.Views
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
             });
+
+            // key: ` (below esc)
+            HotkeysManager.AddHotkey(ModifierKeys.None, Key.OemTilde, () => {
+                tbBarcode.Focus();
+            });
         }
 
 
@@ -380,6 +385,13 @@ namespace UPOSS.Views
                 Properties.Settings.Default.Setting_ScannerIsUsed = false;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        private void searchSection_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // only allowed alphanumeric input
+            // others than alphanumeric will be ignored
+            e.Handled = new Regex("[^0-9a-zA-Z]+").IsMatch(e.Text);
         }
         #endregion
     }
