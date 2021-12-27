@@ -42,6 +42,12 @@ namespace UPOSS.Controls
                 //Generate labels and text boxes
                 for (int i = 0; i < quantityList.Count; i++)
                 {
+                    // only superadmin is allowed to restock for other branches
+                    if (quantityList[i].Branch_name != Properties.Settings.Default.CurrentBranch && Properties.Settings.Default.CurrentUserRole != "Super Admin")
+                    {
+                        continue;
+                    }
+
                     // Create a Content WrapPanel
                     WrapPanel contentWrapPanel = new WrapPanel();
                     contentWrapPanel.Margin = new Thickness(0, 5, 0, 10);
