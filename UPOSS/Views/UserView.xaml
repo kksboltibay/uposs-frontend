@@ -82,6 +82,9 @@
                                 <DataGridTextColumn Header="User Branch"
                                     Width="auto"
                                     Binding="{Binding Path=Branch_name}" />
+                                <DataGridTextColumn Header="Status"
+                                    Width="auto"
+                                    Binding="{Binding Path=Is_log_in}" />
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -189,6 +192,11 @@
                     Margin="5,8"
                     Padding="3"
                     Command="{Binding Path=DeleteCommand}" />
+                    <Button Name="btnForceLogout"
+                    Content="FORCE LOGOUT"
+                    Margin="5,8"
+                    Padding="3"
+                    Command="{Binding Path=ForceLogoutCommand}" />
                 </StackPanel>
             </Grid>
         </Grid>

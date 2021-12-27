@@ -28,6 +28,8 @@ namespace UPOSS.Models
         public string Role { get; set; }
 
         public string Branch_name { get; set; }
+
+        public string Is_log_in { get; set; }
     }
 
 
