@@ -22,12 +22,6 @@ namespace UPOSS.Views
         public AuthView()
         {
             InitializeComponent();
-            Loaded += AuthView_Loaded;
-        }
-
-        private void AuthView_Loaded(object sender, RoutedEventArgs e)
-        {
-            tbUsername.Focus();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
