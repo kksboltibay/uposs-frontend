@@ -133,6 +133,9 @@ namespace UPOSS.ViewModels
                             await updateManager.UpdateApp();
 
                             MessageBox.Show("Updated succesfuly. Please restart the application.");
+
+                            // shut down
+                            Application.Current.Shutdown();
                         }
                     }
                 }

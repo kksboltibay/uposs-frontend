@@ -18,7 +18,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Setting_GovChargesValue" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0.06</Value>
+      <Value Profile="(Default)">0.00</Value>
     </Setting>
     <Setting Name="Setting_System_IsFirstLogin" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
