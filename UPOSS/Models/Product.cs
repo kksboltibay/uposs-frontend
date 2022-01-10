@@ -53,6 +53,11 @@ namespace UPOSS.Models
         public string Datetime { get; set; }
 
         public List<Product> List { get; set; }
+
+        //Analytics
+        public string Created_at { get; set; }
+
+        public string Updated_at { get; set; }
     }
 
     public class ProductQuantity : ObservableObject

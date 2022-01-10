@@ -85,7 +85,7 @@ namespace UPOSS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.06")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.00")]
         public string Setting_GovChargesValue {
             get {
                 return ((string)(this["Setting_GovChargesValue"]));

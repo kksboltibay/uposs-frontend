@@ -10,17 +10,22 @@ namespace UPOSS.Models
 
         public string Msg { get; set; }
 
-        public Analytics Data { get; set; }
+        public List<Analytics> Data { get; set; }
 
         public int Total { get; set; }
     }
 
     public class Analytics : ObservableObject
     {
-        // Sales Report Tab
-        public Datetime Created_at { get; set; }
+        public int Id { get; set; }
 
-        public Datetime Updated_at { get; set; }
+        public Datetime Filter_created_at { get; set; }
+
+        public Datetime Filter_updated_at { get; set; }
+
+        public string Created_at { get; set; }
+
+        public string Updated_at { get; set; }
 
         public string Receipt_no { get; set; }
 
@@ -36,11 +41,7 @@ namespace UPOSS.Models
 
         public string Payment_method { get; set; }
 
-        public string Cash_pay { get; set; } = "0.00";
-
         public string Card_no { get; set; } = "-";
-
-        public string Card_pay { get; set; } = "0.00";
 
         public string Bank_name { get; set; } = "-";
 
@@ -49,9 +50,6 @@ namespace UPOSS.Models
         public string Change { get; set; } = "0.00";
 
         public List<Product> ProductList { get; set; }
-
-        
-        // Purchase Report Tab
     }
 
     public class Datetime : ObservableObject
