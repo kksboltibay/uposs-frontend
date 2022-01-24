@@ -22,5 +22,12 @@ namespace UPOSS.Views
         {
             InitializeComponent();
         }
+
+        private void dtPickerFrom_Loaded(object sender, RoutedEventArgs e)
+        {
+            // default date = today
+            dtPickerFrom.SelectedDate = DateTime.Today;
+            dtPickerTo.SelectedDate = DateTime.Now;
+        }
     }
 }

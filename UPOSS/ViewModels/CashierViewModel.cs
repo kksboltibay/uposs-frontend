@@ -217,7 +217,12 @@ namespace UPOSS.ViewModels
 
                                     if (ProductList.Any(p => p.Product_no == rdr["product_no"].ToString()))
                                     {
-                                        MessageBox.Show("Product :" + rdr["product_no"].ToString() + " already exists", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Information);
+                                        // item += 1
+                                        var item = ProductList.FirstOrDefault(i => i.Product_no == rdr["product_no"].ToString());
+                                        if (item != null)
+                                        {
+                                            item.Total_stock = Math.Round(Convert.ToDecimal( Math.Round(Convert.ToDecimal(item.Total_stock), 2, MidpointRounding.AwayFromZero) + 1 ), 2, MidpointRounding.AwayFromZero).ToString();
+                                        }
                                     }
                                     else if (rdr.IsDBNull(rdr.GetOrdinal("remaining_stock")))
                                     {
@@ -800,6 +805,7 @@ namespace UPOSS.ViewModels
                                             cardType = _paymentDialog.Payment.Card_type,
                                             bankName = _paymentDialog.Payment.Bank_name,
                                             branchName = Properties.Settings.Default.CurrentBranch,
+                                            cashierUsername = Properties.Settings.Default.CurrentUsername,
                                             change = _paymentDialog.Payment.Change
                                         };
 
@@ -817,8 +823,11 @@ namespace UPOSS.ViewModels
                                             //changes
                                             MessageBox.Show("Changes: $" + _paymentDialog.Payment.Change, "UPO$$");
 
-                                            //print receipt
-                                            CashierPrintReceiptDialog _cashierPrintReceiptDialog = new CashierPrintReceiptDialog(param, Response.Data);
+                                            //print receipt (x2 everytime)
+                                            for (var i = 0; i < 2; i++)
+                                            {
+                                                CashierPrintReceiptDialog _cashierPrintReceiptDialog = new CashierPrintReceiptDialog(param, Response.Data, Properties.Settings.Default.CurrentUsername);
+                                            }
                                         }
 
                                         await ClearAll();

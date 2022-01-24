@@ -21,16 +21,16 @@ namespace UPOSS.Controls.Dialog
     /// </summary>
     public partial class CashierPrintReceiptDialog : Window
     {
-        public CashierPrintReceiptDialog(dynamic param, Cashier response)
+        public CashierPrintReceiptDialog(dynamic param, Cashier response, string cashierUsername)
         {
             InitializeComponent();
 
-            LoadReceipt(param, response);
+            LoadReceipt(param, response, cashierUsername);
 
             Print();
         }
 
-        private void LoadReceipt(dynamic param, Cashier response)
+        private void LoadReceipt(dynamic param, Cashier response, string cashierUsername)
         {
             ObservableCollection<Product> cartList = new ObservableCollection<Product>(param.cartList);
 
@@ -43,6 +43,7 @@ namespace UPOSS.Controls.Dialog
                 }
 
                 tbkReceiptNo.Text = response.Receipt_no;
+                tbkCashierUsername.Text = cashierUsername;
                 tbkDatetime.Text = response.Datetime;
 
                 // Cart List

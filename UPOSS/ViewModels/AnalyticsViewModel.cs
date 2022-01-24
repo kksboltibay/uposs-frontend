@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using UPOSS.Commands;
+using UPOSS.Controls.Dialog;
 using UPOSS.Models;
 using UPOSS.Services;
 
@@ -23,22 +24,21 @@ namespace UPOSS.ViewModels
             _Path = "analytics";
             GetActiveBranchList();
 
-            // Sales Report
             searchCommand = new AsyncRelayCommand(Search, this);
-            //addCommand = new AsyncRelayCommand(Add, this);
-            //updateCommand = new AsyncRelayCommand(Update, this);
-            //deactivateCommand = new AsyncRelayCommand(Deactivate, this);
-            //previousPageCommand = new AsyncRelayCommand(PrevPage, this);
-            //nextPageCommand = new AsyncRelayCommand(NextPage, this);
+            voidCommand = new AsyncRelayCommand(Void, this);
+            reprintReceiptCommand = new AsyncRelayCommand(ReprintReceipt, this);
+            printReportCommand = new AsyncRelayCommand(PrintReport, this);
+            previousPageCommand = new AsyncRelayCommand(PrevPage, this);
+            nextPageCommand = new AsyncRelayCommand(NextPage, this);
 
             InputSales = new Analytics();
             InputSales.Filter_created_at = new Datetime();
             InputSales.Filter_updated_at = new Datetime();
+            InputProduct = new Product();
+            SelectedBranch = Properties.Settings.Default.CurrentBranch;
+            SelectedStatus = "All";
             SelectedSales = new Analytics();
-            SelectedProduct = new Product();
             Pagination = new Pagination { CurrentPage = 1, CurrentRecord = "0 - 0", TotalPage = 1, TotalRecord = 0 };
-
-            // default date = today
         }
 
         #region Define
@@ -58,6 +58,13 @@ namespace UPOSS.ViewModels
             set { inputSales = value; OnPropertyChanged("InputSales"); }
         }
 
+        private Product inputProduct;
+        public Product InputProduct
+        {
+            get { return inputProduct; }
+            set { inputProduct = value; OnPropertyChanged("InputProduct"); }
+        }
+
         private ObservableCollection<string> branchList;
         public ObservableCollection<string> BranchList
         {
@@ -70,6 +77,20 @@ namespace UPOSS.ViewModels
         {
             get { return selectedBranch; }
             set { selectedBranch = value; OnPropertyChanged("SelectedBranch"); }
+        }
+
+        private ObservableCollection<string> statusList;
+        public ObservableCollection<string> StatusList
+        {
+            get { return statusList; }
+            set { statusList = value; OnPropertyChanged("StatusList"); }
+        }
+
+        private string selectedStatus;
+        public string SelectedStatus
+        {
+            get { return selectedStatus; }
+            set { selectedStatus = value; OnPropertyChanged("SelectedStatus"); }
         }
 
         //Main section
@@ -85,13 +106,6 @@ namespace UPOSS.ViewModels
         {
             get { return selectedSales; }
             set { selectedSales = value; OnPropertyChanged("SelectedSales"); }
-        }
-
-        private Product selectedProduct;
-        public Product SelectedProduct
-        {
-            get { return selectedProduct; }
-            set { selectedProduct = value; OnPropertyChanged("SelectedProduct"); }
         }
 
         private Pagination pagination;
@@ -129,21 +143,13 @@ namespace UPOSS.ViewModels
             }
         }
 
-        //private void RefreshTextBox()
-        //{
-        //    InputProduct = new Product
-        //    {
-        //        Name = "",
-        //        Category = "",
-        //        Design_code = "",
-        //        Colour_code = "",
-        //        Price = ""
-        //    };
-
-        //    SelectedBranch = "";
-        //    SelectedStatus = "Active";
-
-        //}
+        private void RefreshTextBox()
+        {
+            InputSales.Receipt_no = "";
+            InputProduct.Product_no = "";
+            InputProduct.Name = "";
+            InputProduct.Barcode = "";
+        }
         #endregion
 
         #region SearchOperation
@@ -163,25 +169,20 @@ namespace UPOSS.ViewModels
                     page = currentPage,
                     createdAt = new 
                     {
-                        from = InputSales.Filter_created_at.From != "" ? DateTime.ParseExact(InputSales.Filter_created_at.From, "M/d/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : "",
-                        to = InputSales.Filter_created_at.To != "" ? DateTime.ParseExact(InputSales.Filter_created_at.To, "M/d/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : ""
+                        from = InputSales.Filter_created_at.From != "" ? DateTime.ParseExact(InputSales.Filter_created_at.From, "M/d/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : "",
+                        to = InputSales.Filter_created_at.To != "" ? DateTime.ParseExact(InputSales.Filter_created_at.To, "M/d/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : ""
                     },
                     updatedAt = new
                     {
-                        from = InputSales.Filter_updated_at.From != "" ? DateTime.ParseExact(InputSales.Filter_updated_at.From, "M/d/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : "",
-                        to = InputSales.Filter_updated_at.To != "" ? DateTime.ParseExact(InputSales.Filter_updated_at.To, "M/d/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : ""
+                        from = InputSales.Filter_updated_at.From != "" ? DateTime.ParseExact(InputSales.Filter_updated_at.From, "M/d/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : "",
+                        to = InputSales.Filter_updated_at.To != "" ? DateTime.ParseExact(InputSales.Filter_updated_at.To, "M/d/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : ""
                     },
-                    //receiptNo = InputSales.Receipt_no,
-
-                    //productNo = InputSales.Product_no,
-                    //name = InputSales.Name,
-                    //category = InputSales.Category,
-                    //design_code = InputSales.Design_code,
-                    //colour_code = InputSales.Colour_code,
-                    //price = InputSales.Price,
-                    //barcode = InputSales.Barcode,
-                    //branchName = SelectedBranch == "All" ? null : SelectedBranch,
-
+                    receiptNo = InputSales.Receipt_no,
+                    productNo = InputProduct.Product_no,
+                    name = InputProduct.Name,
+                    barcode = InputProduct.Barcode,
+                    branchName = SelectedBranch == "All" ? null : SelectedBranch,
+                    is_void = SelectedStatus == "All" ? null : SelectedStatus
                 };
 
                 RootAnalyticsObject Response = await ObjAnalyticsService.PostAPI("getSalesList", param, _Path);
@@ -190,6 +191,8 @@ namespace UPOSS.ViewModels
                 {
                     IsLoading = false;
                     MessageBox.Show(Response.Msg, "UPO$$");
+                    SalesList = null;
+                    Pagination = new Pagination { CurrentPage = 1, CurrentRecord = "0 - 0", TotalPage = 1, TotalRecord = 0 };
                     return;
                 }
 
@@ -221,9 +224,221 @@ namespace UPOSS.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
+                SalesList = null;
+                Pagination = new Pagination { CurrentPage = 1, CurrentRecord = "0 - 0", TotalPage = 1, TotalRecord = 0 };
             }
         }
+        #endregion
 
+        #region VoidOperation
+        private AsyncRelayCommand voidCommand;
+        public AsyncRelayCommand VoidCommand
+        {
+            get { return voidCommand; }
+        }
+        private async Task Void()
+        {
+            try
+            {
+                if (SelectedSales is null || SelectedSales.Id == 0)
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Please select a sales from the list", "UPO$$");
+                }
+                else if (SelectedSales.Status == "Voided")
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Selected sales is voided", "UPO$$");
+                }
+                else
+                {
+                    var msgBoxResult = MessageBox.Show("Do you want to void \"" + SelectedSales.Receipt_no + "\" ?", "UPO$$", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                    if (msgBoxResult == MessageBoxResult.Yes)
+                    {
+                        var param = new { receiptNo = SelectedSales.Receipt_no };
+
+                        RootAnalyticsObject Response = await ObjAnalyticsService.PostAPI("voidSales", param, _Path);
+
+                        MessageBox.Show(Response.Msg, "UPO$$");
+
+                        await Search();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+                await Search();
+            }
+        }
+        #endregion
+
+        #region ReprintReceiptOperation
+        private AsyncRelayCommand reprintReceiptCommand;
+        public AsyncRelayCommand ReprintReceiptCommand
+        {
+            get { return reprintReceiptCommand; }
+        }
+        private async Task ReprintReceipt()
+        {
+            try
+            {
+                if (SelectedSales is null || SelectedSales.Id == 0)
+                {
+                    IsLoading = false;
+                    MessageBox.Show("Please select a sales from the list", "UPO$$");
+                }
+                else
+                {
+                    if (SelectedSales.Status == "Voided")
+                    {
+                        var msgBoxResult = MessageBox.Show("Selected sales is already voided, do you want to continue?", "UPO$$", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                        if (msgBoxResult == MessageBoxResult.No)
+                        {
+                            IsLoading = false;
+                            return;
+                        }
+                    }
+
+                    //print
+                    dynamic firstParam = new
+                    {
+                        cartList = SelectedSales.ProductList,
+                        totalItem = SelectedSales.ProductList.Count,
+                        totalSubtotal = Math.Round(Convert.ToDecimal(
+                                Math.Round(Convert.ToDecimal(SelectedSales.Total_amount), 2, MidpointRounding.AwayFromZero) - 
+                                Math.Round(Convert.ToDecimal(SelectedSales.Total_tax), 2, MidpointRounding.AwayFromZero) + 
+                                Math.Round(Convert.ToDecimal(SelectedSales.Total_discount), 2, MidpointRounding.AwayFromZero)
+                        ), 2, MidpointRounding.AwayFromZero).ToString(),
+                        totalDiscount = SelectedSales.Total_discount,
+                        totalTax = SelectedSales.Total_tax,
+                        totalAmount = SelectedSales.Total_amount,
+                        paymentMethod = SelectedSales.Payment_method,
+                        cashPay = SelectedSales.Total_paid_amount,
+                        cardNo = SelectedSales.Card_no,
+                        cardPay = SelectedSales.Total_paid_amount,
+                        cardType = SelectedSales.Card_type,
+                        bankName = SelectedSales.Bank_name,
+                        branchName = SelectedSales.Branch,
+                        change = Math.Round(Convert.ToDecimal(
+                                Math.Round(Convert.ToDecimal(SelectedSales.Total_paid_amount), 2, MidpointRounding.AwayFromZero) -
+                                Math.Round(Convert.ToDecimal(SelectedSales.Total_amount), 2, MidpointRounding.AwayFromZero)
+                        ), 2, MidpointRounding.AwayFromZero).ToString()
+                    };
+
+                    Cashier secondParam = new Cashier
+                    {
+                        Receipt_no = SelectedSales.Receipt_no,
+                        Datetime = SelectedSales.Created_at
+                    };
+
+                    CashierPrintReceiptDialog _cashierPrintReceiptDialog = new CashierPrintReceiptDialog(firstParam, secondParam, SelectedSales.Cashier_username);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+            }
+        }
+        #endregion
+
+        #region PrintReportOperation
+        private AsyncRelayCommand printReportCommand;
+        public AsyncRelayCommand PrintReportCommand
+        {
+            get { return printReportCommand; }
+        }
+        private async Task PrintReport()
+        {
+            try
+            {
+                AnalyticsPRConfirmationDialog _analyticsPRConfirmationDialog = new AnalyticsPRConfirmationDialog();
+
+                if (_analyticsPRConfirmationDialog.ShowDialog() != true)
+                {
+                    return;
+                }
+                
+                var param = new
+                { 
+                    datetime = DateTime.ParseExact(_analyticsPRConfirmationDialog.dtPicker.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss"),
+                    branchName = Properties.Settings.Default.CurrentBranch
+                };
+
+                RootAnalyticsObject Response = await ObjAnalyticsService.PostAPI("getSalesSummary", param, _Path);
+
+                if (Response.Status != "ok")
+                {
+                    MessageBox.Show(Response.Msg, "UPO$$");
+                    return;
+                }
+
+                string selectedDate = DateTime.ParseExact(_analyticsPRConfirmationDialog.dtPicker.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+
+                AnalyticsPrintReportDialog _analyticsPrintReportDialog = new AnalyticsPrintReportDialog(Response.Data[0], selectedDate);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+            }
+        }
+        #endregion
+
+        #region PrevPageOperation
+        private AsyncRelayCommand previousPageCommand;
+        public AsyncRelayCommand PreviousPageCommand
+        {
+            get { return previousPageCommand; }
+        }
+        private async Task PrevPage()
+        {
+            try
+            {
+                var currentPage = Pagination.CurrentPage;
+
+                if (currentPage > 1 && currentPage <= Pagination.TotalPage)
+                {
+                    Pagination = new Pagination { CurrentPage = --currentPage };
+
+                    await Search();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+                await Search();
+            }
+        }
+        #endregion
+
+
+        #region NextPageOperation
+        private AsyncRelayCommand nextPageCommand;
+        public AsyncRelayCommand NextPageCommand
+        {
+            get { return nextPageCommand; }
+        }
+        private async Task NextPage()
+        {
+            try
+            {
+                var currentPage = Pagination.CurrentPage;
+
+                if (currentPage > 0 && currentPage < Pagination.TotalPage)
+                {
+                    Pagination = new Pagination { CurrentPage = ++currentPage };
+
+                    await Search();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+                await Search();
+            }
+        }
         #endregion
     }
 }

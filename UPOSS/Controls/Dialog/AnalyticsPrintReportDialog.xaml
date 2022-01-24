@@ -1,0 +1,300 @@
+﻿<Window x:Class="UPOSS.Controls.Dialog.AnalyticsPrintReportDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UPOSS.Controls.Dialog"
+        xmlns:properties="clr-namespace:UPOSS.Properties"
+        mc:Ignorable="d"
+        Title="AnalyticsPrintReportDialog" 
+        SizeToContent="WidthAndHeight" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None">
+
+    <Grid x:Name="printGrid" HorizontalAlignment="Center">
+        <StackPanel Orientation="Vertical" Margin="5" TextBlock.FontSize="10">
+            <!--Section 1-->
+            <!--Outlet Name-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Outlet name : "/>
+                <TextBlock Text="Kedai Seri Boltibay Sdn. Bhd." TextWrapping="Wrap"/>
+            </WrapPanel>
+
+            <!--Branch-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Branch : "/>
+                <TextBlock x:Name="tbkBranch" TextWrapping="Wrap"/>
+            </WrapPanel>
+
+            <!--Terminal-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Terminal : PC-User"/>
+            </WrapPanel>
+
+            <!--Whole Sales-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Whole Sales"/>
+            </WrapPanel>
+
+            <!--Print Counter-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Print Counter : 1"/>
+            </WrapPanel>
+
+            <!--Sales Performance-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="SALES PERFORMANCE"/>
+            </WrapPanel>
+
+            <!--X-Reading Performance Report-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="X-Reading Performance Report"/>
+            </WrapPanel>
+
+            <!--Generated Date-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Date : "/>
+                <TextBlock x:Name="tbkGeneratedDate" TextWrapping="Wrap"/>
+            </WrapPanel>
+
+            <!--Date Of Report-->
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="To : "/>
+                <TextBlock x:Name="tbkDateOfReport" TextWrapping="Wrap"/>
+            </WrapPanel>
+            
+            
+            <!--Section 2-->
+            <!--Title-->
+            <Grid Margin="0 15 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105"/>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="85"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="COLLECTION - - - - - - - -" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                <TextBlock Text="- - - - - QTY" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                <TextBlock Text="- - - - - - - AMOUNT" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+            </Grid>
+
+            <!--Cash-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105"/>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="85"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="CASH" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                <TextBlock x:Name="tbkCashQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                <TextBlock x:Name="tbkCashAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+            </Grid>
+
+            <!--Card-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105"/>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="85"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="CARD" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                <TextBlock x:Name="tbkCardQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                <TextBlock x:Name="tbkCardAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+            </Grid>
+
+            <Rectangle Stroke="#FF000000" Height="0.5" StrokeThickness="1" StrokeDashArray="2 4" SnapsToDevicePixels="True" Margin="0 5" Width="130" HorizontalAlignment="Right"/>
+
+            <!--Total Collection-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105"/>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="85"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Total Collection" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                <TextBlock x:Name="tbkTotalCollectionQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                <TextBlock x:Name="tbkTotalCollectionAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+            </Grid>
+
+            
+            <!--Cashier-->
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="CASHIER SALES" Margin="1 10 1 0"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="tbkCashierUsername" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkCashierQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock x:Name="tbkCashierAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+
+                <Rectangle Stroke="#FF000000" Height="0.5" StrokeThickness="1" StrokeDashArray="2 4" SnapsToDevicePixels="True" Margin="0 5" Width="130" HorizontalAlignment="Right"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Total" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkCashierTotalQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock x:Name="tbkCashierTotalAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+            </StackPanel>
+
+            <!--Net Sales After++-->
+            <Grid Margin="0 10 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105"/>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="85"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="NET SALES AFTER ++" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                <TextBlock x:Name="tbkNetSalesAfterAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+            </Grid>
+
+            <!--Tax-->
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="TAX" Margin="1 15 1 0"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <WrapPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0">
+                        <TextBlock Text="GOVERMENT TAX "/>
+                        <TextBlock x:Name="tbkGovTaxValue"/>
+                    </WrapPanel>
+                    <TextBlock x:Name="tbkTaxQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock x:Name="tbkTaxAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+
+                <Rectangle Stroke="#FF000000" Height="0.5" StrokeThickness="1" StrokeDashArray="2 4" SnapsToDevicePixels="True" Margin="0 5" Width="130" HorizontalAlignment="Right"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Less (-) Total Tax : " Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkTotalTaxQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock x:Name="tbkTotalTaxAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+            </StackPanel>
+
+            <!--Net Sales Before++-->
+            <StackPanel Orientation="Vertical">
+                <Grid Margin="0 10 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="NET SALES BEFORE ++" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkNetSalesBeforeAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+
+                <TextBlock Text="=================================" Width="130" HorizontalAlignment="Right"/>
+            </StackPanel>
+
+            <!--Gross Sales-->
+            <Grid Margin="0 10 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="105"/>
+                    <ColumnDefinition Width="55"/>
+                    <ColumnDefinition Width="85"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Gross Sales" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                <TextBlock x:Name="tbkGrossSalesAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+            </Grid>
+
+            <!--Discount-->
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Less(-) Discount" Margin="1 15 1 0"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Item Discount" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkItemDiscountAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+
+                <Rectangle Stroke="#FF000000" Height="0.5" StrokeThickness="1" StrokeDashArray="2 4" SnapsToDevicePixels="True" Margin="0 5" Width="130" HorizontalAlignment="Right"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Total (%) Discount" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkTotalDiscountAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+            </StackPanel>
+
+            <!--Total Revenue-->
+            <StackPanel Orientation="Vertical">
+                <Grid Margin="0 10 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="TOTAL REVENUE" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkTotalRevenueAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+
+                <TextBlock Text="=================================" Width="130" HorizontalAlignment="Right"/>
+            </StackPanel>
+
+            <!--Voiding-->
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="VOIDING" Margin="1 15 1 0"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="VOID TRANSACTION" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkVoidQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock x:Name="tbkVoidAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+            </StackPanel>
+
+            <!--Transaction-->
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="TRANSACTION" Margin="1 15 1 0"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="SALES TENDER COUNT" Grid.Column="0" HorizontalAlignment="Left" Margin="1 0"/>
+                    <TextBlock x:Name="tbkSalesTenderQty" Grid.Column="1" HorizontalAlignment="Right" Margin="1 0"/>
+                    <TextBlock x:Name="tbkSalesTenderAmount" Grid.Column="3" HorizontalAlignment="Right" Margin="1 0"/>
+                </Grid>
+            </StackPanel>
+
+
+            <!--horizontal seperate dotted line-->
+            <!--<Rectangle Stroke="#FF000000" Height="1" StrokeThickness="1" StrokeDashArray="4 2" SnapsToDevicePixels="True"/>-->
+            <!--<TextBlock Text="=================================" Width="130" HorizontalAlignment="Right"/>-->
+            <!--horizontal seperate line-->
+            <!--<Separator BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Margin="0 5"/>-->
+        </StackPanel>
+    </Grid>
+</Window>
