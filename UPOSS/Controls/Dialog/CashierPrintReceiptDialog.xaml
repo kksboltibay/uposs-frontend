@@ -37,7 +37,7 @@
                 <!--Staff-->
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Staff : "/>
-                    <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentUsername}" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="tbkCashierUsername" TextWrapping="Wrap"/>
                 </WrapPanel>
 
                 <!--Gov Charges Registration No-->

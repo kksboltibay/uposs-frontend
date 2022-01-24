@@ -173,6 +173,42 @@
                             <!--horizontal seperate line-->
                             <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
                         </Grid>
+
+                        <!--Forth line-->
+                        <Grid Grid.Row="3" Margin="0 15 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Setting Version Label-->
+                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                    <Viewbox>
+                                        <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                            <TextBlock Text="App Version" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </Viewbox>
+                                </WrapPanel>
+
+                                <!--Setting Version-->
+                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                    <Viewbox>
+                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                            <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentApplicationVersion}" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </Viewbox>
+                                </WrapPanel>
+                            </Grid>
+
+                            <!--horizontal seperate line-->
+                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
+                        </Grid>
                     </Grid>
                     
                     <!--Button Section-->

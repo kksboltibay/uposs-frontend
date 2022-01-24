@@ -805,6 +805,7 @@ namespace UPOSS.ViewModels
                                             cardType = _paymentDialog.Payment.Card_type,
                                             bankName = _paymentDialog.Payment.Bank_name,
                                             branchName = Properties.Settings.Default.CurrentBranch,
+                                            cashierUsername = Properties.Settings.Default.CurrentUsername,
                                             change = _paymentDialog.Payment.Change
                                         };
 
@@ -825,7 +826,7 @@ namespace UPOSS.ViewModels
                                             //print receipt (x2 everytime)
                                             for (var i = 0; i < 2; i++)
                                             {
-                                                CashierPrintReceiptDialog _cashierPrintReceiptDialog = new CashierPrintReceiptDialog(param, Response.Data);
+                                                CashierPrintReceiptDialog _cashierPrintReceiptDialog = new CashierPrintReceiptDialog(param, Response.Data, Properties.Settings.Default.CurrentUsername);
                                             }
                                         }
 

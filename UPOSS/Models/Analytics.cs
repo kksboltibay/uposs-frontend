@@ -39,7 +39,11 @@ namespace UPOSS.Models
 
         public string Branch { get; set; }
 
+        public string Cashier_username { get; set; }
+
         public string Payment_method { get; set; }
+
+        public string Total_paid_amount { get; set; } = "0.00";
 
         public string Card_no { get; set; } = "-";
 
@@ -49,7 +53,22 @@ namespace UPOSS.Models
 
         public string Change { get; set; } = "0.00";
 
+        public string Status { get; set; } = "-";
+
         public List<Product> ProductList { get; set; }
+
+        // print sales report
+        public string Total_void_qty { get; set; } = "0.00";
+
+        public string Total_void_amount { get; set; } = "0.00";
+
+        public string Total_cash_sales { get; set; } = "0.00";
+
+        public string Total_card_sales { get; set; } = "0.00";
+
+        public string Total_cash_sales_qty { get; set; } = "0.00";
+
+        public string Total_card_sales_qty { get; set; } = "0.00";
     }
 
     public class Datetime : ObservableObject
