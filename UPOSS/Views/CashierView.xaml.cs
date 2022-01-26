@@ -76,7 +76,7 @@ namespace UPOSS.Views
                 SuggestionList = new ObservableCollection<string>();
 
                 // Search from local DB
-                using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
                 {
                     connection.Open();
                     try
@@ -180,7 +180,7 @@ namespace UPOSS.Views
                 SuggestionList = new ObservableCollection<string>();
 
                 // Search from local DB
-                using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
                 {
                     connection.Open();
                     try
@@ -264,7 +264,7 @@ namespace UPOSS.Views
                 SuggestionList = new ObservableCollection<string>();
 
                 // Search from local DB
-                using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
                 {
                     connection.Open();
                     try

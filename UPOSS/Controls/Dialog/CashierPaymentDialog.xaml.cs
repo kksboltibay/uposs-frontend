@@ -93,7 +93,7 @@ namespace UPOSS.Controls.Dialog
         {
             List<string> bankNameList = new List<string>();
 
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
                 try

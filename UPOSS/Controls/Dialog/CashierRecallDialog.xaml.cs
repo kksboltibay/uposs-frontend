@@ -38,7 +38,7 @@ namespace UPOSS.Controls.Dialog
         private void LoadRecallList()
         {
             //var currentDateTime = DateTime.Now;
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
                 try

@@ -10,222 +10,309 @@
              xmlns:properties="clr-namespace:UPOSS.Properties">
     
     <Grid>
-        <Grid Grid.Column="1" Margin="10">
-            <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
+        <!--Content-->
+        <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
-            <Grid Margin="5">
-                <Rectangle Fill="DarkGray"   Height="auto" RadiusX="5" RadiusY="5"/>
+            <Grid Grid.Column="1" Margin="10">
+                <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
 
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="0.10*"/>
-                    </Grid.RowDefinitions>
+                <Grid Margin="5">
+                    <Rectangle Fill="DarkGray"   Height="auto" RadiusX="5" RadiusY="5"/>
 
-                    <!--Content Section-->
-                    <Grid Grid.Row="0" Margin="10">
+                    <Grid Margin="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.25*"/>
-                            <RowDefinition Height="0.25*"/>
-                            <RowDefinition Height="0.25*"/>
-                            <RowDefinition Height="0.25*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="0.10*"/>
                         </Grid.RowDefinitions>
 
-                        <!--First line-->
-                        <Grid Grid.Row="0" Margin="0 15 0 0">
+                        <!--Content Section-->
+                        <Grid Grid.Row="0" Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*"/>
-                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.25*"/>
+                                <RowDefinition Height="0.25*"/>
+                                <RowDefinition Height="0.25*"/>
+                                <RowDefinition Height="0.25*"/>
+                                <RowDefinition Height="0.25*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.4*"/>
-                                    <ColumnDefinition Width="0.6*"/>
-                                </Grid.ColumnDefinitions>
+                            <!--First line-->
+                            <Grid Grid.Row="0" Margin="0 15 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                </Grid.RowDefinitions>
 
-                                <!--Goverment Charges Name-->
-                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
-                                    <Viewbox>
-                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                            <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                                 Text="{Binding Path=InputSetting.GovChargesName, Mode=TwoWay}"/>
-                                        </Border>
-                                    </Viewbox>
-                                </WrapPanel>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.4*"/>
+                                        <ColumnDefinition Width="0.6*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <!--Goverment Charges Value-->
-                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
-                                    <Viewbox>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <!--Charges Percentage-->
-                                            <Border Width="50" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                    <!--Refactor Local Database-->
+                                    <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBlock Text="Refactor Local Database" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Viewbox>
+                                    </WrapPanel>
+
+                                    <!--Button Refactor-->
+                                    <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                        <Viewbox>
+                                            <Button
+                                            Background="DarkRed"
+                                            Width="110"
+                                            Content="Refactor"
+                                            Margin="5,8"
+                                            Padding="3"
+                                            Command="{Binding Path=RefactorCommand}"/>
+                                        </Viewbox>
+                                    </WrapPanel>
+                                </Grid>
+
+                                <!--horizontal seperate line-->
+                                <Separator Grid.Row="1" BorderBrush="White" BorderThickness="1" VerticalAlignment="Center" Margin="5 0"/>
+                            </Grid>
+
+                            <!--Second line-->
+                            <Grid Grid.Row="1" Margin="0 15 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.4*"/>
+                                        <ColumnDefinition Width="0.6*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--Goverment Charges Name-->
+                                    <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
                                                 <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                                 Text="{Binding Path=InputSetting.GovChargesValue, Mode=TwoWay}"/>
+                                                 Text="{Binding Path=InputSetting.GovChargesName, Mode=TwoWay}"/>
                                             </Border>
-                                            <TextBlock Text="%" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0"/>
-                                            
-                                            <!--Registration No-->
-                                            <Grid>
-                                                <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                                    <TextBox x:Name="tbRegNo" Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                        </Viewbox>
+                                    </WrapPanel>
+
+                                    <!--Goverment Charges Value-->
+                                    <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                        <Viewbox>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <!--Charges Percentage-->
+                                                <Border Width="50" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                    <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 Text="{Binding Path=InputSetting.GovChargesValue, Mode=TwoWay}"/>
+                                                </Border>
+                                                <TextBlock Text="%" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0"/>
+
+                                                <!--Registration No-->
+                                                <Grid>
+                                                    <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                        <TextBox x:Name="tbRegNo" Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                                  Text="{Binding Path=InputSetting.Setting_GovChargesNo, Mode=TwoWay}"/>
-                                                </Border>
+                                                    </Border>
 
-                                                <TextBlock IsHitTestVisible="False" Text="Registration No." VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="{x:Type TextBlock}">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Text, ElementName=tbRegNo}" Value="">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Viewbox>
-                                </WrapPanel>
+                                                    <TextBlock IsHitTestVisible="False" Text="Registration No." VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="{x:Type TextBlock}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Text, ElementName=tbRegNo}" Value="">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Viewbox>
+                                    </WrapPanel>
+                                </Grid>
+
+                                <!--horizontal seperate line-->
+                                <!--<Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>-->
+                                <!--horizontal seperate dotted line-->
+                                <Rectangle Grid.Row="1" Stroke="LightGray" Height="1" StrokeThickness="1" StrokeDashArray="4 4" SnapsToDevicePixels="True" Margin="10 0"/>
                             </Grid>
 
-                            <!--horizontal seperate line-->
-                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
-                        </Grid>
+                            <!--Third line-->
+                            <Grid Grid.Row="2" Margin="0 15 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                </Grid.RowDefinitions>
 
-                        <!--Second line-->
-                        <Grid Grid.Row="1" Margin="0 15 0 0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*"/>
-                                <RowDefinition Height="0.5*"/>
-                            </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.4*"/>
+                                        <ColumnDefinition Width="0.6*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.4*"/>
-                                    <ColumnDefinition Width="0.6*"/>
-                                </Grid.ColumnDefinitions>
+                                    <!--Setting Address Label-->
+                                    <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBlock Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Address"/>
+                                            </Border>
+                                        </Viewbox>
+                                    </WrapPanel>
 
-                                <!--Setting Address Label-->
-                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
-                                    <Viewbox>
-                                        <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                            <TextBlock Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Address"/>
-                                        </Border>
-                                    </Viewbox>
-                                </WrapPanel>
-                                
-                                <!--Setting Address-->
-                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
-                                    <Viewbox>
-                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                            <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                    <!--Setting Address-->
+                                    <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                                  Text="{Binding Path=InputSetting.System_address, Mode=TwoWay}"/>
-                                        </Border>
-                                    </Viewbox>
-                                </WrapPanel>
+                                            </Border>
+                                        </Viewbox>
+                                    </WrapPanel>
+                                </Grid>
+
+                                <!--horizontal seperate dotted line-->
+                                <Rectangle Grid.Row="1" Stroke="LightGray" Height="1" StrokeThickness="1" StrokeDashArray="4 4" SnapsToDevicePixels="True" Margin="10 0"/>
                             </Grid>
 
-                            <!--horizontal seperate line-->
-                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
-                        </Grid>
+                            <!--Forth line-->
+                            <Grid Grid.Row="3" Margin="0 15 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                </Grid.RowDefinitions>
 
-                        <!--Third line-->
-                        <Grid Grid.Row="2" Margin="0 15 0 0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*"/>
-                                <RowDefinition Height="0.5*"/>
-                            </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.4*"/>
+                                        <ColumnDefinition Width="0.6*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.4*"/>
-                                    <ColumnDefinition Width="0.6*"/>
-                                </Grid.ColumnDefinitions>
+                                    <!--Setting Phone Label-->
+                                    <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBlock Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Phone"/>
+                                            </Border>
+                                        </Viewbox>
+                                    </WrapPanel>
 
-                                <!--Setting Phone Label-->
-                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
-                                    <Viewbox>
-                                        <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                            <TextBlock Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Phone"/>
-                                        </Border>
-                                    </Viewbox>
-                                </WrapPanel>
-
-                                <!--Setting Phone-->
-                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
-                                    <Viewbox>
-                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                            <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                    <!--Setting Phone-->
+                                    <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                                  Text="{Binding Path=InputSetting.Phone_no, Mode=TwoWay}"/>
-                                        </Border>
-                                    </Viewbox>
-                                </WrapPanel>
+                                            </Border>
+                                        </Viewbox>
+                                    </WrapPanel>
+                                </Grid>
+
+                                <!--horizontal seperate dotted line-->
+                                <Rectangle Grid.Row="1" Stroke="LightGray" Height="1" StrokeThickness="1" StrokeDashArray="4 4" SnapsToDevicePixels="True" Margin="10 0"/>
                             </Grid>
 
-                            <!--horizontal seperate line-->
-                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
-                        </Grid>
+                            <!--Fifth line-->
+                            <Grid Grid.Row="4" Margin="0 15 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                </Grid.RowDefinitions>
 
-                        <!--Forth line-->
-                        <Grid Grid.Row="3" Margin="0 15 0 0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*"/>
-                                <RowDefinition Height="0.5*"/>
-                            </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.4*"/>
+                                        <ColumnDefinition Width="0.6*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.4*"/>
-                                    <ColumnDefinition Width="0.6*"/>
-                                </Grid.ColumnDefinitions>
+                                    <!--Setting Version Label-->
+                                    <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBlock Text="App Version" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Viewbox>
+                                    </WrapPanel>
 
-                                <!--Setting Version Label-->
-                                <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
-                                    <Viewbox>
-                                        <Border Width="110" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                            <TextBlock Text="App Version" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </Viewbox>
-                                </WrapPanel>
+                                    <!--Setting Version-->
+                                    <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
+                                        <Viewbox>
+                                            <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
+                                                <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentApplicationVersion}" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Viewbox>
+                                    </WrapPanel>
+                                </Grid>
 
-                                <!--Setting Version-->
-                                <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
-                                    <Viewbox>
-                                        <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                            <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentApplicationVersion}" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </Viewbox>
-                                </WrapPanel>
+                                <!--horizontal seperate dotted line-->
+                                <Rectangle Grid.Row="1" Stroke="LightGray" Height="1" StrokeThickness="1" StrokeDashArray="4 4" SnapsToDevicePixels="True" Margin="10 0"/>
                             </Grid>
-
-                            <!--horizontal seperate line-->
-                            <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
                         </Grid>
-                    </Grid>
-                    
-                    <!--Button Section-->
-                    <Grid Grid.Row="1" HorizontalAlignment="Right">
-                        <Viewbox>
-                            <Button
+
+                        <!--Button Section-->
+                        <Grid Grid.Row="1" HorizontalAlignment="Right">
+                            <Viewbox>
+                                <Button
                                 Background="Green"
                                 Width="100"
                                 Content="SAVE"
                                 Margin="5,8"
                                 Padding="3"
                                 Command="{Binding Path=SaveCommand}"/>
-                        </Viewbox>
+                            </Viewbox>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
 
+            </Grid>
+        </Grid>
+
+        <!--Loading Screen-->
+        <Grid>
+            <!--Trigger-->
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--Title-->
+                <TextBlock Text="Loading..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
+
+                <!--Progress Bar-->
+                <Grid MinWidth="600" MaxWidth="800">
+                    <Rectangle Fill="DimGray" Margin="10 5" RadiusX="30" RadiusY="30"/>
+
+                    <Grid Margin="30 10">
+                        <ProgressBar Name="progressBar" Height="25" BorderBrush="Black" IsIndeterminate="True"/>
+                    </Grid>
+                </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

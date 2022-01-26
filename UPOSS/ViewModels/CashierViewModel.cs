@@ -184,7 +184,7 @@ namespace UPOSS.ViewModels
                     {
                         // time in ( <= 15 mins)
                         // Search from local DB
-                        using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                        using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
                         {
                             connection.Open();
 
@@ -328,7 +328,7 @@ namespace UPOSS.ViewModels
             List<string> recordList = new List<string>();
 
             // check with local db
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
 
@@ -379,7 +379,7 @@ namespace UPOSS.ViewModels
                 for (int i = 0; i < ProductList.Count; i++)
                 {
                     // update remaining_stock with local db
-                    using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                    using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
                     {
                         connection.Open();
 
@@ -616,7 +616,7 @@ namespace UPOSS.ViewModels
                         List<string> recordList = new List<string>();
                         var currentDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-                        using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+                        using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
                         {
                             connection.Open();
 
