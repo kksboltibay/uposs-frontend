@@ -32,7 +32,7 @@ namespace UPOSS.LocalDatabase
         public async Task SetupLocalDB()
         {
             System.Diagnostics.Trace.WriteLine("Setup Local Database");
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
                 try
@@ -91,6 +91,18 @@ namespace UPOSS.LocalDatabase
                     command.CommandText = "CREATE TABLE IF NOT EXISTS banks(name TEXT)";
                     command.ExecuteNonQuery();
 
+                    command.CommandText = "CREATE TABLE IF NOT EXISTS settings(" +
+                    "id INTEGER DEFAULT 1, " +
+                    "address TEXT DEFAULT '-', " +
+                    "phone_no TEXT DEFAULT '-', " +
+                    "gov_charge_name TEXT DEFAULT '-', " +
+                    "gov_charge_value TEXT DEFAULT '-', " +
+                    "gov_charge_no TEXT DEFAULT '-', " +
+                    "scanner_is_used INTEGER DEFAULT 1, " +
+                    "is_first_login INTEGER DEFAULT 0, " +
+                    "is_update INTEGER DEFAULT 0" +
+                    ")";
+                    command.ExecuteNonQuery();
 
                     // insert user
                     command.CommandText = "INSERT INTO users(username, branch, user_role, version)" +
@@ -141,7 +153,7 @@ namespace UPOSS.LocalDatabase
             bool isProductUpToDate = false;
             bool isStockUpToDate = false;
 
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
 
@@ -386,7 +398,7 @@ namespace UPOSS.LocalDatabase
             System.Diagnostics.Trace.WriteLine("Check User Branch");
 
             string currentBranch = "";
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
                 try
@@ -454,7 +466,7 @@ namespace UPOSS.LocalDatabase
             var currentDateTime = DateTime.Now;
             string lastUpdate = null;
 
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
                 try
@@ -567,7 +579,7 @@ namespace UPOSS.LocalDatabase
         {
             System.Diagnostics.Trace.WriteLine("Check Recall List");
 
-            using (var connection = new SQLiteConnection("Data Source=SQLiteDatabase.db"))
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 connection.Open();
                 try
@@ -587,8 +599,90 @@ namespace UPOSS.LocalDatabase
         }
 
 
+        public async Task LoadLocalSettings()
+        {
+            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
+            {
+                dynamic result = new { };
+                connection.Open();
+                try
+                {
+                    using var command = new SQLiteCommand(connection);
+
+                    command.CommandText = "SELECT * FROM settings";
+                    using (SQLiteDataReader rdr = command.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            result = new
+                            {
+                                id = rdr["id"].ToString(),
+                                address = rdr["address"].ToString(),
+                                phone_no = rdr["phone_no"].ToString(),
+                                gov_charge_name = rdr["gov_charge_name"].ToString(),
+                                gov_charge_value = rdr["gov_charge_value"].ToString(),
+                                gov_charge_no = rdr["gov_charge_no"].ToString(),
+                                scanner_is_used = rdr["scanner_is_used"].ToString(),
+                                is_first_login = rdr["is_first_login"].ToString(),
+                                is_update = rdr["is_update"].ToString()
+                            };
+                        }
+                        else
+                        {
+                            result = new
+                            {
+                                id = "0",
+                                is_update = "0"
+                            };
+                        }
+                        rdr.Close();
+                    }
+
+                    // insert 1 default record if empty
+                    if (result.id == "0")
+                    {
+                        // insert user
+                        command.CommandText = "INSERT INTO settings(id, address, phone_no, gov_charge_name, gov_charge_value, gov_charge_no, scanner_is_used, is_first_login, is_update)" +
+                                                " VALUES(@id, @address, @phone_no, @gov_charge_name, @gov_charge_value, @gov_charge_no, @scanner_is_used, @is_first_login, @is_update)";
+                        command.Parameters.AddWithValue("@id", 1);
+                        command.Parameters.AddWithValue("@address", "-");
+                        command.Parameters.AddWithValue("@phone_no", "-");
+                        command.Parameters.AddWithValue("@gov_charge_name", "-");
+                        command.Parameters.AddWithValue("@gov_charge_value", "-");
+                        command.Parameters.AddWithValue("@gov_charge_no", "-");
+                        command.Parameters.AddWithValue("@scanner_is_used", 1);
+                        command.Parameters.AddWithValue("@is_first_login", 0);
+                        command.Parameters.AddWithValue("@is_update", 0);
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+                    }
+
+                    if (result.is_update == "1")
+                    {
+                        Properties.Settings.Default.Setting_SystemAddress = result.address;
+                        Properties.Settings.Default.Setting_SystemPhoneNo = result.phone_no;
+                        Properties.Settings.Default.Setting_GovChargesName = result.gov_charge_name;
+                        Properties.Settings.Default.Setting_GovChargesValue = result.gov_charge_value;
+                        Properties.Settings.Default.Setting_GovChargesNo = result.gov_charge_no;
+                        Properties.Settings.Default.Setting_ScannerIsUsed = result.scanner_is_used;
+                        Properties.Settings.Default.Setting_System_IsFirstLogin = result.is_first_login;
+                        Properties.Settings.Default.Save();
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message.ToString(), "UPO$$");
+                }
+                connection.Close();
+            }
+        }
+
+
         public async Task LoadLocalDatabase()
         {
+            //Load local settings
+            await LoadLocalSettings();
+
             //Setup Database if first time login
             if (Properties.Settings.Default.Setting_System_IsFirstLogin)
             {

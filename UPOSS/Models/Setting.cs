@@ -15,5 +15,7 @@ namespace UPOSS.Models
         public string System_address { get; set; }
 
         public string Phone_no { get; set; }
+
+        public string Is_first_login { get; set; }
     }
 }

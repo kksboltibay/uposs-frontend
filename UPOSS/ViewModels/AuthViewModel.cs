@@ -119,7 +119,7 @@ namespace UPOSS.ViewModels
             {
                 using (var updateManager = await UpdateManager.GitHubUpdateManager(@"https://github.com/kksboltibay/uposs-frontend"))
                 {
-                    UPOSS.Properties.Settings.Default.CurrentApplicationVersion = updateManager.CurrentlyInstalledVersion().ToString();
+                    UPOSS.Properties.Settings.Default.CurrentApplicationVersion = updateManager.CurrentlyInstalledVersion()  == null ? "-" : updateManager.CurrentlyInstalledVersion().ToString();
                     UPOSS.Properties.Settings.Default.Save();
 
                     var updateInfo = await updateManager.CheckForUpdate();
@@ -130,6 +130,28 @@ namespace UPOSS.ViewModels
 
                         if (update == MessageBoxResult.Yes)
                         {
+                            // backup local setting before update
+                            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
+                            {
+                                connection.Open();
+                                using var command = new SQLiteCommand(connection);
+                                
+                                command.CommandText = "UPDATE settings SET address = @address, phone_no = @phone_no, gov_charge_name = @gov_charge_name, gov_charge_value = @gov_charge_value, gov_charge_no = @gov_charge_no, scanner_is_used = @scanner_is_used, is_first_login = @is_first_login, is_update = @is_update WHERE id = 1";
+                                command.Parameters.AddWithValue("@address", Properties.Settings.Default.Setting_SystemAddress);
+                                command.Parameters.AddWithValue("@phone_no", Properties.Settings.Default.Setting_SystemPhoneNo);
+                                command.Parameters.AddWithValue("@gov_charge_name", Properties.Settings.Default.Setting_GovChargesName);
+                                command.Parameters.AddWithValue("@gov_charge_value", Properties.Settings.Default.Setting_GovChargesValue);
+                                command.Parameters.AddWithValue("@gov_charge_no", Properties.Settings.Default.Setting_GovChargesNo);
+                                command.Parameters.AddWithValue("@scanner_is_used", Properties.Settings.Default.Setting_ScannerIsUsed);
+                                command.Parameters.AddWithValue("@is_first_login", Properties.Settings.Default.Setting_System_IsFirstLogin);
+                                command.Parameters.AddWithValue("@is_update", 1);
+                                command.Prepare();
+                                command.ExecuteNonQuery();
+
+                                connection.Close();
+                            }
+
+                            // proceed update
                             await updateManager.UpdateApp();
 
                             MessageBox.Show("Updated succesfuly. Please restart the application.");

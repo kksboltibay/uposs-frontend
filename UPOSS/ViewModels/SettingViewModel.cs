@@ -2,17 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using UPOSS.Commands;
 using UPOSS.Models;
+using UPOSS.Services;
 
 namespace UPOSS.ViewModels
 {
     class SettingViewModel : ViewModelBase
     {
+        APIService ObjSettingService;
+
         public SettingViewModel()
         {
+            ObjSettingService = new APIService();
+
             saveCommand = new RelayCommand(Save);
+            refactorCommand = new AsyncRelayCommand(Refactor, this);
 
             InputSetting = new Setting();
 
@@ -27,6 +34,14 @@ namespace UPOSS.ViewModels
         }
 
         #region Define
+        //Loding screen
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; OnPropertyChanged("IsLoading"); }
+        }
+
         private Setting inputSetting;
         public Setting InputSetting
         {
@@ -83,6 +98,83 @@ namespace UPOSS.ViewModels
                         Properties.Settings.Default.Save();
 
                         MessageBox.Show("Changes have been saved successfully.", "UPO$$", MessageBoxButton.OK);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString(), "UPO$$");
+            }
+        }
+        #endregion
+
+        #region RefactorOperation
+        private AsyncRelayCommand refactorCommand;
+        public AsyncRelayCommand RefactorCommand
+        {
+            get { return refactorCommand; }
+        }
+        private async Task Refactor()
+        {
+            try
+            {
+                // save changes
+                var msgBoxResult = MessageBox.Show("Are you sure to refactor local database?", "UPO$$", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (msgBoxResult == MessageBoxResult.Yes)
+                {
+                    Properties.Settings.Default.Setting_System_IsFirstLogin = true;
+                    Properties.Settings.Default.Save();
+
+                    MessageBox.Show("The system is ready to be refactored. This application is going to logout and turn off automatically, please restart the application to proceed.");
+
+                    // logout
+                    bool logoutFail = false;
+                    try
+                    {
+                        dynamic param = new { username = Properties.Settings.Default.CurrentUsername };
+
+                        RootUserObject Response = await ObjSettingService.PostAPI("logout", param, "user");
+
+                        if (Response.Status == "ok")
+                        {
+                            Properties.Settings.Default.CurrentUsername = "";
+                            Properties.Settings.Default.CurrentUserRole = "";
+                            Properties.Settings.Default.Save();
+
+                            // shut down
+                            Application.Current.Shutdown();
+                        }
+                        else
+                        {
+                            logoutFail = true;
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        logoutFail = true;
+                    }
+
+
+                    if (logoutFail)
+                    {
+                        var exitResult = MessageBox.Show("Logout error, there might be internet connection problem, do you still want to exit UPO$$ ?" +
+                            "\b(Note: Logout like this may cause some server issues, please contact IT support)", "UPO$$", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                        if (exitResult == MessageBoxResult.Yes)
+                        {
+                            Properties.Settings.Default.CurrentUsername = "";
+                            Properties.Settings.Default.CurrentUserRole = "";
+                            Properties.Settings.Default.Save();
+
+                            // shut down
+                            Application.Current.Shutdown();
+                        }
+                    } 
+                    else
+                    {
+                        // shut down
+                        Application.Current.Shutdown();
                     }
                 }
             }
