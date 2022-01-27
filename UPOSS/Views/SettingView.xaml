@@ -128,7 +128,7 @@
                                                     <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
                                                         <TextBox x:Name="tbRegNo" Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                                 Text="{Binding Path=InputSetting.Setting_GovChargesNo, Mode=TwoWay}"/>
+                                                 Text="{Binding Path=InputSetting.GovChargesNo, Mode=TwoWay}"/>
                                                     </Border>
 
                                                     <TextBlock IsHitTestVisible="False" Text="Registration No." VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">

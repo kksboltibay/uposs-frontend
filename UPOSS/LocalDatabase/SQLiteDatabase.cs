@@ -604,6 +604,8 @@ namespace UPOSS.LocalDatabase
             using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
             {
                 dynamic result = new { };
+                bool isLocalDbEmpty = false;
+
                 connection.Open();
                 try
                 {
@@ -629,9 +631,9 @@ namespace UPOSS.LocalDatabase
                         }
                         else
                         {
+                            isLocalDbEmpty = true;
                             result = new
                             {
-                                id = "0",
                                 is_update = "0"
                             };
                         }
@@ -639,7 +641,7 @@ namespace UPOSS.LocalDatabase
                     }
 
                     // insert 1 default record if empty
-                    if (result.id == "0")
+                    if (isLocalDbEmpty)
                     {
                         // insert user
                         command.CommandText = "INSERT INTO settings(id, address, phone_no, gov_charge_name, gov_charge_value, gov_charge_no, scanner_is_used, is_first_login, is_update)" +
@@ -664,9 +666,23 @@ namespace UPOSS.LocalDatabase
                         Properties.Settings.Default.Setting_GovChargesName = result.gov_charge_name;
                         Properties.Settings.Default.Setting_GovChargesValue = result.gov_charge_value;
                         Properties.Settings.Default.Setting_GovChargesNo = result.gov_charge_no;
-                        Properties.Settings.Default.Setting_ScannerIsUsed = result.scanner_is_used;
-                        Properties.Settings.Default.Setting_System_IsFirstLogin = result.is_first_login;
+                        Properties.Settings.Default.Setting_ScannerIsUsed = result.scanner_is_used == "0" ? false : true;
+                        Properties.Settings.Default.Setting_System_IsFirstLogin = result.is_first_login == "0" ? false : true;
                         Properties.Settings.Default.Save();
+
+                        // change back to default value
+                        command.CommandText = "UPDATE users SET id = @id, address = @address, phone_no = @phone_no, gov_charge_name = @gov_charge_name, gov_charge_value = @gov_charge_value, gov_charge_no = @gov_charge_no, sacnner_is_used = @sacnner_is_used, is_first_login = @is_first_login, is_update = @is_update";
+                        command.Parameters.AddWithValue("@id", 1);
+                        command.Parameters.AddWithValue("@address", "-");
+                        command.Parameters.AddWithValue("@phone_no", "-");
+                        command.Parameters.AddWithValue("@gov_charge_name", "-");
+                        command.Parameters.AddWithValue("@gov_charge_value", "-");
+                        command.Parameters.AddWithValue("@gov_charge_no", "-");
+                        command.Parameters.AddWithValue("@scanner_is_used", 1);
+                        command.Parameters.AddWithValue("@is_first_login", 0);
+                        command.Parameters.AddWithValue("@is_update", 0);
+                        command.Prepare();
+                        command.ExecuteNonQuery();
                     }
                 }
                 catch (Exception e)
