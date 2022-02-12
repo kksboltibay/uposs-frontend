@@ -416,7 +416,7 @@
                 <!--Buttons-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <!--Search-->
-                    <Button Content="SEARCH"
+                    <Button x:Name="btnSearch" Content="SEARCH"
                                         Width="100"
                                         Margin="5,8"
                                         Padding="3"

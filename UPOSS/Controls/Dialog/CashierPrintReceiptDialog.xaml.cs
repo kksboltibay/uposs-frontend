@@ -79,7 +79,7 @@ namespace UPOSS.Controls.Dialog
 
                     // column 0
                     TextBlock tbk0 = new TextBlock();
-                    tbk0.Text = cartList[i].Product_no;
+                    tbk0.Text = cartList[i].Category;
                     tbk0.HorizontalAlignment = HorizontalAlignment.Left;
                     tbk0.Margin = new Thickness(1, 0, 1, 0);
                     Grid.SetColumn(tbk0, 0);

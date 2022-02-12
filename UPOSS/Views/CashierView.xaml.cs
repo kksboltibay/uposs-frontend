@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -36,16 +37,54 @@ namespace UPOSS.Views
             togglebuttonScanner.IsChecked = Properties.Settings.Default.Setting_ScannerIsUsed;
 
             // set hotkey
-            // key: +
-            HotkeysManager.AddHotkey(ModifierKeys.None, Key.Add, () => {
+            // key: ctrl +
+            // payment
+            HotkeysManager.AddHotkey(ModifierKeys.Control, Key.Add, () => {
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(btnPayment);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
             });
 
-            // key: ` (below esc)
-            HotkeysManager.AddHotkey(ModifierKeys.None, Key.OemTilde, () => {
+            // key: ctrl 1
+            // focus on search barcode column
+            HotkeysManager.AddHotkey(ModifierKeys.Control, Key.D1, () => {
                 tbBarcode.Focus();
+            });
+
+            // key: ctrl 2 (below esc)
+            // focus on search product category column
+            HotkeysManager.AddHotkey(ModifierKeys.Control, Key.D2, () => {
+                tbProductCategory.Focus();
+            });
+
+            // key: ctrl 3
+            // focus on search product name column
+            HotkeysManager.AddHotkey(ModifierKeys.Control, Key.D3, () => {
+                tbProductName.Focus();
+            });
+
+            // key: ctrl ` (below esc)
+            // edit latest price
+            HotkeysManager.AddHotkey(ModifierKeys.Control, Key.OemTilde, () => {
+                if (dgProduct.Items.Count > 0)
+                {
+                    dgProduct.SelectionUnit = DataGridSelectionUnit.Cell;
+                    dgProduct.CurrentCell = new DataGridCellInfo(dgProduct.Items[dgProduct.Items.Count - 1], dgProduct.Columns[4]);
+                    dgProduct.BeginEdit();
+                    dgProduct.SelectionUnit = DataGridSelectionUnit.FullRow;
+                }
+            });
+
+            // key: ctrl * (below esc)
+            // edit latest quantity
+            HotkeysManager.AddHotkey(ModifierKeys.Control, Key.Multiply, () => {
+                if (dgProduct.Items.Count > 0)
+                {
+                    dgProduct.SelectionUnit = DataGridSelectionUnit.Cell;
+                    dgProduct.CurrentCell = new DataGridCellInfo(dgProduct.Items[dgProduct.Items.Count - 1], dgProduct.Columns[5]);
+                    dgProduct.BeginEdit();
+                    dgProduct.SelectionUnit = DataGridSelectionUnit.FullRow;
+                }
             });
         }
 
@@ -59,73 +98,57 @@ namespace UPOSS.Views
         private void tbBarcode_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
-            { 
-                if (string.IsNullOrEmpty(tbBarcode.Text))
+            {
+                // Check if scanner is not used
+                if (!Properties.Settings.Default.Setting_ScannerIsUsed)
                 {
-                    //Close pop up
-                    popupBarcode.Visibility = Visibility.Collapsed;
-                    popupBarcode.IsOpen = false;
-                    lbBarcode.Visibility = Visibility.Collapsed;
-                    return;
-                }
-                //Open pop up
-                popupBarcode.Visibility = Visibility.Visible;
-                popupBarcode.IsOpen = true;
-                lbBarcode.Visibility = Visibility.Visible;
-
-                SuggestionList = new ObservableCollection<string>();
-
-                // Search from local DB
-                using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
-                {
-                    connection.Open();
-                    try
+                    if (string.IsNullOrEmpty(tbBarcode.Text))
                     {
-                        using var command = new SQLiteCommand(connection);
+                        //Close pop up
+                        popupBarcode.Visibility = Visibility.Collapsed;
+                        popupBarcode.IsOpen = false;
+                        lbBarcode.Visibility = Visibility.Collapsed;
+                        return;
+                    }
+                    //Open pop up
+                    popupBarcode.Visibility = Visibility.Visible;
+                    popupBarcode.IsOpen = true;
+                    lbBarcode.Visibility = Visibility.Visible;
 
-                        // get product barcode
-                        command.CommandText = "SELECT barcode FROM products WHERE barcode LIKE '%"+ tbBarcode.Text.ToUpper() + "%' AND is_active = '1' LIMIT 5";
-                        using (SQLiteDataReader rdr = command.ExecuteReader())
+                    SuggestionList = new ObservableCollection<string>();
+
+                    // Search from local DB
+                    using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
+                    {
+                        connection.Open();
+                        try
                         {
-                            while (rdr.Read())
-                            {
-                                SuggestionList.Add(rdr[0].ToString());
-                            }
-                            rdr.Close();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message.ToString(), "UPO$$");
-                    }
-                    connection.Close();
-                }
+                            using var command = new SQLiteCommand(connection);
 
-                lbBarcode.ItemsSource = SuggestionList.ToList();
+                            // get product barcode
+                            command.CommandText = "SELECT barcode FROM products WHERE barcode LIKE '%" + tbBarcode.Text.ToUpper() + "%' AND is_active = '1' LIMIT 5";
+                            using (SQLiteDataReader rdr = command.ExecuteReader())
+                            {
+                                while (rdr.Read())
+                                {
+                                    SuggestionList.Add(rdr[0].ToString());
+                                }
+                                rdr.Close();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message.ToString(), "UPO$$");
+                        }
+                        connection.Close();
+                    }
+
+                    lbBarcode.ItemsSource = SuggestionList.ToList();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void tbBarcode_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                // Check if scanner is used
-                if (Properties.Settings.Default.Setting_ScannerIsUsed)
-                {
-                    if (lbBarcode.Items.Count > 0)
-                    {
-                        lbBarcode.SelectedIndex = 0;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Barcode not found", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        tbBarcode.Text = "";
-                    }
-                }
             }
         }
 
@@ -133,111 +156,257 @@ namespace UPOSS.Views
         {
             try
             {
-                if (lbBarcode.SelectedIndex <= -1)
+                // Check if scanner is not used
+                if (!Properties.Settings.Default.Setting_ScannerIsUsed) 
                 {
+                    if (lbBarcode.SelectedIndex <= -1)
+                    {
+                        //Close pop up
+                        popupBarcode.Visibility = Visibility.Collapsed;
+                        popupBarcode.IsOpen = false;
+                        lbBarcode.Visibility = Visibility.Collapsed;
+                        return;
+                    }
                     //Close pop up
                     popupBarcode.Visibility = Visibility.Collapsed;
                     popupBarcode.IsOpen = false;
                     lbBarcode.Visibility = Visibility.Collapsed;
-                    return;
-                }
-                //Close pop up
-                popupBarcode.Visibility = Visibility.Collapsed;
-                popupBarcode.IsOpen = false;
-                lbBarcode.Visibility = Visibility.Collapsed;
 
-                tbBarcode.Text = "";
-                tbProductNo.Text = "";
-                tbProductName.Text = "";
-                lbBarcode.SelectedIndex = -1;
+                    tbBarcode.Text = "";
+                    tbProductCategory.Text = "";
+                    tbProductName.Text = "";
+                    lbBarcode.SelectedIndex = -1;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void tbBarcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                try
+                {
+                    // Check if scanner is not used
+                    if (!Properties.Settings.Default.Setting_ScannerIsUsed)
+                    {
+                        if (lbBarcode.Items.Count > 0)
+                        {
+                            lbBarcode.SelectedIndex = 0;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Result not found", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            tbBarcode.Text = "";
+                        }
+                    } 
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(tbBarcode.Text))
+                        {
+                            // Search from local DB
+                            using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
+                            {
+                                connection.Open();
+                                try
+                                {
+                                    using var command = new SQLiteCommand(connection);
+
+                                    SuggestionList = new ObservableCollection<string>();
+
+                                    // get product category
+                                    command.CommandText = "SELECT barcode FROM products WHERE barcode = '" + tbBarcode.Text.ToUpper() + "' AND is_active = '1' LIMIT 1";
+                                    using (SQLiteDataReader rdr = command.ExecuteReader())
+                                    {
+                                        if (rdr.Read())
+                                        {
+                                            SuggestionList.Add(rdr[0].ToString());
+                                        }
+                                        rdr.Close();
+                                    }
+
+                                    if (SuggestionList.Count > 0)
+                                    {
+                                        lbBarcode.ItemsSource = SuggestionList.ToList();
+
+                                        lbBarcode.SelectedIndex = 0;
+
+                                        // refresh list box and binding
+                                        lbBarcode.SelectedIndex = -1;
+
+                                        //refresh all search columns
+                                        tbBarcode.Text = "";
+                                        tbProductCategory.Text = "";
+                                        tbProductName.Text = "";
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Result not found", "UPO$$");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message.ToString(), "UPO$$");
+                                }
+                                connection.Close();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
         #endregion
 
 
-        #region Search Section (Product No)
-        private void tbProductNo_TextChanged(object sender, TextChangedEventArgs e)
+        #region Search Section (Product Category)
+        //private void tbProductCategory_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(tbProductCategory.Text))
+        //        {
+        //            //Close pop up
+        //            popupProductCategory.Visibility = Visibility.Collapsed;
+        //            popupProductCategory.IsOpen = false;
+        //            lbProductCategory.Visibility = Visibility.Collapsed;
+        //            return;
+        //        }
+        //        //Open pop up
+        //        popupProductCategory.Visibility = Visibility.Visible;
+        //        popupProductCategory.IsOpen = true;
+        //        lbProductCategory.Visibility = Visibility.Visible;
+
+        //        SuggestionList = new ObservableCollection<string>();
+
+        //        // Search from local DB
+        //        using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
+        //        {
+        //            connection.Open();
+        //            try
+        //            {
+        //                using var command = new SQLiteCommand(connection);
+
+        //                // get product category
+        //                command.CommandText = "SELECT category FROM products WHERE category LIKE '%" + tbProductCategory.Text.ToUpper() + "%' AND is_active = '1' LIMIT 5";
+        //                using (SQLiteDataReader rdr = command.ExecuteReader())
+        //                {
+        //                    while (rdr.Read())
+        //                    {
+        //                        SuggestionList.Add(rdr[0].ToString());
+        //                    }
+        //                    rdr.Close();
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                MessageBox.Show(ex.Message.ToString(), "UPO$$");
+        //            }
+        //            connection.Close();
+        //        }
+
+        //        lbProductCategory.ItemsSource = SuggestionList.ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
+        //private void lbProductCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (lbProductCategory.SelectedIndex <= -1)
+        //        {
+        //            //Close pop up
+        //            popupProductCategory.Visibility = Visibility.Collapsed;
+        //            popupProductCategory.IsOpen = false;
+        //            lbProductCategory.Visibility = Visibility.Collapsed;
+        //            return;
+        //        }
+        //        //Close pop up
+        //        popupProductCategory.Visibility = Visibility.Collapsed;
+        //        popupProductCategory.IsOpen = false;
+        //        lbProductCategory.Visibility = Visibility.Collapsed;
+
+        //        tbBarcode.Text = "";
+        //        tbProductCategory.Text = "";
+        //        tbProductName.Text = "";
+        //        lbProductCategory.SelectedIndex = -1;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
+        private void tbProductCategory_KeyDown(object sender, KeyEventArgs e)
         {
-            try
+            if (e.Key == Key.Enter)
             {
-                if (string.IsNullOrEmpty(tbProductNo.Text))
+                try
                 {
-                    //Close pop up
-                    popupProductNo.Visibility = Visibility.Collapsed;
-                    popupProductNo.IsOpen = false;
-                    lbProductNo.Visibility = Visibility.Collapsed;
-                    return;
-                }
-                //Open pop up
-                popupProductNo.Visibility = Visibility.Visible;
-                popupProductNo.IsOpen = true;
-                lbProductNo.Visibility = Visibility.Visible;
-
-                SuggestionList = new ObservableCollection<string>();
-
-                // Search from local DB
-                using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
-                {
-                    connection.Open();
-                    try
+                    if (!string.IsNullOrEmpty(tbProductCategory.Text))
                     {
-                        using var command = new SQLiteCommand(connection);
-
-                        // get product_no
-                        command.CommandText = "SELECT product_no FROM products WHERE product_no LIKE '%" + tbProductNo.Text.ToUpper() + "%' AND is_active = '1' LIMIT 5";
-                        using (SQLiteDataReader rdr = command.ExecuteReader())
+                        // Search from local DB
+                        using (var connection = new SQLiteConnection("Data Source=../SQLiteDatabase.db"))
                         {
-                            while (rdr.Read())
+                            connection.Open();
+                            try
                             {
-                                SuggestionList.Add(rdr[0].ToString());
+                                using var command = new SQLiteCommand(connection);
+
+                                SuggestionList = new ObservableCollection<string>();
+
+                                // get product category
+                                command.CommandText = "SELECT category FROM products WHERE category = '" + tbProductCategory.Text + "' AND is_active = '1' LIMIT 1";
+                                using (SQLiteDataReader rdr = command.ExecuteReader())
+                                {
+                                    if (rdr.Read())
+                                    {
+                                        SuggestionList.Add(rdr[0].ToString());
+                                    }
+                                    rdr.Close();
+                                }
+
+                                if (SuggestionList.Count > 0)
+                                {
+                                    lbProductCategory.ItemsSource = SuggestionList.ToList();
+
+                                    lbProductCategory.SelectedIndex = 0;
+
+                                    // refresh list box and binding
+                                    lbProductCategory.SelectedIndex = -1;
+
+                                    //refresh all search columns
+                                    tbBarcode.Text = "";
+                                    tbProductCategory.Text = "";
+                                    tbProductName.Text = "";
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Result not found", "UPO$$");
+                                }
                             }
-                            rdr.Close();
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message.ToString(), "UPO$$");
+                            }
+                            connection.Close();
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message.ToString(), "UPO$$");
-                    }
-                    connection.Close();
                 }
-
-                lbProductNo.ItemsSource = SuggestionList.ToList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void lbProductNo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (lbProductNo.SelectedIndex <= -1)
+                catch (Exception ex)
                 {
-                    //Close pop up
-                    popupProductNo.Visibility = Visibility.Collapsed;
-                    popupProductNo.IsOpen = false;
-                    lbProductNo.Visibility = Visibility.Collapsed;
-                    return;
+                    MessageBox.Show(ex.Message, "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                //Close pop up
-                popupProductNo.Visibility = Visibility.Collapsed;
-                popupProductNo.IsOpen = false;
-                lbProductNo.Visibility = Visibility.Collapsed;
-
-                tbBarcode.Text = "";
-                tbProductNo.Text = "";
-                tbProductName.Text = "";
-                lbProductNo.SelectedIndex = -1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
@@ -315,13 +484,28 @@ namespace UPOSS.Views
                 lbProductName.Visibility = Visibility.Collapsed;
 
                 tbBarcode.Text = "";
-                tbProductNo.Text = "";
+                tbProductCategory.Text = "";
                 tbProductName.Text = "";
                 lbProductName.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void tbProductName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (lbProductName.Items.Count > 0)
+                {
+                    lbProductName.SelectedIndex = 0;
+                }
+                else
+                {
+                    MessageBox.Show("Result not found", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
         #endregion
@@ -352,11 +536,15 @@ namespace UPOSS.Views
 
         private void dgProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
-
-            if (e.Handled)
+            IEditableCollectionView itemsView = dgProduct.Items;
+            if (itemsView.IsAddingNew || itemsView.IsEditingItem)
             {
-                MessageBox.Show("Only number with decimal is allowed in Product [Price] and [Qty]", "UPO$$");
+                e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
+
+                if (e.Handled)
+                {
+                    MessageBox.Show("Only number with decimal is allowed in Product [Price] and [Qty]", "UPO$$");
+                }
             }
         }
         #endregion
