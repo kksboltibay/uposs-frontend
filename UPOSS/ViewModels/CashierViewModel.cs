@@ -93,18 +93,18 @@ namespace UPOSS.ViewModels
             }
         }
 
-        private string selectedProductNo;
-        public string SelectedProductNo
+        private string selectedProductCategory;
+        public string SelectedProductCategory
         {
-            get { return selectedProductNo; }
+            get { return selectedProductCategory; }
             set
             {
-                selectedProductNo = value;
-                OnPropertyChanged("SelectedProductNo");
+                selectedProductCategory = value;
+                OnPropertyChanged("SelectedProductCategory");
 
-                if (!string.IsNullOrEmpty(SelectedProductNo))
+                if (!string.IsNullOrEmpty(SelectedProductCategory))
                 {
-                    AddItemIntoProductList("", SelectedProductNo);
+                    AddItemIntoProductList("", SelectedProductCategory);
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace UPOSS.ViewModels
 
 
         #region Custom
-        private async Task AddItemIntoProductList(string barcode = "", string productNo = "", string productName = "")
+        private async Task AddItemIntoProductList(string barcode = "", string productCategory = "", string productName = "")
         {
             try
             {
@@ -195,9 +195,9 @@ namespace UPOSS.ViewModels
                             {
                                 sql = "SELECT * FROM products WHERE barcode = '" + barcode + "' AND is_active = '1' LIMIT 1";
                             }
-                            else if (!string.IsNullOrEmpty(productNo))
+                            else if (!string.IsNullOrEmpty(productCategory))
                             {
-                                sql = "SELECT * FROM products WHERE product_no = '" + productNo + "' AND is_active = '1' LIMIT 1";
+                                sql = "SELECT * FROM products WHERE category = '" + productCategory + "' AND is_active = '1' LIMIT 1";
                             }
                             else if (!string.IsNullOrEmpty(productName))
                             {
@@ -238,6 +238,7 @@ namespace UPOSS.ViewModels
                                         {
                                             Product_no = rdr["product_no"].ToString(),
                                             Name = rdr["name"].ToString(),
+                                            Category = rdr["category"].ToString(),
                                             Barcode = rdr["barcode"].ToString(),
                                             Price = Math.Round(Convert.ToDecimal(rdr["price"].ToString()), 2, MidpointRounding.AwayFromZero).ToString("0.00"),
                                             Total_stock = "1.00",
@@ -580,7 +581,7 @@ namespace UPOSS.ViewModels
                 InputProduct = new Product
                 {
                     Barcode = "",
-                    Product_no = "",
+                    Category = "",
                     Name = "",
                 };
 

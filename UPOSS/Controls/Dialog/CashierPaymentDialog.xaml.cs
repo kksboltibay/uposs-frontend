@@ -147,7 +147,7 @@ namespace UPOSS.Controls.Dialog
                 else
                 {
                     // pay by card
-                    if (tbCardNo.Text.Length != 16)
+                    if (comboboxCardType.SelectedValue.ToString() != "E-Wallet" && tbCardNo.Text.Length != 16)
                     {
                         MessageBox.Show("Error: Incorrect [Card No]", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
                         return false;
@@ -249,6 +249,25 @@ namespace UPOSS.Controls.Dialog
             if (string.IsNullOrWhiteSpace(tbCardPay.Text))
             {
                 tbCardPay.Text = "0.00";
+            }
+        }
+
+        private void comboboxCardType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // check if eWallet is selected
+            if (comboboxCardType.SelectedValue.ToString() == "E-Wallet")
+            {
+                // mute other columns
+                tbCardNo.Text = "";
+                comboboxBankNameList.SelectedValue = "Other";
+                tbCardNo.IsHitTestVisible = false;
+                comboboxBankNameList.IsHitTestVisible = false;
+            }
+            else
+            {
+                // reopen
+                tbCardNo.IsHitTestVisible = true;
+                comboboxBankNameList.IsHitTestVisible = true;
             }
         }
     }

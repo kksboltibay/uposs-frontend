@@ -115,7 +115,7 @@ namespace UPOSS.LocalDatabase
                     command.ExecuteNonQuery();
 
                     // insert bank
-                    string[] bankAry = { "Affin Bank", "Alliance Bank", "AmBank", "Agrobank", "Bank Islam Malaysia", "Bank Rakyat", "Bank Simpanan Nasional (BSN)", "CIMB", "Hong Leong Bank", "Maybank", "Public Bank", "RHB Bank", "Standard Chartered Bank Malaysia" };
+                    string[] bankAry = { "Affin Bank", "Alliance Bank", "AmBank", "Agrobank", "Bank Islam Malaysia", "Bank Rakyat", "Bank Simpanan Nasional (BSN)", "CIMB", "Hong Leong Bank", "Maybank", "Public Bank", "RHB Bank", "Standard Chartered Bank Malaysia", "Other" };
 
                     for (var i = 0; i < bankAry.Length; i++)
                     {

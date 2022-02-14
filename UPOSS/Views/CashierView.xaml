@@ -95,29 +95,29 @@
                             </StackPanel>
                         </Grid>
 
-                        <!--Product No search box-->
+                        <!--Product Category search box-->
                         <Grid Margin="5">
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <!--Text Box-->
                                 <Grid>
-                                    <TextBox x:Name="tbProductNo" Width="150" BorderBrush="Black" BorderThickness="1"
+                                    <TextBox x:Name="tbProductCategory" Width="170" BorderBrush="Black" BorderThickness="1"
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                        Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay}"
-                                        TextChanged="tbProductNo_TextChanged"
-                                        PreviewTextInput="searchSection_PreviewTextInput">
+                                        Text="{Binding Path=InputProduct.Category, Mode=TwoWay}"
+                                        PreviewTextInput="searchSection_PreviewTextInput"
+                                        KeyDown="tbProductCategory_KeyDown">
                                         <TextBox.Resources>
                                             <Style TargetType="{x:Type Border}">
                                                 <Setter Property="CornerRadius" Value="6"/>
                                             </Style>
                                         </TextBox.Resources>
                                     </TextBox>
-                                    <TextBlock IsHitTestVisible="False" Text="- Search Product No -" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
+                                    <TextBlock IsHitTestVisible="False" Text="- Search Product Category -" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkGray">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Text, ElementName=tbProductNo}" Value="">
+                                                    <DataTrigger Binding="{Binding Text, ElementName=tbProductCategory}" Value="">
                                                         <Setter Property="Visibility" Value="Visible"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -126,11 +126,14 @@
                                     </TextBlock>
                                 </Grid>
 
+                                <!--Hidden List Box-->
+                                <ListBox x:Name="lbProductCategory" Visibility="Collapsed" SelectedItem="{Binding Path=SelectedProductCategory, Mode=TwoWay}"/>
+
                                 <!-- Suggestion box -->
-                                <Popup x:Name="popupProductNo" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
-                                    <!--List Box-->
-                                    <ListBox x:Name="lbProductNo" Visibility="Collapsed" SelectionChanged="lbProductNo_SelectionChanged" SelectedItem="{Binding Path=SelectedProductNo, Mode=TwoWay}"/>
-                                </Popup>
+                                <!--<Popup x:Name="popupProductCategory" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
+                                    --><!--List Box--><!--
+                                    <ListBox x:Name="lbProductCategory" Visibility="Collapsed" SelectionChanged="lbProductCategory_SelectionChanged" SelectedItem="{Binding Path=SelectedProductCategory, Mode=TwoWay}"/>
+                                </Popup>-->
                             </StackPanel>
                         </Grid>
 
@@ -143,7 +146,7 @@
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                         Text="{Binding Path=InputProduct.Name, Mode=TwoWay}"
-                                        TextChanged="tbProductName_TextChanged"
+                                        TextChanged="tbProductName_TextChanged" KeyDown="tbProductName_KeyDown"
                                         PreviewTextInput="searchSection_PreviewTextInput">
                                         <TextBox.Resources>
                                             <Style TargetType="{x:Type Border}">
@@ -215,7 +218,22 @@
                         
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding Path=Id}" Width="0.3*"/>
-                            <DataGridTextColumn Header="Product No." IsReadOnly="True" Binding="{Binding Path=Product_no}" Width="1*">
+                            <!--<DataGridTextColumn Header="Product No." IsReadOnly="True" Binding="{Binding Path=Product_no}" Width="1*">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>-->
+                            <DataGridTextColumn Header="Product Cat." IsReadOnly="True" Binding="{Binding Path=Category}" Width="1*">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="Template">

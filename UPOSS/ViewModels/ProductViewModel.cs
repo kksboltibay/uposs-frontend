@@ -30,7 +30,8 @@ namespace UPOSS.ViewModels
             addCommand = new AsyncRelayCommand(Add, this);
             updateCommand = new AsyncRelayCommand(Update, this);
             //deleteCommand = new AsyncRelayCommand(Delete, this);
-            restockCommand = new AsyncRelayCommand(Restock, this);
+            //restockCommand = new AsyncRelayCommand(Restock, this);
+            scanRestockCommand = new AsyncRelayCommand(ScanRestock, this);
             activateCommand = new AsyncRelayCommand(Activate, this);
             deactivateCommand = new AsyncRelayCommand(Deactivate, this);
             previousPageCommand = new AsyncRelayCommand(PrevPage, this);
@@ -481,7 +482,7 @@ namespace UPOSS.ViewModels
         //                    RefreshTextBox();
         //                    Search();
         //                }
-                        
+
         //            }
         //        }
         //    }
@@ -496,51 +497,117 @@ namespace UPOSS.ViewModels
 
 
         #region RestockOperation
-        private AsyncRelayCommand restockCommand;
-        public AsyncRelayCommand RestockCommand
+        //private AsyncRelayCommand restockCommand;
+        //public AsyncRelayCommand RestockCommand
+        //{
+        //    get { return restockCommand; }
+        //}
+        //private async Task Restock()
+        //{
+        //    try
+        //    {
+        //        if (SelectedProduct is null || SelectedProduct.Id == 0)
+        //        {
+        //            IsLoading = false;
+        //            MessageBox.Show("Please select a product from the list", "UPO$$");
+        //        }
+        //        else if (SelectedProduct.Is_active == "Inactive" || QuantityList == null)
+        //        {
+        //            IsLoading = false;
+        //            MessageBox.Show("Only active product is allowed to be restocked", "UPO$$");
+        //        }
+        //        else
+        //        {
+        //            ProductRestockDialog _defaultInputDialog = new ProductRestockDialog("Please fill in restock price and quantity", mode: "restock", QuantityList);
+
+        //            if (_defaultInputDialog.ShowDialog() == true)
+        //            {
+        //                if (_defaultInputDialog.ProductResult is null)
+        //                {
+        //                    IsLoading = false;
+        //                    MessageBox.Show("Empty column detected, all columns can't be empty", "UPO$$");
+        //                }
+        //                else
+        //                {
+        //                    dynamic param;
+
+        //                    param = new { productNo = SelectedProduct.Product_no, price = _defaultInputDialog.Price, restockList = _defaultInputDialog.ProductResult };
+
+        //                    RootProductObject Response = await ObjProductService.PostAPI("restock", param, _Path);
+
+        //                    MessageBox.Show(Response.Msg, "UPO$$");
+
+        //                    if (Response.Status is "ok")
+        //                    {
+        //                        RefreshTextBox();
+        //                        await Search();
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        MessageBox.Show(e.Message.ToString(), "UPO$$");
+        //        await Search();
+        //    }
+        //}
+        #endregion
+
+
+        #region ScanRestockOperation
+        private AsyncRelayCommand scanRestockCommand;
+        public AsyncRelayCommand ScanRestockCommand
         {
-            get { return restockCommand; }
+            get { return scanRestockCommand; }
         }
-        private async Task Restock()
+        private async Task ScanRestock()
         {
             try
             {
-                if (SelectedProduct is null || SelectedProduct.Id == 0)
+                if (SelectedProduct is null || SelectedProduct.Id == 0 || SelectedQuantity is null || SelectedQuantity.Branch_name is null)
                 {
                     IsLoading = false;
-                    MessageBox.Show("Please select a product from the list", "UPO$$");
+                    MessageBox.Show("Please select product and quantity on both list", "UPO$$");
                 }
-                else if (SelectedProduct.Is_active == "Inactive" || QuantityList == null)
+                else if (SelectedProduct.Is_active == "Inactive")
                 {
                     IsLoading = false;
-                    MessageBox.Show("Only active product is allowed to be restocked", "UPO$$");
+                    MessageBox.Show("Product is Inactive, only active product is allowed to be restock", "UPO$$");
                 }
                 else
                 {
-                    ProductRestockDialog _defaultInputDialog = new ProductRestockDialog("Please fill in restock price and quantity", mode: "restock", QuantityList);
+                    if (SelectedQuantity != null)
+                    {
+                        if (SelectedQuantity.Branch_name != null && SelectedQuantity.Branch_name != Properties.Settings.Default.CurrentBranch && Properties.Settings.Default.CurrentUserRole != "Super Admin")
+                        {
+                            IsLoading = false;
+                            MessageBox.Show("Only superadmin is allowed to update other branch's stock", "UPO$$");
+                            return;
+                        }
+                    }
+
+                    ProductScanRestockDialog _defaultInputDialog = new ProductScanRestockDialog("Please use scanner to restock", mode: "scanRestock", SelectedProduct, SelectedQuantity);
 
                     if (_defaultInputDialog.ShowDialog() == true)
                     {
-                        if (_defaultInputDialog.ProductResult is null)
+                        dynamic param;
+
+                        param = new
                         {
-                            IsLoading = false;
-                            MessageBox.Show("Empty column detected, all columns can't be empty", "UPO$$");
-                        }
-                        else
+                            productNo = SelectedProduct.Product_no,
+                            branchName = SelectedQuantity.Branch_name,
+                            addQuantity = _defaultInputDialog.tbQuantity.Text
+                        };
+                        
+                        RootProductObject Response = await ObjProductService.PostAPI("scanRestockProduct", param, _Path);
+
+                        MessageBox.Show(Response.Msg, "UPO$$");
+
+                        if (Response.Status is "ok")
                         {
-                            dynamic param;
-
-                            param = new { productNo = SelectedProduct.Product_no, price = _defaultInputDialog.Price, restockList = _defaultInputDialog.ProductResult };
-
-                            RootProductObject Response = await ObjProductService.PostAPI("restock", param, _Path);
-
-                            MessageBox.Show(Response.Msg, "UPO$$");
-
-                            if (Response.Status is "ok")
-                            {
-                                RefreshTextBox();
-                                await Search();
-                            }
+                            RefreshTextBox();
+                            await Search();
                         }
                     }
                 }
