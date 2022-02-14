@@ -327,12 +327,18 @@
                             Margin="5,8"
                             Padding="3"
                             Command="{Binding Path=UpdateCommand}" />
-                        <Button Name="btnRestock"
+                        <!--<Button Name="btnRestock"
                             Width="100"
                             Content="RESTOCK"
                             Margin="5,8"
                             Padding="3"
-                            Command="{Binding Path=RestockCommand}" />
+                            Command="{Binding Path=RestockCommand}" />-->
+                        <Button Name="btnScanRestock"
+                            Width="120"
+                            Content="SCAN RESTOCK"
+                            Margin="5,8"
+                            Padding="3"
+                            Command="{Binding Path=ScanRestockCommand}"/>
 
                         <Grid>
                             <Rectangle Fill="White" Height="auto" Margin="5 12" RadiusX="10" RadiusY="10"/>

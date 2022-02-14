@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -70,8 +71,7 @@ namespace UPOSS.Controls
                         tbBranch.Text = quantity.Branch_name;
                         tbQuantity.Text = quantity.Quantity;
 
-                        //tbkNote.Visibility = Visibility.Collapsed;
-                        tbkNote.Text = "Note: 'UPDATE' product quantity does not count as a record of restock";
+                        tbkNote.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
@@ -198,23 +198,30 @@ namespace UPOSS.Controls
             }
             else
             {
-                ProductResult = new Product
+                try
                 {
-                    Product_no = tbProductNo.Text,
-                    Name = tbName.Text,
-                    Category = tbCategory.Text,
-                    Design_code = tbDesignCode.Text,
-                    Colour_code = tbColourCode.Text,
-                    Price = Math.Round(Convert.ToDecimal(tbPrice.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
-                };
+                    ProductResult = new Product
+                    {
+                        Product_no = tbProductNo.Text,
+                        Name = tbName.Text,
+                        Category = tbCategory.Text,
+                        Design_code = tbDesignCode.Text,
+                        Colour_code = tbColourCode.Text,
+                        Price = Math.Round(Convert.ToDecimal(tbPrice.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
+                    };
 
-                QuantityResult = new ProductQuantity
+                    QuantityResult = new ProductQuantity
+                    {
+                        Branch_name = tbBranch.Text,
+                        Quantity = Math.Round(Convert.ToDecimal(tbQuantity.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
+                    };
+
+                    this.DialogResult = true;
+                }
+                catch (Exception error)
                 {
-                    Branch_name = tbBranch.Text,
-                    Quantity = tbQuantity.Text
-                };
-
-                this.DialogResult = true;
+                    MessageBox.Show(error.Message.ToString(), "UPO$$");
+                }
             }
         }
 
@@ -222,6 +229,14 @@ namespace UPOSS.Controls
         {
             tbName.SelectAll();
             tbName.Focus();
+        }
+
+        private void tbQuantity_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
+
+            // check decimal
+                
         }
     }
 }
