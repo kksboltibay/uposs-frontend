@@ -10,16 +10,8 @@
              d:DesignHeight="1024" d:DesignWidth="1080">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.25*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!--Navigation bar-->
-        <controls:NavigationBar Grid.Column="0" DataContext="{Binding Navigator}"/>
-
-        <!--Content-->
-        <Grid Grid.Column="1">
+        <!--Main-->
+        <Grid>
             <!--Trigger-->
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -32,22 +24,33 @@
                 </Style>
             </Grid.Style>
 
-            <ContentControl>
-                <ContentControl.Content>
-                    <Binding Path="Navigator.CurrentViewModel">
-                        <Binding.TargetNullValue>
-                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock FontSize="50" FontFamily="Courier New">~ Welcome to UPO$$ ~</TextBlock>
-                            </Grid>
-                        </Binding.TargetNullValue>
-                    </Binding>
-                </ContentControl.Content>
-            </ContentControl>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.25*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Navigation bar-->
+            <controls:NavigationBar Grid.Column="0" DataContext="{Binding Navigator}"/>
+
+            <!--Content-->
+            <Grid Grid.Column="1">
+                <ContentControl>
+                    <ContentControl.Content>
+                        <Binding Path="Navigator.CurrentViewModel">
+                            <Binding.TargetNullValue>
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock FontSize="50" FontFamily="Courier New">~ Welcome to UPO$$ ~</TextBlock>
+                                </Grid>
+                            </Binding.TargetNullValue>
+                        </Binding>
+                    </ContentControl.Content>
+                </ContentControl>
+            </Grid>
         </Grid>
 
         
         <!--Loading Screen-->
-        <Grid Grid.Column="1">
+        <Grid>
             <!--Trigger-->
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -62,7 +65,7 @@
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <!--Title-->
-                <TextBlock Text="Loading..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
+                <TextBlock Text="Syncing..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
 
                 <!--Progress Bar-->
                 <Grid MinWidth="600" MaxWidth="800">

@@ -11,10 +11,7 @@ namespace UPOSS.ViewModels
 
         public DashboardViewModel()
         {
-            SQLiteDatabase DB = new SQLiteDatabase(this);
-            IsLoading = true;
-            DB.LoadLocalDatabase().Await();
-            IsLoading = false;
+            SyncDB();
         }
 
         #region Definition
@@ -26,5 +23,16 @@ namespace UPOSS.ViewModels
             set { _isLoading = value; OnPropertyChanged("IsLoading"); }
         }
         #endregion
+
+
+        private async void SyncDB()
+        {
+            IsLoading = true;
+
+            SQLiteDatabase DB = new SQLiteDatabase(this);
+            await DB.LoadLocalDatabase();
+
+            IsLoading = false;
+        }
     }
 }

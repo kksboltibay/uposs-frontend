@@ -375,10 +375,10 @@
 
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.25*"/>
-                            <RowDefinition Height="0.25*"/>
-                            <RowDefinition Height="0.25*"/>
-                            <RowDefinition Height="0.40*"/>
+                            <RowDefinition Height="0.20*"/>
+                            <RowDefinition Height="0.20*"/>
+                            <RowDefinition Height="0.20*"/>
+                            <RowDefinition Height="0.55*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="0.20*"/>
                         </Grid.RowDefinitions>
@@ -488,8 +488,8 @@
                         <!--Fourth line-->
                         <Grid Grid.Row="3">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*"/>
-                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.7*"/>
+                                <RowDefinition Height="0.3*"/>
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
@@ -501,14 +501,14 @@
                                 <!--Total-->
                                 <WrapPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <Viewbox>
-                                        <TextBlock Text="Total" FontWeight="Bold"/>
+                                        <TextBlock Text="Total" FontFamily="Times New Roman"/>
                                     </Viewbox>
                                 </WrapPanel>
 
                                 <!--Total price-->
                                 <WrapPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <Viewbox>
-                                        <TextBlock>
+                                        <TextBlock  FontFamily="Times New Roman">
                                             $<TextBlock Text="{Binding Path=Cart.Total_amount, Mode=TwoWay}"/>
                                         </TextBlock>
                                     </Viewbox>
