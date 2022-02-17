@@ -671,7 +671,7 @@ namespace UPOSS.LocalDatabase
                         Properties.Settings.Default.Save();
 
                         // change back to default value
-                        command.CommandText = "UPDATE settings SET id = @id, address = @address, phone_no = @phone_no, gov_charge_name = @gov_charge_name, gov_charge_value = @gov_charge_value, gov_charge_no = @gov_charge_no, sacnner_is_used = @sacnner_is_used, is_first_login = @is_first_login, is_update = @is_update";
+                        command.CommandText = "UPDATE settings SET id = @id, address = @address, phone_no = @phone_no, gov_charge_name = @gov_charge_name, gov_charge_value = @gov_charge_value, gov_charge_no = @gov_charge_no, scanner_is_used = @scanner_is_used, is_first_login = @is_first_login, is_update = @is_update";
                         command.Parameters.AddWithValue("@id", 1);
                         command.Parameters.AddWithValue("@address", "-");
                         command.Parameters.AddWithValue("@phone_no", "-");
