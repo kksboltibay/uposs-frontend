@@ -46,7 +46,7 @@
                             <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                 Text="{Binding Path=InputSales.Receipt_no, Mode=TwoWay}">
+                                 Text="{Binding Path=InputSales.Receipt_no, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -62,7 +62,7 @@
                             <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                 Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay}">
+                                 Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -78,7 +78,7 @@
                             <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                 Text="{Binding Path=InputProduct.Name, Mode=TwoWay}">
+                                 Text="{Binding Path=InputProduct.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -94,7 +94,7 @@
                             <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                 Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}">
+                                 Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="6"/>
@@ -134,7 +134,7 @@
                             <TextBlock Text="Status :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
 
                             <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
-                              Margin="10 0" MinWidth="150" FontSize="15" MaxHeight="300" MaxWidth="300" SelectedValue="{Binding SelectedStatus, Mode=TwoWay}" SelectedValuePath="Content">
+                              Margin="10 0" MinWidth="150" FontSize="15" MaxHeight="300" MaxWidth="300" SelectedValue="{Binding SelectedStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content">
                                 <ComboBoxItem Content="All"></ComboBoxItem>
                                 <ComboBoxItem Content="Void"></ComboBoxItem>
                                 <ComboBoxItem Content="Unvoid"></ComboBoxItem>
@@ -160,8 +160,8 @@
                       IsReadOnly="True"
                       Margin="8,8"
                       Padding="9"
-                      ItemsSource="{Binding Path=SalesList, Mode=TwoWay}"
-                      SelectedItem="{Binding Path=SelectedSales, Mode=TwoWay}">
+                      ItemsSource="{Binding Path=SalesList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Path=SelectedSales, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header=""
                                     Width="auto"
@@ -288,7 +288,7 @@
                     <DataGrid.RowDetailsTemplate>
                         <DataTemplate>
                             <DataGrid 
-                            ItemsSource="{Binding Path=ProductList, Mode=TwoWay}" 
+                            ItemsSource="{Binding Path=ProductList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                             AutoGenerateColumns="False" 
                             IsReadOnly="True"
                             IsHitTestVisible="False"
@@ -388,7 +388,7 @@
                             <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
                                     Margin="5 8" Foreground="WhiteSmoke"
                                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                                    Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay}" />
+                                    Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Button Name="btnNxtPage"
                                     Content="Next"
@@ -398,7 +398,7 @@
 
                             <Label FontSize="14" VerticalContentAlignment="Center">
                                 <TextBlock>
-                                    of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalPage, Mode=TwoWay}"/></Bold>  pages
+                                    of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  pages
                                 </TextBlock>
                             </Label>
                         </WrapPanel>
@@ -406,7 +406,7 @@
                         <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                             <Label FontSize="14" VerticalContentAlignment="Center">
                                 <TextBlock>
-                                    Showing  <Bold><TextBlock Text="{Binding Path=Pagination.CurrentRecord, Mode=TwoWay}"/></Bold>  out of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalRecord, Mode=TwoWay}"/></Bold>  records
+                                    Showing  <Bold><TextBlock Text="{Binding Path=Pagination.CurrentRecord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  out of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalRecord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  records
                                 </TextBlock>
                             </Label>
                         </WrapPanel>
