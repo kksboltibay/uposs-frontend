@@ -64,7 +64,7 @@
                                     <TextBox x:Name="tbBarcode" Width="150" BorderBrush="Black" BorderThickness="1"
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                        Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}"
+                                        Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         TextChanged="tbBarcode_TextChanged" KeyDown="tbBarcode_KeyDown"
                                         PreviewTextInput="searchSection_PreviewTextInput">
                                         <TextBox.Resources>
@@ -90,7 +90,7 @@
                                 <!-- Suggestion box -->
                                 <Popup x:Name="popupBarcode" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
                                     <!--List Box-->
-                                    <ListBox x:Name="lbBarcode" Visibility="Collapsed" SelectionChanged="lbBarcode_SelectionChanged" SelectedItem="{Binding Path=SelectedBarcode, Mode=TwoWay}"/>
+                                    <ListBox x:Name="lbBarcode" Visibility="Collapsed" SelectionChanged="lbBarcode_SelectionChanged" SelectedItem="{Binding Path=SelectedBarcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Popup>
                             </StackPanel>
                         </Grid>
@@ -103,7 +103,7 @@
                                     <TextBox x:Name="tbProductCategory" Width="170" BorderBrush="Black" BorderThickness="1"
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                        Text="{Binding Path=InputProduct.Category, Mode=TwoWay}"
+                                        Text="{Binding Path=InputProduct.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         PreviewTextInput="searchSection_PreviewTextInput"
                                         KeyDown="tbProductCategory_KeyDown">
                                         <TextBox.Resources>
@@ -127,12 +127,12 @@
                                 </Grid>
 
                                 <!--Hidden List Box-->
-                                <ListBox x:Name="lbProductCategory" Visibility="Collapsed" SelectedItem="{Binding Path=SelectedProductCategory, Mode=TwoWay}"/>
+                                <ListBox x:Name="lbProductCategory" Visibility="Collapsed" SelectedItem="{Binding Path=SelectedProductCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                                 <!-- Suggestion box -->
                                 <!--<Popup x:Name="popupProductCategory" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
                                     --><!--List Box--><!--
-                                    <ListBox x:Name="lbProductCategory" Visibility="Collapsed" SelectionChanged="lbProductCategory_SelectionChanged" SelectedItem="{Binding Path=SelectedProductCategory, Mode=TwoWay}"/>
+                                    <ListBox x:Name="lbProductCategory" Visibility="Collapsed" SelectionChanged="lbProductCategory_SelectionChanged" SelectedItem="{Binding Path=SelectedProductCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Popup>-->
                             </StackPanel>
                         </Grid>
@@ -145,7 +145,7 @@
                                     <TextBox x:Name="tbProductName" Width="150" BorderBrush="Black" BorderThickness="1"
                                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                        Text="{Binding Path=InputProduct.Name, Mode=TwoWay}"
+                                        Text="{Binding Path=InputProduct.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         TextChanged="tbProductName_TextChanged" KeyDown="tbProductName_KeyDown"
                                         PreviewTextInput="searchSection_PreviewTextInput">
                                         <TextBox.Resources>
@@ -171,7 +171,7 @@
                                 <!-- Suggestion box -->
                                 <Popup x:Name="popupProductName" Visibility="Collapsed" Height="150" StaysOpen="False" Placement="Bottom">
                                     <!--List Box-->
-                                    <ListBox x:Name="lbProductName" Visibility="Collapsed" SelectionChanged="lbProductName_SelectionChanged" SelectedItem="{Binding Path=SelectedProductName, Mode=TwoWay}"/>
+                                    <ListBox x:Name="lbProductName" Visibility="Collapsed" SelectionChanged="lbProductName_SelectionChanged" SelectedItem="{Binding Path=SelectedProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Popup>
                             </StackPanel>
                         </Grid>
@@ -190,8 +190,8 @@
                       SelectionUnit="FullRow"
                       SelectionMode="Single"
                       Padding="9"
-                      ItemsSource="{Binding Path=ProductList, Mode=TwoWay}"
-                      SelectedItem="{Binding Path=SelectedProduct, Mode=TwoWay}">
+                      ItemsSource="{Binding Path=ProductList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Path=SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                         <!--Make datagrid content alignment center-->
                         <DataGrid.CellStyle>
@@ -407,7 +407,7 @@
                                 <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
                                     <Viewbox>
                                         <TextBlock FontWeight="Light">
-                                            $<TextBlock Text="{Binding Path=Cart.Subtotal, Mode=TwoWay}"/>
+                                            $<TextBlock Text="{Binding Path=Cart.Subtotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         </TextBlock>
                                     </Viewbox>
                                 </WrapPanel>
@@ -441,7 +441,7 @@
                                 <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
                                     <Viewbox>
                                         <TextBlock FontWeight="Light">
-                                            ($<TextBlock Text="{Binding Path=Cart.Discount, Mode=TwoWay}"/>)
+                                            ($<TextBlock Text="{Binding Path=Cart.Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>)
                                         </TextBlock>
                                     </Viewbox>
                                 </WrapPanel>
@@ -475,7 +475,7 @@
                                 <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
                                     <Viewbox>
                                         <TextBlock FontWeight="Light">
-                                            $<TextBlock Text="{Binding Path=Cart.Tax, Mode=TwoWay}"/>
+                                            $<TextBlock Text="{Binding Path=Cart.Tax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         </TextBlock>
                                     </Viewbox>
                                 </WrapPanel>
@@ -509,7 +509,7 @@
                                 <WrapPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <Viewbox>
                                         <TextBlock  FontFamily="Times New Roman">
-                                            $<TextBlock Text="{Binding Path=Cart.Total_amount, Mode=TwoWay}"/>
+                                            $<TextBlock Text="{Binding Path=Cart.Total_amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         </TextBlock>
                                     </Viewbox>
                                 </WrapPanel>

@@ -18,7 +18,7 @@
             <Grid>
                 <TextBox x:Name="autoTextBox" Width="150" BorderBrush="Black" BorderThickness="1"
                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25"
-                                Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay}"
+                                Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 TextChanged="AutoTextBox_TextChanged">
                     <TextBox.Resources>
                         <Style TargetType="{x:Type Border}">

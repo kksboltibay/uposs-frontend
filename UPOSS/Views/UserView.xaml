@@ -49,7 +49,7 @@
                     <TextBox Grid.Column="1" x:Name="tbUsername" 
                          Margin="5 0" BorderBrush="Black" BorderThickness="1"
                          materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                         Text="{Binding Path=InputUser.Username, Mode=TwoWay}" />
+                         Text="{Binding Path=InputUser.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
 
                 <Separator Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30" VerticalAlignment="Top"/>
@@ -67,8 +67,8 @@
                       IsReadOnly="True"
                       Margin="8,8"
                       Padding="9"
-                      ItemsSource="{Binding Path=UserList, Mode=TwoWay}"
-                      SelectedItem="{Binding Path=SelectedUser, Mode=TwoWay}">
+                      ItemsSource="{Binding Path=UserList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Path=SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="User Id"
                                     Width="auto"
@@ -110,7 +110,7 @@
                                     <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
                             Margin="5 8" Foreground="WhiteSmoke"
                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                            Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay}" />
+                            Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                     <Button Name="btnNxtPage"
                             Content="Next"
@@ -120,7 +120,7 @@
 
                                     <Label FontSize="14" VerticalContentAlignment="Center">
                                         <TextBlock>
-                                    of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalPage, Mode=TwoWay}"/></Bold>  pages
+                                    of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  pages
                                 </TextBlock>
                                     </Label>
                                 </WrapPanel>
@@ -128,7 +128,7 @@
                                 <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                                     <Label FontSize="14" VerticalContentAlignment="Center">
                                         <TextBlock>
-                                    Showing  <Bold><TextBlock Text="{Binding Path=Pagination.CurrentRecord, Mode=TwoWay}"/></Bold>  out of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalRecord, Mode=TwoWay}"/></Bold>  records
+                                    Showing  <Bold><TextBlock Text="{Binding Path=Pagination.CurrentRecord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  out of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalRecord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  records
                                 </TextBlock>
                                     </Label>
                                 </WrapPanel>

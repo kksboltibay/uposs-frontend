@@ -207,13 +207,13 @@ namespace UPOSS.Controls
                         Category = tbCategory.Text,
                         Design_code = tbDesignCode.Text,
                         Colour_code = tbColourCode.Text,
-                        Price = Math.Round(Convert.ToDecimal(tbPrice.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
+                        Price = string.IsNullOrWhiteSpace(tbPrice.Text) ? "0.00" : Math.Round(Convert.ToDecimal(tbPrice.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
                     };
 
                     QuantityResult = new ProductQuantity
                     {
                         Branch_name = tbBranch.Text,
-                        Quantity = Math.Round(Convert.ToDecimal(tbQuantity.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
+                        Quantity = string.IsNullOrWhiteSpace(tbQuantity.Text) ? "0.00" : Math.Round(Convert.ToDecimal(tbQuantity.Text), 2, MidpointRounding.AwayFromZero).ToString("0.00")
                     };
 
                     this.DialogResult = true;
