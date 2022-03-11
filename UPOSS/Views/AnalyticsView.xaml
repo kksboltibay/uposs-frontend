@@ -9,150 +9,150 @@
              xmlns:properties="clr-namespace:UPOSS.Properties"
              d:DesignHeight="450" d:DesignWidth="1090">
 
-    
-    <Grid>
-        <!--Content-->
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
-            <!--Trigger-->
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="False">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+            <!--Content-->
+            <Grid>
+                <!--Trigger-->
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.25*"/>
-                <RowDefinition Height="0.05*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.25*"/>
+                    <RowDefinition Height="0.05*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <!--filter section-->
-            <Grid Grid.Row="0" TextBlock.Foreground="Black">
+                <!--filter section-->
+                <Grid Grid.Row="0" TextBlock.Foreground="Black">
 
-                <Rectangle Fill="White" Height="auto" Margin="15 10" RadiusX="10" RadiusY="10"/>
+                    <Rectangle Fill="White" Height="auto" Margin="15 10" RadiusX="10" RadiusY="10"/>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15 10">
-                    <!--Stack row 1-->
-                    <WrapPanel Orientation="Horizontal" Margin="0 0 0 10" HorizontalAlignment="Center">
-                        <!--Receipt No-->
-                        <StackPanel Orientation="Vertical" Margin="10 0">
-                            <TextBlock Text="Receipt No. : " FontWeight="Bold"/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15 10">
+                        <!--Stack row 1-->
+                        <WrapPanel Orientation="Horizontal" Margin="0 0 0 10" HorizontalAlignment="Center">
+                            <!--Receipt No-->
+                            <StackPanel Orientation="Vertical" Margin="10 0">
+                                <TextBlock Text="Receipt No. : " FontWeight="Bold"/>
 
-                            <TextBox MinWidth="100"
+                                <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                  Text="{Binding Path=InputSales.Receipt_no, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <TextBox.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="6"/>
-                                    </Style>
-                                </TextBox.Resources>
-                            </TextBox>
-                        </StackPanel>
+                                    <TextBox.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                            </StackPanel>
 
-                        <!--Product No-->
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10 0">
-                            <TextBlock Text="Product No : " FontWeight="Bold"/>
+                            <!--Product No-->
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10 0">
+                                <TextBlock Text="Product No : " FontWeight="Bold"/>
 
-                            <TextBox MinWidth="100"
+                                <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                  Text="{Binding Path=InputProduct.Product_no, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <TextBox.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="6"/>
-                                    </Style>
-                                </TextBox.Resources>
-                            </TextBox>
-                        </StackPanel>
+                                    <TextBox.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                            </StackPanel>
 
-                        <!--Product Name-->
-                        <StackPanel Orientation="Vertical" Margin="10 0">
-                            <TextBlock Text="Name : " FontWeight="Bold"/>
+                            <!--Product Name-->
+                            <StackPanel Orientation="Vertical" Margin="10 0">
+                                <TextBlock Text="Name : " FontWeight="Bold"/>
 
-                            <TextBox MinWidth="100"
+                                <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                  Text="{Binding Path=InputProduct.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <TextBox.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="6"/>
-                                    </Style>
-                                </TextBox.Resources>
-                            </TextBox>
-                        </StackPanel>
+                                    <TextBox.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                            </StackPanel>
 
-                        <!--Barcode-->
-                        <StackPanel Orientation="Vertical" Margin="10 0">
-                            <TextBlock Text="Barcode : " FontWeight="Bold"/>
+                            <!--Barcode-->
+                            <StackPanel Orientation="Vertical" Margin="10 0">
+                                <TextBlock Text="Barcode : " FontWeight="Bold"/>
 
-                            <TextBox MinWidth="100"
+                                <TextBox MinWidth="100"
                                  BorderBrush="Black" BorderThickness="1" MaxWidth="100"
                                  materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                  Text="{Binding Path=InputProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <TextBox.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="6"/>
-                                    </Style>
-                                </TextBox.Resources>
-                            </TextBox>
-                        </StackPanel>
+                                    <TextBox.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                            </StackPanel>
 
-                        <!--Branch-->
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <TextBlock Text="Branch :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <!--Branch-->
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Text="Branch :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
+                                <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
                               Margin="10 0" MinWidth="150" FontSize="15" MaxHeight="300" MaxWidth="300"
                               ItemsSource="{Binding BranchList}" SelectedItem="{Binding SelectedBranch}"/>
-                        </StackPanel>
-                    </WrapPanel>
+                            </StackPanel>
+                        </WrapPanel>
 
-                    <!--Stack row 2-->
-                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <!--Date From-->
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <TextBlock Text="From : " FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <!--Stack row 2-->
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <!--Date From-->
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Text="From : " FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <DatePicker x:Name="dtPickerFrom" Loaded="dtPickerFrom_Loaded" Width="150" Foreground="White" Background="Black" IsTodayHighlighted="True" SelectedDate="{Binding Path=InputSales.Filter_created_at.From}"/>
-                        </StackPanel>
+                                <DatePicker x:Name="dtPickerFrom" Loaded="dtPickerFrom_Loaded" Width="150" Foreground="White" Background="Black" IsTodayHighlighted="True" SelectedDate="{Binding Path=InputSales.Filter_created_at.From}"/>
+                            </StackPanel>
 
-                        <!--Date To-->
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <TextBlock Text="To : " FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <!--Date To-->
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Text="To : " FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <DatePicker x:Name="dtPickerTo" Width="150" Foreground="White" Background="Black" IsTodayHighlighted="True" SelectedDate="{Binding Path=InputSales.Filter_created_at.To}"/>
-                        </StackPanel>
+                                <DatePicker x:Name="dtPickerTo" Width="150" Foreground="White" Background="Black" IsTodayHighlighted="True" SelectedDate="{Binding Path=InputSales.Filter_created_at.To}"/>
+                            </StackPanel>
 
-                        <!--Status-->
-                        <StackPanel Orientation="Horizontal" Margin="10 0">
-                            <TextBlock Text="Status :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <!--Status-->
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <TextBlock Text="Status :" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
 
-                            <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
+                                <ComboBox  HorizontalAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="Black" BorderThickness="1"
                               Margin="10 0" MinWidth="150" FontSize="15" MaxHeight="300" MaxWidth="300" SelectedValue="{Binding SelectedStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content">
-                                <ComboBoxItem Content="All"></ComboBoxItem>
-                                <ComboBoxItem Content="Void"></ComboBoxItem>
-                                <ComboBoxItem Content="Unvoid"></ComboBoxItem>
-                            </ComboBox>
-                        </StackPanel>
-                    </WrapPanel>
-                </StackPanel>
-            </Grid>
+                                    <ComboBoxItem Content="All"></ComboBoxItem>
+                                    <ComboBoxItem Content="Void"></ComboBoxItem>
+                                    <ComboBoxItem Content="Unvoid"></ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Grid>
 
-            <!--horizontal seperate line-->
-            <!--<Separator Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30 0" VerticalAlignment="Top"/>-->
+                <!--horizontal seperate line-->
+                <!--<Separator Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="30 0" VerticalAlignment="Top"/>-->
 
-            <!--Main section-->
-            <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <!--Sales List-->
-                <DataGrid
+                <!--Main section-->
+                <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <!--Sales List-->
+                    <DataGrid
                       AutoGenerateColumns="False"
-                      MaxHeight="500"
                       MinWidth="500"
                       CanUserAddRows="False"
                       SelectionMode="Single"
@@ -162,132 +162,132 @@
                       Padding="9"
                       ItemsSource="{Binding Path=SalesList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       SelectedItem="{Binding Path=SelectedSales, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header=""
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header=""
                                     Width="auto"
                                     Binding="{Binding Path=Id}" />
-                        <DataGridTextColumn Header="Create At"
+                            <DataGridTextColumn Header="Create At"
                                     Width="auto"
                                     Binding="{Binding Path=Created_at}" />
-                        <DataGridTextColumn Header="Updated At"
+                            <DataGridTextColumn Header="Updated At"
                                     Width="auto"
                                     CanUserSort="False"
                                     Binding="{Binding Path=Updated_at}" />
-                        <DataGridTextColumn Header="Receipt No."
+                            <DataGridTextColumn Header="Receipt No."
                                     Width="auto"
                                     CanUserSort="False"
                                     Binding="{Binding Path=Receipt_no}" />
-                        <DataGridTextColumn Header="Discount" Width="auto" CanUserSort="False" Binding="{Binding Path=Total_discount}">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="{x:Type DataGridCell}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                <Grid Background="{TemplateBinding Background}">
-                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
+                            <DataGridTextColumn Header="Discount" Width="auto" CanUserSort="False" Binding="{Binding Path=Total_discount}">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                    <Style.Triggers>
-                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                            <Setter Property="Background" Value="#757575" />
-                                            <Setter Property="Foreground" Value="White" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Tax" Width="auto" CanUserSort="False" Binding="{Binding Path=Total_tax}">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="{x:Type DataGridCell}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                <Grid Background="{TemplateBinding Background}">
-                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#757575" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Tax" Width="auto" CanUserSort="False" Binding="{Binding Path=Total_tax}">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                    <Style.Triggers>
-                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                            <Setter Property="Background" Value="#757575" />
-                                            <Setter Property="Foreground" Value="White" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Total" Width="auto" CanUserSort="False" Binding="{Binding Path=Total_amount}">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="{x:Type DataGridCell}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                <Grid Background="{TemplateBinding Background}">
-                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#757575" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Total" Width="auto" CanUserSort="False" Binding="{Binding Path=Total_amount}">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                    <Style.Triggers>
-                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                            <Setter Property="Background" Value="#757575" />
-                                            <Setter Property="Foreground" Value="White" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Branch"
+                                        <Style.Triggers>
+                                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#757575" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Branch"
                                     Width="auto"
                                     CanUserSort="False"
                                     Binding="{Binding Path=Branch}" />
-                        <DataGridTextColumn Header="Payment" Width="auto" Binding="{Binding Path=Payment_method}">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="{x:Type DataGridCell}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                <Grid Background="{TemplateBinding Background}">
-                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
+                            <DataGridTextColumn Header="Payment" Width="auto" Binding="{Binding Path=Payment_method}">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                    <Style.Triggers>
-                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                            <Setter Property="Background" Value="#757575" />
-                                            <Setter Property="Foreground" Value="White" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Card No."
+                                        <Style.Triggers>
+                                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#757575" />
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Card No."
                                     Width="auto"
                                     CanUserSort="False"
                                     Binding="{Binding Path=Card_no}" />
-                        <DataGridTextColumn Header="Card Type"
+                            <DataGridTextColumn Header="Card Type"
                                     Width="auto"
                                     Binding="{Binding Path=Card_type}" />
-                        <DataGridTextColumn Header="Bank"
+                            <DataGridTextColumn Header="Bank"
                                     Width="auto"
                                     Binding="{Binding Path=Bank_name}" />
-                        <DataGridTextColumn Header="Status"
+                            <DataGridTextColumn Header="Status"
                                     Width="auto"
                                     Binding="{Binding Path=Status}" />
-                    </DataGrid.Columns>
+                        </DataGrid.Columns>
 
-                    <!--Detail Row-->
-                    <DataGrid.RowDetailsTemplate>
-                        <DataTemplate>
-                            <DataGrid 
+                        <!--Detail Row-->
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <DataGrid 
                             ItemsSource="{Binding Path=ProductList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                             AutoGenerateColumns="False" 
                             IsReadOnly="True"
@@ -296,181 +296,182 @@
                             Background="MidnightBlue"
                             BorderBrush="Black"
                             BorderThickness="5">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Created At" Binding="{Binding Path=Created_at}"/>
-                                    <DataGridTextColumn Header="Updated At" Binding="{Binding Path=Updated_at}"/>
-                                    <DataGridTextColumn Header="Product No." Binding="{Binding Path=Product_no}" />
-                                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
-                                    <DataGridTextColumn Header="Barcode" Binding="{Binding Path=Barcode}" />
-                                    <DataGridTextColumn Header="Price" Binding="{Binding Path=Price}">
-                                        <DataGridTextColumn.CellStyle>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                            <Grid Background="{TemplateBinding Background}">
-                                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                            </Grid>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGridTextColumn.CellStyle>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Qty(Meter)" Binding="{Binding Path=Total_stock}">
-                                        <DataGridTextColumn.CellStyle>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                            <Grid Background="{TemplateBinding Background}">
-                                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                            </Grid>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGridTextColumn.CellStyle>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Discount" Binding="{Binding Path=Discount}">
-                                        <DataGridTextColumn.CellStyle>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                            <Grid Background="{TemplateBinding Background}">
-                                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                            </Grid>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGridTextColumn.CellStyle>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Subtotal" Binding="{Binding Path=Subtotal}">
-                                        <DataGridTextColumn.CellStyle>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                            <Grid Background="{TemplateBinding Background}">
-                                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                            </Grid>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DataGridTextColumn.CellStyle>
-                                    </DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DataTemplate>
-                    </DataGrid.RowDetailsTemplate>
-                </DataGrid>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Created At" Binding="{Binding Path=Created_at}"/>
+                                        <DataGridTextColumn Header="Updated At" Binding="{Binding Path=Updated_at}"/>
+                                        <DataGridTextColumn Header="Product No." Binding="{Binding Path=Product_no}" />
+                                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                                        <DataGridTextColumn Header="Barcode" Binding="{Binding Path=Barcode}" />
+                                        <DataGridTextColumn Header="Price" Binding="{Binding Path=Price}">
+                                            <DataGridTextColumn.CellStyle>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                                <Grid Background="{TemplateBinding Background}">
+                                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                                </Grid>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridTextColumn.CellStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="Qty(Meter)" Binding="{Binding Path=Total_stock}">
+                                            <DataGridTextColumn.CellStyle>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                                <Grid Background="{TemplateBinding Background}">
+                                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                                </Grid>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridTextColumn.CellStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="Discount" Binding="{Binding Path=Discount}">
+                                            <DataGridTextColumn.CellStyle>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                                <Grid Background="{TemplateBinding Background}">
+                                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                                </Grid>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridTextColumn.CellStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="Subtotal" Binding="{Binding Path=Subtotal}">
+                                            <DataGridTextColumn.CellStyle>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                                <Grid Background="{TemplateBinding Background}">
+                                                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                                </Grid>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridTextColumn.CellStyle>
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
 
-                <!--Pagination-->
-                <Grid MaxWidth="900">
-                    <Rectangle Fill="DimGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
+                    <!--Pagination-->
+                    <Grid MaxWidth="900">
+                        <Rectangle Fill="DimGray" Height="auto" Margin="10 5" RadiusX="30" RadiusY="30"/>
 
-                    <Grid Margin="30 10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid Margin="30 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <WrapPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                            <Button Name="btnPrePage"
+                            <WrapPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Button Name="btnPrePage"
                                     Content="Prev"
                                     Margin="5,8"
                                     Padding="8"
                                     Command="{Binding Path=PreviousPageCommand}" />
 
-                            <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
+                                <TextBox x:Name="tbPage" MinWidth="20" Width="auto"
                                     Margin="5 8" Foreground="WhiteSmoke"
                                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
                                     Text="{Binding Path=Pagination.CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <Button Name="btnNxtPage"
+                                <Button Name="btnNxtPage"
                                     Content="Next"
                                     Margin="5,8"
                                     Padding="8"
                                     Command="{Binding Path=NextPageCommand}" />
 
-                            <Label FontSize="14" VerticalContentAlignment="Center">
-                                <TextBlock>
+                                <Label FontSize="14" VerticalContentAlignment="Center">
+                                    <TextBlock>
                                     of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  pages
                                 </TextBlock>
-                            </Label>
-                        </WrapPanel>
+                                </Label>
+                            </WrapPanel>
 
-                        <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                            <Label FontSize="14" VerticalContentAlignment="Center">
-                                <TextBlock>
+                            <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Label FontSize="14" VerticalContentAlignment="Center">
+                                    <TextBlock>
                                     Showing  <Bold><TextBlock Text="{Binding Path=Pagination.CurrentRecord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  out of  <Bold><TextBlock Text="{Binding Path=Pagination.TotalRecord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Bold>  records
                                 </TextBlock>
-                            </Label>
-                        </WrapPanel>
+                                </Label>
+                            </WrapPanel>
+                        </Grid>
                     </Grid>
-                </Grid>
 
-                <!--Buttons-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <!--Search-->
-                    <Button x:Name="btnSearch" Content="SEARCH"
+                    <!--Buttons-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!--Search-->
+                        <Button x:Name="btnSearch" Content="SEARCH"
                                         Width="100"
                                         Margin="5,8"
                                         Padding="3"
                                         Command="{Binding Path=SearchCommand}" />
-                    <!--Void-->
-                    <Button Content="VOID"
+                        <!--Void-->
+                        <Button Content="VOID"
                                         Width="100"
                                         Margin="5,8"
                                         Padding="3"
                                         Background="DarkRed"
                                         Command="{Binding Path=VoidCommand}" />
-                    <!--Reprint sales receipt-->
-                    <Button Content="REPRINT RECEIPT"
+                        <!--Reprint sales receipt-->
+                        <Button Content="REPRINT RECEIPT"
                                         Margin="5,8"
                                         Padding="3"
                                         Command="{Binding Path=ReprintReceiptCommand}" />
-                    <!--Print sales report-->
-                    <Button Content="PRINT -REPORT-"
+                        <!--Print sales report-->
+                        <Button Content="PRINT -REPORT-"
                                         Margin="5,8"
                                         Padding="3"
                                         Command="{Binding Path=PrintReportCommand}" />
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </Grid>
+            </Grid>
 
 
 
-        <!--Loading Screen-->
-        <Grid>
-            <!--Trigger-->
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+            <!--Loading Screen-->
+            <Grid>
+                <!--Trigger-->
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <!--Title-->
-                <TextBlock Text="Loading..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!--Title-->
+                    <TextBlock Text="Loading..." FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Foreground="DimGray" FontFamily="Microsoft Himalaya"/>
 
-                <!--Progress Bar-->
-                <Grid MinWidth="600" MaxWidth="800">
-                    <Rectangle Fill="DimGray" Margin="10 5" RadiusX="30" RadiusY="30"/>
+                    <!--Progress Bar-->
+                    <Grid MinWidth="600" MaxWidth="800">
+                        <Rectangle Fill="DimGray" Margin="10 5" RadiusX="30" RadiusY="30"/>
 
-                    <Grid Margin="30 10">
-                        <ProgressBar Name="progressBar" Height="25" BorderBrush="Black" IsIndeterminate="True"/>
+                        <Grid Margin="30 10">
+                            <ProgressBar Name="progressBar" Height="25" BorderBrush="Black" IsIndeterminate="True"/>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </UserControl>
