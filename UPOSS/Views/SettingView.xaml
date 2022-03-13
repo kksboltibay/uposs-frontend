@@ -24,7 +24,7 @@
                 </Style>
             </Grid.Style>
 
-            <Grid Grid.Column="1" Margin="10">
+            <Grid Margin="10">
                 <Rectangle Fill="White" Height="auto" RadiusX="10" RadiusY="10"/>
 
                 <Grid Margin="5">
@@ -39,11 +39,11 @@
                         <!--Content Section-->
                         <Grid Grid.Row="0" Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="0.25*"/>
-                                <RowDefinition Height="0.25*"/>
-                                <RowDefinition Height="0.25*"/>
-                                <RowDefinition Height="0.25*"/>
-                                <RowDefinition Height="0.25*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
@@ -74,9 +74,8 @@
                                         <Viewbox>
                                             <Button
                                             Background="DarkRed"
-                                            Width="110"
+                                            Width="100"
                                             Content="Refactor"
-                                            Margin="5,8"
                                             Padding="3"
                                             Command="{Binding Path=RefactorCommand}"/>
                                         </Viewbox>
@@ -118,7 +117,7 @@
                                                 <!--Charges Percentage-->
                                                 <Border Width="50" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
                                                     <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0"
                                                  Text="{Binding Path=InputSetting.GovChargesValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </Border>
                                                 <TextBlock Text="%" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0"/>
@@ -127,7 +126,7 @@
                                                 <Grid>
                                                     <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
                                                         <TextBox x:Name="tbRegNo" Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0"
                                                  Text="{Binding Path=InputSetting.GovChargesNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                     </Border>
 
@@ -182,7 +181,7 @@
                                         <Viewbox>
                                             <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
                                                 <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0"
                                                  Text="{Binding Path=InputSetting.System_address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                             </Border>
                                         </Viewbox>
@@ -220,7 +219,7 @@
                                         <Viewbox>
                                             <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
                                                 <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  BorderThickness="0"
                                                  Text="{Binding Path=InputSetting.Phone_no, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                             </Border>
                                         </Viewbox>
@@ -257,7 +256,10 @@
                                     <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">
                                         <Viewbox>
                                             <Border Width="150" Padding="2" Background="white" BorderBrush="Black" BorderThickness="1" CornerRadius="6">
-                                                <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentApplicationVersion}" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <!--<TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentApplicationVersion}" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                                                <TextBox Background="White" materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" Focusable="False" BorderThickness="0"
+                                                 Text="{Binding Source={x:Static properties:Settings.Default}, Path=CurrentApplicationVersion}"/>
                                             </Border>
                                         </Viewbox>
                                     </WrapPanel>
@@ -269,7 +271,7 @@
                         </Grid>
 
                         <!--Button Section-->
-                        <Grid Grid.Row="1" HorizontalAlignment="Right">
+                        <Grid Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                             <Viewbox>
                                 <Button
                                 Background="Green"

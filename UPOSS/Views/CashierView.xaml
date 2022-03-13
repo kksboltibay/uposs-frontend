@@ -308,7 +308,7 @@
                                     </Style>
                                 </DataGridTextColumn.HeaderStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Discount" IsReadOnly="True" Binding="{Binding Path=Discount}" Width="1*">
+                            <!--<DataGridTextColumn Header="Discount" IsReadOnly="True" Binding="{Binding Path=Discount}" Width="1*">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="Template">
@@ -322,7 +322,7 @@
                                         </Setter>
                                     </Style>
                                 </DataGridTextColumn.HeaderStyle>
-                            </DataGridTextColumn>
+                            </DataGridTextColumn>-->
                             <DataGridTextColumn Header="Subtotal" IsReadOnly="True" Binding="{Binding Path=Subtotal}" Width="1*">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
@@ -375,12 +375,11 @@
 
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.20*"/>
-                            <RowDefinition Height="0.20*"/>
-                            <RowDefinition Height="0.20*"/>
-                            <RowDefinition Height="0.55*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.60*"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="0.20*"/>
+                            <RowDefinition Height="0.25*"/>
                         </Grid.RowDefinitions>
 
                         <!--First line-->
@@ -417,8 +416,8 @@
                             <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
                         </Grid>
 
-                        <!--Second line-->
-                        <Grid Grid.Row="1">
+                        <!--Discount line-->
+                        <!--<Grid Grid.Row="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.5*"/>
                                 <RowDefinition Height="0.5*"/>
@@ -430,14 +429,14 @@
                                     <ColumnDefinition Width="0.6*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!--Discount-->
+                                --><!--Discount--><!--
                                 <WrapPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 5 0">
                                     <Viewbox>
                                         <TextBlock Text="Discounts" FontWeight="Light"/>
                                     </Viewbox>
                                 </WrapPanel>
 
-                                <!--Discount price-->
+                                --><!--Discount price--><!--
                                 <WrapPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0 0 0">
                                     <Viewbox>
                                         <TextBlock FontWeight="Light">
@@ -447,12 +446,12 @@
                                 </WrapPanel>
                             </Grid>
 
-                            <!--horizontal seperate line-->
+                            --><!--horizontal seperate line--><!--
                             <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
-                        </Grid>
+                        </Grid>-->
 
-                        <!--Thirt line-->
-                        <Grid Grid.Row="2">
+                        <!--Second line-->
+                        <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.5*"/>
                                 <RowDefinition Height="0.5*"/>
@@ -485,8 +484,8 @@
                             <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
                         </Grid>
 
-                        <!--Fourth line-->
-                        <Grid Grid.Row="3">
+                        <!--Thirt line-->
+                        <Grid Grid.Row="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.7*"/>
                                 <RowDefinition Height="0.3*"/>
@@ -518,10 +517,10 @@
                             <!--horizontal seperate line-->
                             <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" VerticalAlignment="Center" Margin="10 0"/>
                         </Grid>
-                        
-                        
-                        <!--Fifth line-->
-                        <Grid Grid.Row="4">
+
+
+                        <!--Fourth line-->
+                        <Grid Grid.Row="3">
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <!--Refresh sync button-->
                                 <Button Name="btnSync"
@@ -579,8 +578,8 @@
                         </Grid>
 
 
-                        <!--sixth line-->
-                        <Grid Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!--Fifth line-->
+                        <Grid Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <!--Payment button-->
                             <Button Name="btnPayment"
                                 Background="Green"

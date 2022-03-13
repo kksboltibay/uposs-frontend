@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:properties="clr-namespace:UPOSS.Properties"
-             d:DesignHeight="450" d:DesignWidth="1090">
+             d:DesignHeight="500" d:DesignWidth="1090">
 
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -154,6 +154,7 @@
                     <DataGrid
                       AutoGenerateColumns="False"
                       MinWidth="500"
+                      MaxHeight="500"
                       CanUserAddRows="False"
                       SelectionMode="Single"
                       SelectionUnit="FullRow"
