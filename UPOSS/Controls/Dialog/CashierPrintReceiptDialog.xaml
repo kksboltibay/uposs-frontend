@@ -82,9 +82,9 @@
                 <!--horizontal seperate line-->
                 <Separator BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Margin="0 5"/>
 
-                <!--Datetime-->
+                <!--Total-->
                 <Grid>
-                    <TextBlock Text="Total : " HorizontalAlignment="Left" Margin="1 0" FontWeight="Bold"/>
+                    <TextBlock Text="Total (RM) : " HorizontalAlignment="Left" Margin="1 0" FontWeight="Bold"/>
                     <TextBlock x:Name="tbkTotal" HorizontalAlignment="Right" Margin="1 0" FontWeight="Bold"/>
                 </Grid>
 
