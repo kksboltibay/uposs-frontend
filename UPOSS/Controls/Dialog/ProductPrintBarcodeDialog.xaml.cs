@@ -14,6 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Size = System.Windows.Size;
+using ZXing;
+using ZXing.Common;
+using UPOSS.Models;
+using System.Linq;
 
 namespace UPOSS.Controls.Dialog
 {
@@ -22,13 +26,14 @@ namespace UPOSS.Controls.Dialog
     /// </summary>
     public partial class ProductPrintBarcodeDialog : Window
     {
-        public ProductPrintBarcodeDialog(string barcodeString)
+        public ProductPrintBarcodeDialog(Product _product)
         {
             InitializeComponent();
 
-            GenerateBarcode(barcodeString);
+            //GenerateBarcode(barcodeString);
+            //Print();
 
-            Print();
+            GenerateAndPrintBarcode(_product);
         }
 
         private void GenerateBarcode(string bString)
@@ -67,6 +72,94 @@ namespace UPOSS.Controls.Dialog
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString(), "UPO$$");
+            }
+        }
+
+        public static void GenerateAndPrintBarcode(Product product)
+        {
+            // define
+            string barcode = product.Barcode;
+            int width = 100;
+            int height = 100;
+            string textBelowBarcode = product.Barcode + "\n" + product.Name + "\nRM" + product.Price;
+            string fontName = "Aerial";
+            float fontSize = 10;
+
+            // Create barcode writer and set encoding options
+            BarcodeWriter writer = new BarcodeWriter
+            {
+                Format = BarcodeFormat.CODE_128,
+                Options = new EncodingOptions
+                {
+                    Width = width,
+                    Height = height,
+                    Margin = 0,
+                    PureBarcode = true
+                }
+            };
+
+            // Generate barcode image
+            var barcodeBitmap = writer.Write(barcode);
+
+            // Create graphics object
+            using (var graphics = System.Drawing.Graphics.FromImage(barcodeBitmap))
+            {
+                // Define font and brush for text
+                var font = new System.Drawing.Font(fontName, fontSize);
+                var brush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+
+                // Define string format for text
+                var stringFormat = new System.Drawing.StringFormat
+                {
+                    Alignment = System.Drawing.StringAlignment.Center,
+                    LineAlignment = System.Drawing.StringAlignment.Center
+                };
+
+                // Calculate text size
+                var textSize = graphics.MeasureString(textBelowBarcode, font, barcodeBitmap.Width, stringFormat);
+
+                // Draw text
+                graphics.DrawString(textBelowBarcode, font, brush, new System.Drawing.RectangleF(0, barcodeBitmap.Height, barcodeBitmap.Width, textSize.Height), stringFormat);
+            }
+
+            // Print barcode image
+            var printDocument = new System.Drawing.Printing.PrintDocument();
+            printDocument.PrintPage += (s, e) =>
+            {
+                // Calculate position of barcode on page
+                var x = (e.PageBounds.Width - barcodeBitmap.Width) / 2;
+                var y = (e.PageBounds.Height - barcodeBitmap.Height - (int)fontSize * 2) / 2;
+
+                // Define font and brush for text
+                var font = new System.Drawing.Font(fontName, fontSize);
+                var brush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+
+                // Define string format for text
+                var stringFormat = new System.Drawing.StringFormat
+                {
+                    Alignment = System.Drawing.StringAlignment.Center,
+                    LineAlignment = System.Drawing.StringAlignment.Center
+                };
+
+                // Calculate text size
+                var textSize = e.Graphics.MeasureString(textBelowBarcode, font, e.PageBounds.Width, stringFormat);
+
+                // Calculate text position
+                var textX = e.PageBounds.Left + (e.PageBounds.Width - textSize.Width) / 2;
+                var textY = y + barcodeBitmap.Height + (int)fontSize;
+
+                // Draw barcode and text at calculated position
+                e.Graphics.DrawImage(barcodeBitmap, x, y);
+                e.Graphics.DrawString(textBelowBarcode, font, brush, new System.Drawing.RectangleF(e.PageBounds.Left, textY, e.PageBounds.Width, textSize.Height), stringFormat);
+            };
+
+            //printDocument.Print(); //direct print without choosing printer
+
+            // Show print dialog and print if user clicks "Print"
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == true)
+            {
+                printDocument.Print();
             }
         }
     }

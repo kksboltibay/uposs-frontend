@@ -814,7 +814,7 @@ namespace UPOSS.ViewModels
                     }
                     else
                     {
-                        ProductPrintBarcodeDialog _defaultPrintDialog = new ProductPrintBarcodeDialog(SelectedProduct.Barcode);
+                        ProductPrintBarcodeDialog _defaultPrintDialog = new ProductPrintBarcodeDialog(SelectedProduct);
                     }
                 }
             }

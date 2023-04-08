@@ -164,7 +164,10 @@ namespace UPOSS.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message.ToString() + "\n\nUpdate checking process error, please contact IT support", "UPO$$");
+                if (e.Message.ToString() != "Response status code does not indicate success: 404 (Not Found).")
+                {
+                    MessageBox.Show(e.Message.ToString() + "\n\nUpdate checking process error, please contact IT support", "UPO$$");
+                }
             }
             IsLoading = false;
         }
