@@ -40,9 +40,13 @@ namespace UPOSS.Views
             // key: ctrl +
             // payment
             HotkeysManager.AddHotkey(ModifierKeys.Control, Key.Add, () => {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(btnPayment);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+                try {
+                    ButtonAutomationPeer peer = new ButtonAutomationPeer(btnPayment);
+                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                    invokeProv.Invoke();
+                } catch (Exception e) {
+
+                }
             });
 
             // key: ctrl 1
@@ -51,7 +55,7 @@ namespace UPOSS.Views
                 tbBarcode.Focus();
             });
 
-            // key: ctrl 2 (below esc)
+            // key: ctrl 2
             // focus on search product category column
             HotkeysManager.AddHotkey(ModifierKeys.Control, Key.D2, () => {
                 tbProductCategory.Focus();
@@ -75,7 +79,7 @@ namespace UPOSS.Views
                 }
             });
 
-            // key: ctrl * (below esc)
+            // key: ctrl *
             // edit latest quantity
             HotkeysManager.AddHotkey(ModifierKeys.Control, Key.Multiply, () => {
                 if (dgProduct.Items.Count > 0)
@@ -556,9 +560,11 @@ namespace UPOSS.Views
         {
             // or FocusManager.FocusedElement = tbBarcode;
 
-            tbBarcode.Focus();
+            //tbBarcode.Focus();
 
             //searchBox.tbBarcode.Focus();
+
+            tbProductCategory.Focus();
         }
 
         private void togglebuttonScanner_Checked(object sender, RoutedEventArgs e)
