@@ -309,6 +309,8 @@ namespace UPOSS.ViewModels
                     Math.Round(Convert.ToDecimal(totalSubtotal), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(totalDiscount), 2, MidpointRounding.AwayFromZero) + Math.Round(Convert.ToDecimal(tax), 2, MidpointRounding.AwayFromZero)
             ), 2, MidpointRounding.AwayFromZero).ToString();
 
+            netTotal = (Math.Ceiling(Convert.ToDecimal(netTotal) / Convert.ToDecimal(0.05)) * Convert.ToDecimal(0.05)).ToString();
+
             Cart = new Cashier
             {
                 Subtotal = totalSubtotal,
@@ -453,14 +455,14 @@ namespace UPOSS.ViewModels
                     }
 
                     // check for price
-                    else if (Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) > Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2))
-                    {
-                        MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] can't be greater than its original price", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //else if (Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) > Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2))
+                    //{
+                    //    MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] can't be greater than its original price", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                        ProductList[i].Price = ProductList[i].Original_price;
+                    //    ProductList[i].Price = ProductList[i].Original_price;
 
-                        isCorrect = false;
-                    }
+                    //    isCorrect = false;
+                    //}
 
                     // round up price and qty
                     ProductList[i].Total_stock = Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2, MidpointRounding.AwayFromZero).ToString("0.00");

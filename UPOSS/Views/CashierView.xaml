@@ -206,6 +206,8 @@
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
+                                <Setter Property="Height" Value="120"/>
+                                <Setter Property="FontSize" Value="20"/>
                             </Style>
                         </DataGrid.CellStyle>
 
