@@ -455,14 +455,14 @@ namespace UPOSS.ViewModels
                     }
 
                     // check for price
-                    //else if (Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) > Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2))
-                    //{
-                    //    MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] can't be greater than its original price", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else if (Math.Round(Convert.ToDecimal(ProductList[i].Price), 2) > Math.Round(Convert.ToDecimal(ProductList[i].Original_price), 2))
+                    {
+                        MessageBox.Show("Product: " + ProductList[i].Product_no + " [Price] can't be greater than its original price", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                    //    ProductList[i].Price = ProductList[i].Original_price;
+                        ProductList[i].Price = ProductList[i].Original_price;
 
-                    //    isCorrect = false;
-                    //}
+                        isCorrect = false;
+                    }
 
                     // round up price and qty
                     ProductList[i].Total_stock = Math.Round(Convert.ToDecimal(ProductList[i].Total_stock), 2, MidpointRounding.AwayFromZero).ToString("0.00");
@@ -824,7 +824,9 @@ namespace UPOSS.ViewModels
                                         else
                                         {
                                             //changes
-                                            MessageBox.Show("Changes: $" + _paymentDialog.Payment.Change, "UPO$$");
+                                            CustomMessageDialog _customMessageDialog = new CustomMessageDialog("Changes: $" + _paymentDialog.Payment.Change);
+
+                                            _customMessageDialog.ShowDialog();
 
                                             //print receipt (x2 everytime)
                                             for (var i = 0; i < 2; i++)
