@@ -22,17 +22,23 @@ namespace UPOSS.Controls.Dialog
             InitializeComponent();
         }
 
-        private void dtPicker_Loaded(object sender, RoutedEventArgs e)
+        private void datePickerFrom_Loaded(object sender, RoutedEventArgs e)
         {
             // default date = today
-            dtPicker.SelectedDate = DateTime.Today;
+            datePickerFrom.SelectedDate = DateTime.Today;
+        }
+
+        private void datePickerTo_Loaded(object sender, RoutedEventArgs e)
+        {
+            // default date = today
+            datePickerTo.SelectedDate = DateTime.Today;
         }
 
         private void btnDialogOk_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(dtPicker.Text) || dtPicker.SelectedDate == null)
+            if (string.IsNullOrWhiteSpace(datePickerFrom.Text) || datePickerFrom.SelectedDate == null || string.IsNullOrWhiteSpace(datePickerTo.Text) || datePickerTo.SelectedDate == null)
             {
-                MessageBox.Show("Please select a date", "UPO$$");
+                MessageBox.Show("Please select the date", "UPO$$");
                 return;
             }
 

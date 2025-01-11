@@ -18,22 +18,22 @@ namespace UPOSS.Controls.Dialog
     /// </summary>
     public partial class AnalyticsPrintReportDialog : Window
     {
-        public AnalyticsPrintReportDialog(Analytics analytics, string selectedDate)
+        public AnalyticsPrintReportDialog(Analytics analytics, string selectedDateFrom, string selectedDateTo)
         {
             InitializeComponent();
 
-            LoadReceipt(analytics, selectedDate);
+            LoadReceipt(analytics, selectedDateFrom, selectedDateTo);
 
             Print();
         }
 
-        private void LoadReceipt(Analytics analytics, string selectedDate)
+        private void LoadReceipt(Analytics analytics, string selectedDateFrom, string selectedDateTo)
         {
             try
             {
                 tbkBranch.Text = Properties.Settings.Default.CurrentBranch;
                 tbkGeneratedDate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                tbkDateOfReport.Text = selectedDate;
+                tbkDateOfReport.Text = selectedDateFrom + " - " + selectedDateTo;
 
                 // main section
                 // cash
@@ -77,16 +77,19 @@ namespace UPOSS.Controls.Dialog
                 ), 2, MidpointRounding.AwayFromZero).ToString();
 
                 // gross sales
-                tbkGrossSalesAmount.Text = tbkNetSalesBeforeAmount.Text;
+                //tbkGrossSalesAmount.Text = tbkNetSalesBeforeAmount.Text;
 
                 // discount
-                tbkItemDiscountAmount.Text = analytics.Total_discount;
-                tbkTotalDiscountAmount.Text = tbkItemDiscountAmount.Text;
+                //tbkItemDiscountAmount.Text = analytics.Total_discount;
+                //tbkTotalDiscountAmount.Text = tbkItemDiscountAmount.Text;
 
                 // total revenue
-                tbkTotalRevenueAmount.Text = Math.Round(Convert.ToDecimal(
-                    Math.Round(Convert.ToDecimal(tbkGrossSalesAmount.Text), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(tbkTotalDiscountAmount.Text), 2, MidpointRounding.AwayFromZero)
-                ), 2, MidpointRounding.AwayFromZero).ToString();
+                //tbkTotalRevenueAmount.Text = Math.Round(Convert.ToDecimal(
+                //    Math.Round(Convert.ToDecimal(tbkGrossSalesAmount.Text), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(tbkTotalDiscountAmount.Text), 2, MidpointRounding.AwayFromZero)
+                //), 2, MidpointRounding.AwayFromZero).ToString();
+
+                // total revenue v2
+                tbkTotalRevenueAmount.Text = tbkNetSalesBeforeAmount.Text;
 
                 // void transaction
                 tbkVoidQty.Text = analytics.Total_void_qty;
