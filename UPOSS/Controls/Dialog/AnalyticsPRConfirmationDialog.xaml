@@ -19,14 +19,20 @@
         </Grid.RowDefinitions>
 
         <!--Line 1-->
-        <TextBlock Grid.Row="0" Text="- Please select a date to print sales report -" Margin="10" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Text="- Please select date to print sales report -" Margin="10" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
         <!--Line 2-->
-        <Grid Grid.Row="1" Margin="10">
+        <WrapPanel Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="10">
             <Border Width="150" Padding="4" BorderBrush="Black" BorderThickness="2" CornerRadius="4">
-                <DatePicker x:Name="dtPicker" Loaded="dtPicker_Loaded" Foreground="White" Background="Black" IsTodayHighlighted="True"/>
+                <DatePicker x:Name="datePickerFrom" Loaded="datePickerFrom_Loaded" Foreground="White" Background="Black" IsTodayHighlighted="True"/>
             </Border>
-        </Grid>
+
+            <TextBlock Text="  ____  " FontSize="16" FontWeight="UltraBold" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+            <Border Width="150" Padding="4" BorderBrush="Black" BorderThickness="2" CornerRadius="4">
+                <DatePicker x:Name="datePickerTo" Loaded="datePickerTo_Loaded" Foreground="White" Background="Black" IsTodayHighlighted="True"/>
+            </Border>
+        </WrapPanel>
 
         <!--Line 3-->
         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10">

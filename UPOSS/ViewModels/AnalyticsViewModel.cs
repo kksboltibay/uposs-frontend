@@ -363,7 +363,8 @@ namespace UPOSS.ViewModels
                 
                 var param = new
                 { 
-                    datetime = DateTime.ParseExact(_analyticsPRConfirmationDialog.dtPicker.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss"),
+                    datetimeFrom = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerFrom.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss"),
+                    datetimeTo = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerTo.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss"),
                     branchName = Properties.Settings.Default.CurrentBranch
                 };
 
@@ -375,9 +376,10 @@ namespace UPOSS.ViewModels
                     return;
                 }
 
-                string selectedDate = DateTime.ParseExact(_analyticsPRConfirmationDialog.dtPicker.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+                string selectedDateFrom = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerFrom.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+                string selectedDateTo = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerTo.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
 
-                AnalyticsPrintReportDialog _analyticsPrintReportDialog = new AnalyticsPrintReportDialog(Response.Data[0], selectedDate);
+                AnalyticsPrintReportDialog _analyticsPrintReportDialog = new AnalyticsPrintReportDialog(Response.Data[0], selectedDateFrom, selectedDateTo);
             }
             catch (Exception e)
             {
