@@ -77,19 +77,21 @@ namespace UPOSS.Controls.Dialog
                 ), 2, MidpointRounding.AwayFromZero).ToString();
 
                 // gross sales
-                //tbkGrossSalesAmount.Text = tbkNetSalesBeforeAmount.Text;
+                tbkGrossSalesAmount.Text = tbkNetSalesBeforeAmount.Text;
 
                 // discount
-                //tbkItemDiscountAmount.Text = analytics.Total_discount;
-                //tbkTotalDiscountAmount.Text = tbkItemDiscountAmount.Text;
+                tbkItemDiscountAmount.Text = analytics.Total_discount;
+                tbkTotalDiscountAmount.Text = tbkItemDiscountAmount.Text;
 
-                // total revenue
-                //tbkTotalRevenueAmount.Text = Math.Round(Convert.ToDecimal(
-                //    Math.Round(Convert.ToDecimal(tbkGrossSalesAmount.Text), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(tbkTotalDiscountAmount.Text), 2, MidpointRounding.AwayFromZero)
-                //), 2, MidpointRounding.AwayFromZero).ToString();
+                // total revenue v1
+                tbkTotalRevenueAmount.Text = Math.Round(Convert.ToDecimal(
+                    Math.Round(Convert.ToDecimal(tbkGrossSalesAmount.Text), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(tbkTotalDiscountAmount.Text), 2, MidpointRounding.AwayFromZero)
+                ), 2, MidpointRounding.AwayFromZero).ToString();
 
                 // total revenue v2
-                tbkTotalRevenueAmount.Text = tbkNetSalesBeforeAmount.Text;
+                //tbkTotalRevenueAmount.Text = Math.Round(Convert.ToDecimal(
+                //    Math.Round(Convert.ToDecimal(tbkNetSalesBeforeAmount.Text), 2, MidpointRounding.AwayFromZero) - Math.Round(Convert.ToDecimal(analytics.Total_discount), 2, MidpointRounding.AwayFromZero)
+                //), 2, MidpointRounding.AwayFromZero).ToString();
 
                 // void transaction
                 tbkVoidQty.Text = analytics.Total_void_qty;
