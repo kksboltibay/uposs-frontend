@@ -13,12 +13,12 @@ using UPOSS.Services;
 
 namespace UPOSS.ViewModels
 {
-    class AnalyticsViewModel : ViewModelBase
+    class AnalyticsSalesViewModel : ViewModelBase
     {
         APIService ObjAnalyticsService;
         private string _Path;
 
-        public AnalyticsViewModel()
+        public AnalyticsSalesViewModel()
         {
             ObjAnalyticsService = new APIService();
             _Path = "analytics";
@@ -27,17 +27,16 @@ namespace UPOSS.ViewModels
             searchCommand = new AsyncRelayCommand(Search, this);
             voidCommand = new AsyncRelayCommand(Void, this);
             reprintReceiptCommand = new AsyncRelayCommand(ReprintReceipt, this);
-            printReportCommand = new AsyncRelayCommand(PrintReport, this);
             previousPageCommand = new AsyncRelayCommand(PrevPage, this);
             nextPageCommand = new AsyncRelayCommand(NextPage, this);
 
-            InputSales = new Analytics();
+            InputSales = new AnalyticsSales();
             InputSales.Filter_created_at = new Datetime();
             InputSales.Filter_updated_at = new Datetime();
             InputProduct = new Product();
             SelectedBranch = Properties.Settings.Default.CurrentBranch;
             SelectedStatus = "All";
-            SelectedSales = new Analytics();
+            SelectedSales = new AnalyticsSales();
             Pagination = new Pagination { CurrentPage = 1, CurrentRecord = "0 - 0", TotalPage = 1, TotalRecord = 0 };
         }
 
@@ -51,8 +50,8 @@ namespace UPOSS.ViewModels
         }
 
         //Filter section
-        private Analytics inputSales;
-        public Analytics InputSales
+        private AnalyticsSales inputSales;
+        public AnalyticsSales InputSales
         {
             get { return inputSales; }
             set { inputSales = value; OnPropertyChanged("InputSales"); }
@@ -94,15 +93,15 @@ namespace UPOSS.ViewModels
         }
 
         //Main section
-        private ObservableCollection<Analytics> salesList;
-        public ObservableCollection<Analytics> SalesList
+        private ObservableCollection<AnalyticsSales> salesList;
+        public ObservableCollection<AnalyticsSales> SalesList
         {
             get { return salesList; }
             set { salesList = value; OnPropertyChanged("SalesList"); }
         }
 
-        private Analytics selectedSales;
-        public Analytics SelectedSales
+        private AnalyticsSales selectedSales;
+        public AnalyticsSales SelectedSales
         {
             get { return selectedSales; }
             set { selectedSales = value; OnPropertyChanged("SelectedSales"); }
@@ -167,7 +166,7 @@ namespace UPOSS.ViewModels
                 dynamic param = new
                 {
                     page = currentPage,
-                    createdAt = new 
+                    createdAt = new
                     {
                         from = InputSales.Filter_created_at.From != "" ? DateTime.ParseExact(InputSales.Filter_created_at.From, "M/d/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : "",
                         to = InputSales.Filter_created_at.To != "" ? DateTime.ParseExact(InputSales.Filter_created_at.To, "M/d/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss") : ""
@@ -185,7 +184,7 @@ namespace UPOSS.ViewModels
                     is_void = SelectedStatus == "All" ? null : SelectedStatus
                 };
 
-                RootAnalyticsObject Response = await ObjAnalyticsService.PostAPI("getSalesList", param, _Path);
+                RootAnalyticsSalesObject Response = await ObjAnalyticsService.PostAPI("getSalesList", param, _Path);
 
                 if (Response.Status != "ok" || Response.Msg == "No result found")
                 {
@@ -214,7 +213,7 @@ namespace UPOSS.ViewModels
                 };
 
                 //datagrid
-                SalesList = new ObservableCollection<Analytics>(Response.Data);
+                SalesList = new ObservableCollection<AnalyticsSales>(Response.Data);
 
                 for (int i = 0; i < SalesList.Count; i++)
                 {
@@ -258,7 +257,7 @@ namespace UPOSS.ViewModels
                     {
                         var param = new { receiptNo = SelectedSales.Receipt_no };
 
-                        RootAnalyticsObject Response = await ObjAnalyticsService.PostAPI("voidSales", param, _Path);
+                        RootAnalyticsSalesObject Response = await ObjAnalyticsService.PostAPI("voidSales", param, _Path);
 
                         MessageBox.Show(Response.Msg, "UPO$$");
 
@@ -308,8 +307,8 @@ namespace UPOSS.ViewModels
                         cartList = SelectedSales.ProductList,
                         totalItem = SelectedSales.ProductList.Count,
                         totalSubtotal = Math.Round(Convert.ToDecimal(
-                                Math.Round(Convert.ToDecimal(SelectedSales.Total_amount), 2, MidpointRounding.AwayFromZero) - 
-                                Math.Round(Convert.ToDecimal(SelectedSales.Total_tax), 2, MidpointRounding.AwayFromZero) + 
+                                Math.Round(Convert.ToDecimal(SelectedSales.Total_amount), 2, MidpointRounding.AwayFromZero) -
+                                Math.Round(Convert.ToDecimal(SelectedSales.Total_tax), 2, MidpointRounding.AwayFromZero) +
                                 Math.Round(Convert.ToDecimal(SelectedSales.Total_discount), 2, MidpointRounding.AwayFromZero)
                         ), 2, MidpointRounding.AwayFromZero).ToString(),
                         totalDiscount = SelectedSales.Total_discount,
@@ -336,50 +335,6 @@ namespace UPOSS.ViewModels
 
                     CashierPrintReceiptDialog _cashierPrintReceiptDialog = new CashierPrintReceiptDialog(firstParam, secondParam, SelectedSales.Cashier_username);
                 }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message.ToString(), "UPO$$");
-            }
-        }
-        #endregion
-
-        #region PrintReportOperation
-        private AsyncRelayCommand printReportCommand;
-        public AsyncRelayCommand PrintReportCommand
-        {
-            get { return printReportCommand; }
-        }
-        private async Task PrintReport()
-        {
-            try
-            {
-                AnalyticsPRConfirmationDialog _analyticsPRConfirmationDialog = new AnalyticsPRConfirmationDialog();
-
-                if (_analyticsPRConfirmationDialog.ShowDialog() != true)
-                {
-                    return;
-                }
-                
-                var param = new
-                { 
-                    datetimeFrom = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerFrom.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss"),
-                    datetimeTo = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerTo.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss"),
-                    branchName = Properties.Settings.Default.CurrentBranch
-                };
-
-                RootAnalyticsObject Response = await ObjAnalyticsService.PostAPI("getSalesSummary", param, _Path);
-
-                if (Response.Status != "ok")
-                {
-                    MessageBox.Show(Response.Msg, "UPO$$");
-                    return;
-                }
-
-                string selectedDateFrom = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerFrom.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
-                string selectedDateTo = DateTime.ParseExact(_analyticsPRConfirmationDialog.datePickerTo.SelectedDate.ToString(), "d/M/yyyy h:m:s tt", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
-
-                AnalyticsPrintReportDialog _analyticsPrintReportDialog = new AnalyticsPrintReportDialog(Response.Data[0], selectedDateFrom, selectedDateTo);
             }
             catch (Exception e)
             {

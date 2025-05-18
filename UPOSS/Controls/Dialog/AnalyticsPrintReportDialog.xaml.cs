@@ -18,7 +18,7 @@ namespace UPOSS.Controls.Dialog
     /// </summary>
     public partial class AnalyticsPrintReportDialog : Window
     {
-        public AnalyticsPrintReportDialog(Analytics analytics, string selectedDateFrom, string selectedDateTo)
+        public AnalyticsPrintReportDialog(AnalyticsReceipt analytics, string selectedDateFrom, string selectedDateTo)
         {
             InitializeComponent();
 
@@ -27,7 +27,7 @@ namespace UPOSS.Controls.Dialog
             Print();
         }
 
-        private void LoadReceipt(Analytics analytics, string selectedDateFrom, string selectedDateTo)
+        private void LoadReceipt(AnalyticsReceipt analytics, string selectedDateFrom, string selectedDateTo)
         {
             try
             {

@@ -19,7 +19,7 @@
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
                 <!--<materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Yellow" SecondaryColor="Red" />-->
-                
+
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -48,8 +48,12 @@
                 <views:CashierView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewModels:AnalyticsViewModel}">
-                <views:AnalyticsView/>
+            <DataTemplate DataType="{x:Type viewModels:AnalyticsReceiptViewModel}">
+                <views:AnalyticsReceiptView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:AnalyticsSalesViewModel}">
+                <views:AnalyticsSalesView/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModels:SettingViewModel}">

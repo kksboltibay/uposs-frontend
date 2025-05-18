@@ -137,18 +137,47 @@
             </ListViewItem>
 
             <!--Analytics-->
-            <ListViewItem>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Analytics}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <ListViewItem Padding="0">
+                <Expander Background="Transparent">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal" Margin="0 17">
+                            <materialDesign:PackIcon Kind="ChartArc" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
+                            <TextBlock Text="Analytics" VerticalAlignment="Center" Margin="5" FontSize="40"/>
+                        </StackPanel>
+                    </Expander.Header>
 
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="ChartArc" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
-                    <TextBlock Text="Analytics" VerticalAlignment="Center" Margin="5" FontSize="40"/>
-                </StackPanel>
+                    <Expander.Content>
+                        <StackPanel>
+                            <ListViewItem Padding="40 0 0 0">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                                        <i:InvokeCommandAction Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Analytics_receipt}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ChevronRight" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
+                                    <TextBlock Text="Receipt Report" VerticalAlignment="Center" Margin="5" FontSize="25"/>
+                                </StackPanel>
+                            </ListViewItem>
+
+                            <ListViewItem Padding="40 0 0 0">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                                        <i:InvokeCommandAction Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Analytics_sales}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ChevronRight" VerticalAlignment="Center" Margin="5 0 10 0" Width="50" Height="50"/>
+                                    <TextBlock Text="Sales Report" VerticalAlignment="Center" Margin="5" FontSize="25"/>
+                                </StackPanel>
+                            </ListViewItem>
+                        </StackPanel>
+                    </Expander.Content>
+                </Expander>
             </ListViewItem>
+           
 
             <!--Settings-->
             <ListViewItem>

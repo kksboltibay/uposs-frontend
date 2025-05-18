@@ -22,10 +22,10 @@ namespace UPOSS.Services
         public APIService()
         {
             //dev url
-            //_url = "http://localhost:5000/api/v1/";
+            _url = "http://localhost:5000/api/v1/";
 
             //prod url
-            _url = "http://128.199.212.104/api/v1/";
+            //_url = "http://128.199.212.104/api/v1/";
 
         }
 
@@ -90,7 +90,16 @@ namespace UPOSS.Services
                         responseObj = JsonConvert.DeserializeObject<RootCashierObject>(responseString); break;
 
                     case "analytics":
-                        responseObj = JsonConvert.DeserializeObject<RootAnalyticsObject>(responseString); break;
+                        if (apiCommand == "getSalesList" || apiCommand == "getSalesSummary")
+                        {
+                            responseObj = JsonConvert.DeserializeObject<RootAnalyticsReceiptObject>(responseString);
+
+                        } else
+                        {
+                            responseObj = JsonConvert.DeserializeObject<RootAnalyticsSalesObject>(responseString); 
+                        }
+
+                        break;
 
                     default:
                         MessageBox.Show("Client API Service error: missing [path], please contact IT support", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -130,7 +139,16 @@ namespace UPOSS.Services
                         return new RootCashierObject { Status = "error", Msg = e.Message, Data = null};
 
                     case "analytics":
-                        return new RootAnalyticsObject { Status = "error", Msg = e.Message, Data = null};
+                        if (apiCommand == "getSalesList" || apiCommand == "getSalesSummary")
+                        {
+                            return new RootAnalyticsReceiptObject { Status = "error", Msg = e.Message, Data = null };
+
+                        }
+                        else
+                        {
+                            return new RootAnalyticsSalesObject { Status = "error", Msg = e.Message, Data = null };
+                        }
+                    
 
                     default:
                         MessageBox.Show("Client API Service exception: missing [path], please contact IT support", "UPO$$", MessageBoxButton.OK, MessageBoxImage.Error);
